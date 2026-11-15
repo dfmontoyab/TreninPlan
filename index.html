@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-title" content="VeloPlan Pro" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#0f172a" />
-  <title>VeloPlan Pro v3.2 — Con Memoria Persistente</title>
+  <title>VeloPlan Pro v3.3 — Conectado a Intervals.icu</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <style>
@@ -45,23 +45,26 @@
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white">VeloPlan <span class="text-emerald-400">PRO 3.2</span></h1>
+            <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white">VeloPlan <span class="text-emerald-400">PRO 3.3</span></h1>
             <span id="saveStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>Guardado Automático
+              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>Memoria Activa
             </span>
           </div>
-          <p class="text-[11px] text-slate-400">Siempre activos: <span class="text-rose-400 font-semibold">Pulsaciones (FC)</span> • <span class="text-amber-400 font-semibold">Fuerza (Potencia)</span> • <span class="text-cyan-400 font-semibold">Pedaleo (Cadencia)</span></p>
+          <p class="text-[11px] text-slate-400">Adaptativo con <span class="text-indigo-400 font-semibold">Intervals.icu</span> • <span class="text-rose-400 font-semibold">Pulso</span> • <span class="text-amber-400 font-semibold">Potencia</span> • <span class="text-cyan-400 font-semibold">Pedaleo</span></p>
         </div>
       </div>
 
       <div class="flex items-center gap-1.5">
+        <button onclick="openIntervalsSyncModal()" class="px-2.5 py-1.5 rounded-lg bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-400/50 text-indigo-200 text-xs font-bold flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-rotate"></i>
+          <span>Conectar Intervals.icu</span>
+        </button>
         <button onclick="openLiveTimerModal()" class="px-2.5 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/40 text-cyan-300 text-xs font-semibold flex items-center gap-1.5 transition">
           <i class="fa-solid fa-stopwatch"></i>
-          <span class="hidden sm:inline">Reloj de Agua</span>
+          <span class="hidden sm:inline">Reloj Agua</span>
         </button>
-        <button onclick="openBackupModal()" class="px-2.5 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-300 text-xs font-semibold flex items-center gap-1.5 transition" title="Respaldar o restaurar tus datos">
+        <button onclick="openBackupModal()" class="px-2.5 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-300 text-xs font-semibold flex items-center gap-1.5 transition">
           <i class="fa-solid fa-database"></i>
-          <span>Mis Datos</span>
         </button>
       </div>
     </div>
@@ -76,7 +79,7 @@
         <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
           <div>
             <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Paso 1 de 3</span>
-            <h2 class="text-lg sm:text-xl font-bold text-white">Tus Datos Básicos (Se guardan automáticamente)</h2>
+            <h2 class="text-lg sm:text-xl font-bold text-white">Tus Datos Básicos (Guardado Automático)</h2>
           </div>
           <i class="fa-solid fa-id-card-clip text-2xl text-slate-600"></i>
         </div>
@@ -208,10 +211,6 @@
           <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
             ¿Qué sensores tienes conectados a tu bicicleta?
           </h3>
-          <p class="text-xs text-slate-400 mb-3">
-            La aplicación <strong>siempre te mostrará los 3 datos (Pulsaciones, Potencia y Cadencia)</strong>. Pero si <strong>NO marcas Potenciómetro</strong>, el archivo para tu Magene C706 te guiará con tus <strong>Pulsaciones (Banda Cardíaca) + Cadencia</strong>.
-          </p>
-
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-900/90 border border-rose-500/40 cursor-pointer hover:bg-slate-800/80 transition">
               <input id="chkHR" type="checkbox" checked onchange="autoSaveInputs()" class="mt-1 w-4 h-4 accent-rose-500" />
@@ -225,7 +224,7 @@
               <input id="chkPM" type="checkbox" onchange="autoSaveInputs()" class="mt-1 w-4 h-4 accent-amber-500" />
               <div>
                 <div class="text-sm font-bold text-amber-300"><i class="fa-solid fa-bolt mr-1"></i>Potenciómetro (Fuerza en Vatios)</div>
-                <p class="text-[11px] text-slate-400"><strong>Desmárcalo si no tienes.</strong> Así tu Magene te mostrará el objetivo en Pulsaciones.</p>
+                <p class="text-[11px] text-slate-400"><strong>Desmárcalo si no tienes.</strong> Así tu Magene te guiará con tus Pulsaciones.</p>
               </div>
             </label>
 
@@ -277,7 +276,6 @@
                 <option value="90">1 hora y media (90 minutos)</option>
                 <option value="120">2 horas (120 minutos)</option>
               </select>
-              <p class="text-[11px] text-slate-400 mt-1">Ningún entrenamiento entre semana se pasará de este tiempo.</p>
             </div>
 
             <div>
@@ -292,7 +290,6 @@
                 <option value="240">4 horas (240 min - Salida larga)</option>
                 <option value="300">5 horas (300 min - Gran Fondo)</option>
               </select>
-              <p class="text-[11px] text-slate-400 mt-1">Calcularemos tus descansos, comida y agua según estas horas.</p>
             </div>
 
             <div>
@@ -304,7 +301,6 @@
                 <option value="4" selected>4 días de Bici + 2 de Fortalecimiento + 1 Descanso</option>
                 <option value="5">5 días de Bici + 1 de Fortalecimiento + 1 Descanso</option>
               </select>
-              <p class="text-[11px] text-slate-400 mt-1">En los días sin bici incluimos ejercicios para piernas, abdomen y espalda.</p>
             </div>
           </div>
         </div>
@@ -341,7 +337,7 @@
         </div>
 
         <div class="mt-4">
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Clima donde entrenas normalmente (Para calcular cuánta agua debes tomar)</label>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Clima donde entrenas normalmente</label>
           <select id="inClimate" onchange="autoSaveInputs()" class="w-full sm:w-1/2 rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
             <option value="warm" selected>Caluroso o Húmedo (24°C a 32°C — Ej. Cali / Valle / Costa)</option>
             <option value="temperate">Templado (16°C a 23°C — Ej. Medellín / Eje Cafetero)</option>
@@ -360,32 +356,45 @@
       </div>
     </section>
 
-    <!-- SECCIÓN 4: MI PLAN SEMANAL -->
+    <!-- SECCIÓN 4: MI PLAN SEMANAL CON PROGRESIÓN Y LECTURA DE INTERVALS.ICU -->
     <section id="tab-plan" class="tab-panel hidden space-y-4">
 
+      <!-- CABECERA DEL PLAN Y NIVEL DE RENDIMIENTO ADAPTATIVO -->
       <div class="glass rounded-2xl p-4 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-l-4 border-l-emerald-400">
-        <div>
+        <div class="space-y-1">
           <div class="flex flex-wrap items-center gap-2">
             <span id="planPhaseBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-              ETAPA: GANANDO FUERZA Y RESISTENCIA
+              FASE DE LA SEMANA
             </span>
-            <span id="planModeExplain" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">
-              Ciclocomputador guiado por: PULSACIONES (FC)
+            <span id="fitnessLevelBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">
+              Nivel de Avance: Base (100%)
             </span>
           </div>
-          <h2 id="planHeaderTitle" class="text-lg sm:text-xl font-extrabold text-white mt-1">Plan Semanal de Entrenamiento</h2>
-          <p id="planSubSummary" class="text-xs text-slate-300 mt-0.5"></p>
+          <h2 id="planHeaderTitle" class="text-lg sm:text-xl font-extrabold text-white">Plan Semanal de Entrenamiento</h2>
+          <p id="planFocusDescription" class="text-xs text-emerald-300 font-medium"></p>
+          <p id="planSubSummary" class="text-[11px] text-slate-400"></p>
         </div>
 
         <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto justify-end">
           <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5">
-            <label class="text-xs font-semibold text-slate-400">Semana:</label>
+            <label class="text-xs font-semibold text-slate-400">Cambiar Semana:</label>
             <select id="selActiveWeek" onchange="changeActiveWeek(this.value)" class="bg-transparent text-xs font-bold text-emerald-400 focus:outline-none mono"></select>
           </div>
-          <button onclick="closeWeekAndAdapt()" class="px-3 py-2 rounded-xl bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-500/40 text-indigo-300 text-xs font-bold flex items-center gap-1.5 transition">
-            <i class="fa-solid fa-chart-line"></i> Terminé la Semana (Ajustar la Siguiente)
+          <button onclick="openIntervalsSyncModal()" class="px-3 py-2 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-slate-950 text-xs font-extrabold flex items-center gap-1.5 transition shadow-lg shadow-indigo-500/20">
+            <i class="fa-solid fa-cloud-arrow-down"></i> Leer mi Rendimiento de Intervals.icu
           </button>
         </div>
+      </div>
+
+      <!-- CAJA RESUMEN DE ADAPTACIÓN SI YA SE SINCRONIZÓ CON INTERVALS.ICU -->
+      <div id="intervalsAdaptationBanner" class="hidden glass rounded-2xl p-4 border border-indigo-500/40 bg-indigo-950/20 space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-extrabold uppercase tracking-wider text-indigo-300">
+            <i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Ajuste Automático Basado en tus Salidas Reales (Intervals.icu)
+          </span>
+          <span id="intervalsLastSyncDate" class="text-[10px] text-slate-400 mono"></span>
+        </div>
+        <p id="intervalsAdaptationSummary" class="text-xs text-slate-200 leading-relaxed"></p>
       </div>
 
       <!-- TABLA DE RITMOS EXPLICADOS EN SENCILLO -->
@@ -410,24 +419,24 @@
         <div class="flex items-center justify-between border-b border-slate-800 pb-3">
           <div>
             <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Pasar al Ciclocomputador</span>
-            <h2 class="text-lg sm:text-xl font-extrabold text-white">Cargar tus Entrenamientos al Magene C706, Garmin o Wahoo</h2>
+            <h2 class="text-lg sm:text-xl font-extrabold text-white">Enviar Entrenamientos a Intervals.icu → OnelapFit (Magene C706)</h2>
           </div>
           <i class="fa-solid fa-satellite-dish text-2xl text-emerald-400"></i>
         </div>
 
-        <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-700 space-y-2">
-          <div class="flex items-center gap-2 text-sm font-bold text-white">
-            <i class="fa-solid fa-circle-info text-cyan-400"></i>
-            ¿Cómo salen los 3 objetivos (Pulsaciones, Potencia y Cadencia) en tu aparato?
+        <div class="p-4 rounded-xl bg-indigo-950/30 border border-indigo-500/40 space-y-2">
+          <div class="flex items-center gap-2 text-sm font-bold text-indigo-200">
+            <i class="fa-solid fa-bolt text-amber-400"></i>
+            ¡Nuevo! Envío Directo con 1 Clic al Calendario de Intervals.icu
           </div>
           <p class="text-xs text-slate-300 leading-relaxed">
-            Todos los archivos llevan los 3 datos. Si marcaste que <strong>NO tienes potenciómetro</strong>, el código que copias para <strong>Intervals.icu / OnelapFit</strong> le ordena a tu Magene C706 mostrarte la barra de <span class="text-rose-400 font-bold">Pulsaciones del Corazón (FC)</span> y tu <span class="text-cyan-400 font-bold">Velocidad de Pedaleo (Cadencia)</span> como objetivos principales, y te escribe los <span class="text-amber-400 font-bold">Vatios de Potencia</span> en el título del bloque.
+            Si conectaste tu cuenta de <strong>Intervals.icu</strong> (botón superior <em>Conectar Intervals.icu</em>), ya ni siquiera tienes que copiar y pegar texto manualmente: al tocar el botón <strong>"Subir Directo a Intervals"</strong> en cualquier entrenamiento, la aplicación lo agenda sola en tu calendario de Intervals.icu en modo Pulsaciones (`% HR`) + Cadencia para que aparezca de inmediato en <strong>OnelapFit</strong> y en tu <strong>Magene C706</strong>.
           </p>
         </div>
 
         <div>
           <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3">
-            Entrenamientos de Bicicleta de esta Semana
+            Entrenamientos de Bicicleta de la Semana Activa
           </h3>
           <div id="syncWorkoutsList" class="space-y-3"></div>
         </div>
@@ -436,23 +445,80 @@
 
   </main>
 
+  <!-- MODAL NUEVO: CONEXIÓN Y LECTURA EN VIVO DESDE INTERVALS.ICU -->
+  <div id="intervalsSyncModal" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass rounded-2xl max-w-xl w-full p-5 border border-indigo-500/50 space-y-4 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div>
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-indigo-400">Sincronización Bidireccional</span>
+          <h3 class="text-base font-extrabold text-white flex items-center gap-2">
+            <i class="fa-solid fa-link text-indigo-400"></i>
+            Conectar con Intervals.icu y Adaptar Mi Plan
+          </h3>
+        </div>
+        <button onclick="closeIntervalsSyncModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300 space-y-1.5">
+        <div class="font-bold text-white"><i class="fa-solid fa-circle-question text-indigo-400 mr-1"></i>¿Dónde encuentro estos 2 datos en Intervals.icu?</div>
+        <ol class="list-decimal list-inside space-y-1 text-[11px] text-slate-300">
+          <li>Abre <strong>intervals.icu</strong> en el navegador y entra a <strong>Settings</strong> (menú izquierdo).</li>
+          <li>Baja hasta el final de la página hasta donde dice <strong>Developer Settings</strong>.</li>
+          <li>Copia tu <strong>Athlete ID</strong> (ej. <code>i123456</code>) y toca en <strong>API Key (View)</strong> para copiar tu clave.</li>
+        </ol>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Tu Athlete ID de Intervals.icu</label>
+          <input id="inIntervalsId" type="text" placeholder="Ej: i184920" oninput="saveIntervalsCredentials()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white mono focus:border-indigo-400 focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Tu API Key de Intervals.icu</label>
+          <input id="inIntervalsKey" type="password" placeholder="Pega aquí tu API Key" oninput="saveIntervalsCredentials()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white mono focus:border-indigo-400 focus:outline-none" />
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-2">
+        <button onclick="fetchAndAnalyzeIntervalsActivities()" id="btnFetchIntervals" class="flex-1 py-2.5 px-4 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 transition">
+          <i class="fa-solid fa-cloud-arrow-down"></i> Leer Mis Salidas de los Últimos 14 Días y Adaptar Plan
+        </button>
+      </div>
+
+      <!-- RESULTADO DE LAS ACTIVIDADES LEÍDAS DESDE INTERVALS.ICU -->
+      <div id="intervalsFetchedContainer" class="hidden space-y-3 pt-2 border-t border-slate-800">
+        <div class="text-xs font-bold text-emerald-300 flex items-center justify-between">
+          <span><i class="fa-solid fa-check-circle mr-1"></i>Entrenamientos reales encontrados en tu cuenta:</span>
+          <span id="intervalsCountBadge" class="mono text-[11px] text-slate-400"></span>
+        </div>
+        <div id="intervalsActivitiesList" class="space-y-2 max-h-52 overflow-y-auto pr-1"></div>
+        <div id="intervalsAiVerdict" class="p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-500/40 text-xs text-slate-200 leading-relaxed whitespace-pre-line"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL 1: TEXTO COPIADO PARA INTERVALS.ICU -->
   <div id="intervalsModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="glass rounded-2xl max-w-lg w-full p-5 border border-emerald-500/40 space-y-4">
       <div class="flex items-center justify-between">
         <h3 class="text-base font-extrabold text-white flex items-center gap-2">
           <i class="fa-solid fa-clipboard-check text-emerald-400"></i>
-          Texto Listo para Intervals.icu → OnelapFit (Magene)
+          Enviar a Intervals.icu → OnelapFit (Magene)
         </h3>
         <button onclick="closeIntervalsModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
       <p id="intervalsModalSubtitle" class="text-xs text-slate-300"></p>
       <textarea id="intervalsModalTextarea" readonly rows="10" class="w-full rounded-xl bg-slate-950 border border-slate-700 p-3 text-xs mono text-emerald-300 focus:outline-none"></textarea>
       <div class="flex flex-wrap justify-between items-center gap-2">
-        <button onclick="copyIntervalsTextarea()" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-1.5">
-          <i class="fa-solid fa-copy"></i> Copiar Texto
-        </button>
-        <button onclick="closeIntervalsModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs">
+        <div class="flex flex-wrap gap-2">
+          <button onclick="copyIntervalsTextarea()" class="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-1.5">
+            <i class="fa-solid fa-copy"></i> Copiar Texto
+          </button>
+          <button onclick="pushWorkoutDirectlyToIntervals()" id="btnDirectPushIntervals" class="px-3.5 py-2 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-slate-950 font-extrabold text-xs flex items-center gap-1.5">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Subir Directo al Calendario de Intervals.icu
+          </button>
+        </div>
+        <button onclick="closeIntervalsModal()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs">
           Cerrar
         </button>
       </div>
@@ -468,7 +534,7 @@
       </div>
 
       <p class="text-xs text-slate-300">
-        Este registro queda <strong>guardado en tu aplicación</strong> para recordar qué días ya cumpliste y ajustar la próxima semana.
+        Al guardar este registro, la aplicación <strong>recalcula automáticamente la exigencia de tus próximas sesiones</strong> para que nunca te estanques.
       </p>
 
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -501,7 +567,7 @@
       </div>
 
       <button onclick="processWorkoutFeedback()" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-extrabold text-xs">
-        Guardar Cumplimiento y Ver Consejos para Mañana
+        Guardar, Adaptar Mi Nivel y Ver Consejos para Mañana
       </button>
 
       <div id="fbResultBox" class="hidden p-3.5 rounded-xl bg-slate-900 border border-slate-700 space-y-3">
@@ -518,7 +584,7 @@
     </div>
   </div>
 
-  <!-- MODAL 3: GESTIÓN DE DATOS Y RESPALDO (PARA QUE NUNCA SE PIERDAN) -->
+  <!-- MODAL 3: GESTIÓN DE DATOS Y RESPALDO -->
   <div id="backupModal" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="glass rounded-2xl max-w-lg w-full p-5 border border-emerald-500/40 space-y-4">
       <div class="flex items-center justify-between">
@@ -532,29 +598,23 @@
       <div class="p-3.5 rounded-xl bg-emerald-950/25 border border-emerald-500/30 text-xs text-slate-200 space-y-1">
         <div class="font-bold text-emerald-300"><i class="fa-solid fa-circle-check mr-1"></i>Estado de la memoria interna: Activa</div>
         <p class="text-[11px] text-slate-300">
-          Tus datos (perfil, bicicleta, horarios, semana actual y entrenamientos cumplidos) se están guardando automáticamente en la memoria interna de este dispositivo (`localStorage` + `IndexedDB`).
+          Tus datos, tu conexión con Intervals.icu y tu nivel de progreso se guardan automáticamente en este teléfono.
         </p>
       </div>
 
-      <div class="space-y-2">
-        <h4 class="text-xs font-bold text-white">Copia de Seguridad (Para pasar tus datos del PC al Celular o guardarlos)</h4>
-        <p class="text-[11px] text-slate-400">
-          Si configuraste todo en el computador y quieres pasarlo idéntico al celular sin volver a llenar nada, descarga tu archivo de respaldo y cárgaselo en el teléfono:
-        </p>
-        <div class="flex flex-wrap gap-2 pt-1">
-          <button onclick="exportProfileBackup()" class="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-1.5">
-            <i class="fa-solid fa-download"></i> Descargar Copia de Mis Datos (.json)
-          </button>
-          <label class="px-3.5 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 font-bold text-xs flex items-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-upload"></i> Cargar Copia Guardada
-            <input type="file" accept=".json" onchange="importProfileBackup(event)" class="hidden" />
-          </label>
-        </div>
+      <div class="flex flex-wrap gap-2 pt-1">
+        <button onclick="exportProfileBackup()" class="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-1.5">
+          <i class="fa-solid fa-download"></i> Descargar Copia (.json)
+        </button>
+        <label class="px-3.5 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 font-bold text-xs flex items-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-upload"></i> Restaurar Copia
+          <input type="file" accept=".json" onchange="importProfileBackup(event)" class="hidden" />
+        </label>
       </div>
 
       <div class="pt-3 border-t border-slate-800 flex justify-between items-center">
         <button onclick="resetAllData()" class="text-xs text-rose-400 hover:text-rose-300 font-semibold">
-          <i class="fa-solid fa-trash-can mr-1"></i>Borrar todo y empezar de cero
+          <i class="fa-solid fa-trash-can mr-1"></i>Borrar todo y reiniciar
         </button>
         <button onclick="closeBackupModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs">
           Cerrar
@@ -615,7 +675,7 @@
 
   <script>
     // =========================================================================
-    // CLAVE DE BASE DE DATOS LOCAL Y ESTADO GLOBAL (VELOPLAN PRO v3.2)
+    // ESTADO GLOBAL Y BASE DE DATOS LOCAL (VELOPLAN PRO v3.3)
     // =========================================================================
     const STORAGE_KEY = 'veloplan_pro_v32_database';
 
@@ -656,18 +716,25 @@
         strengthMode: 'gym',
         climate: 'warm'
       },
+      intervalsAuth: {
+        athleteId: '',
+        apiKey: '',
+        lastSyncSummary: '',
+        lastSyncDate: ''
+      },
       totalWeeks: 8,
       currentWeek: 1,
-      weeklyProgressionFactor: 1.0,
-      completedLogs: {}, // Guarda qué entrenamientos ya hiciste: { "W1_D1": { status, realHR, realCAD, rpe } }
+      weeklyProgressionFactor: 1.0, // Sube o baja según tu rendimiento real en Intervals.icu
+      completedLogs: {},
       zones: [],
       plan: [],
       selectedDayForFeedback: 0,
+      selectedDayForIntervalsExport: 0,
       lastFeedbackReport: ''
     };
 
     // =========================================================================
-    // MOTOR DE PERSISTENCIA DOBLE: LOCALSTORAGE + INDEXEDDB
+    // GUARDADO Y CARGA AUTOMÁTICA (LOCALSTORAGE + INDEXEDDB)
     // =========================================================================
     function saveStateToLocal() {
       const payload = {
@@ -676,6 +743,7 @@
         rider: state.rider,
         bike: state.bike,
         goal: state.goal,
+        intervalsAuth: state.intervalsAuth,
         totalWeeks: state.totalWeeks,
         currentWeek: state.currentWeek,
         weeklyProgressionFactor: state.weeklyProgressionFactor,
@@ -686,7 +754,6 @@
         flashSaveIndicator();
       } catch (e) {}
 
-      // Respaldo adicional en IndexedDB del navegador para evitar borrados en iOS
       try {
         const req = indexedDB.open('VeloPlanDB', 1);
         req.onupgradeneeded = function(ev) {
@@ -716,7 +783,6 @@
         return;
       }
 
-      // Si no estaba en localStorage, buscar en IndexedDB
       try {
         const req = indexedDB.open('VeloPlanDB', 1);
         req.onupgradeneeded = function(ev) {
@@ -745,19 +811,18 @@
       }
     }
 
-    // Volcar los datos guardados hacia las casillas HTML para no perderlos nunca
     function applyLoadedDataToStateAndForm(data) {
       state.hasSavedProfile = Boolean(data.hasSavedProfile);
       state.lastActiveTab = data.lastActiveTab || 'plan';
       if (data.rider) Object.assign(state.rider, data.rider);
       if (data.bike) Object.assign(state.bike, data.bike);
       if (data.goal) Object.assign(state.goal, data.goal);
+      if (data.intervalsAuth) Object.assign(state.intervalsAuth, data.intervalsAuth);
       if (data.totalWeeks) state.totalWeeks = data.totalWeeks;
       if (data.currentWeek) state.currentWeek = data.currentWeek;
       if (data.weeklyProgressionFactor) state.weeklyProgressionFactor = data.weeklyProgressionFactor;
       if (data.completedLogs) state.completedLogs = data.completedLogs;
 
-      // Rellenar los campos del formulario HTML con los datos recuperados
       document.getElementById('inName').value = state.rider.name || '';
       document.getElementById('inEmail').value = state.rider.email || '';
       document.getElementById('inAge').value = state.rider.age || 42;
@@ -787,20 +852,20 @@
       document.getElementById('inBikeDays').value = String(state.goal.bikeDays || 4);
       document.getElementById('inStrengthMode').value = state.goal.strengthMode || 'gym';
       document.getElementById('inClimate').value = state.goal.climate || 'warm';
+
+      document.getElementById('inIntervalsId').value = state.intervalsAuth.athleteId || '';
+      document.getElementById('inIntervalsKey').value = state.intervalsAuth.apiKey || '';
     }
 
     function flashSaveIndicator() {
       const badge = document.getElementById('saveStatusBadge');
       if (!badge) return;
-      badge.innerHTML = '<i class="fa-solid fa-check mr-1"></i>Datos Guardados';
-      badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/30 text-emerald-200 border border-emerald-400';
+      badge.innerHTML = '<i class="fa-solid fa-check mr-1"></i>Guardado';
       setTimeout(() => {
         badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>Memoria Activa';
-        badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
-      }, 1500);
+      }, 1400);
     }
 
-    // Se ejecuta cada vez que el usuario modifica cualquier campo en los pasos 1, 2 o 3
     function autoSaveInputs() {
       readInputsAndComputeMetrics();
       buildWeekSchedule(state.currentWeek);
@@ -839,7 +904,7 @@
     }
 
     // =========================================================================
-    // CÁLCULO DE LAS 5 ZONAS CON NOMBRES SENCILLOS Y HUMANOS
+    // CÁLCULO DE LAS 5 ZONAS CON NOMBRES SENCILLOS
     // =========================================================================
     function readInputsAndComputeMetrics() {
       state.rider.name = document.getElementById('inName').value.trim() || 'Ciclista';
@@ -862,7 +927,8 @@
       } else {
         const wkgMap = { beginner: 2.2, intermediate: 2.85, advanced: 3.5 };
         state.rider.ftp = 0;
-        state.rider.ftpCalculated = Math.round(state.rider.weight * (wkgMap[state.rider.level] || 2.8));
+        // La potencia estimada también progresa a medida que sube tu weeklyProgressionFactor
+        state.rider.ftpCalculated = Math.round(state.rider.weight * (wkgMap[state.rider.level] || 2.8) * state.weeklyProgressionFactor);
         state.rider.ftpEstimated = true;
       }
 
@@ -1038,13 +1104,18 @@
     function populateWeekSelector() {
       const sel = document.getElementById('selActiveWeek');
       sel.innerHTML = '';
+      const themes = [
+        'Base y Pedaleo Ágil',
+        'Fuerza en Loma (Torque)',
+        'Cambios de Ritmo y Pulmón',
+        'Semana de Asimilación y Descarga'
+      ];
       for (let w = 1; w <= state.totalWeeks; w++) {
         const opt = document.createElement('option');
         opt.value = w;
-        const isDeload = (w % 4 === 0 && w < state.totalWeeks);
         const isTaper = (w === state.totalWeeks);
-        const tag = isTaper ? ' (Semana Suave Pre-Evento)' : (isDeload ? ' (Semana de Recuperación)' : '');
-        opt.textContent = `Semana ${w} de ${state.totalWeeks}${tag}`;
+        const themeName = isTaper ? 'Semana Pre-Competencia (Llegar Fresco)' : themes[(w - 1) % 4];
+        opt.textContent = `Semana ${w}: ${themeName}`;
         if (w === state.currentWeek) opt.selected = true;
         sel.appendChild(opt);
       }
@@ -1060,7 +1131,7 @@
 
     function fitIntervalsToAvailableTime(availMin, warmMin, coolMin, workMin, restMin, desiredReps) {
       const usable = Math.max(15, availMin - warmMin - coolMin);
-      let reps = desiredReps;
+      let reps = Math.max(1, desiredReps);
       while (reps > 1 && ((reps * workMin) + ((reps - 1) * restMin)) > usable) {
         reps--;
       }
@@ -1071,45 +1142,162 @@
       return { reps, warmMin: finalWarm, coolMin: finalCool, workMin, restMin };
     }
 
+    // =========================================================================
+    // MOTOR GENERADOR DE SEMANAS DINÁMICAS (NINGUNA SEMANA ES IGUAL A LA ANTERIOR)
+    // =========================================================================
     function buildWeekSchedule(weekNum) {
       const z1 = state.zones[0];
       const z2 = state.zones[1];
 
-      const isDeload = (weekNum % 4 === 0 && weekNum < state.totalWeeks);
+      // Ciclo de 4 semanas con estímulos completamente distintos + progresión por bloque
+      const cycleIndex = (weekNum - 1) % 4; // 0: Base Ágil, 1: Fuerza Loma, 2: Choque VO2/Cambios, 3: Descarga
+      const blockNumber = Math.floor((weekNum - 1) / 4); // Aumenta dificultad en cada mes
       const isTaper = (weekNum === state.totalWeeks);
-      let loadMult = 1 + ((weekNum - 1) * 0.05) * state.weeklyProgressionFactor;
-      if (isDeload) loadMult = 0.80;
-      if (isTaper) loadMult = 0.65;
+
+      // Factor combinado: Tu nivel real leído de Intervals.icu + el avance de las semanas
+      let fitnessMult = state.weeklyProgressionFactor * (1 + (blockNumber * 0.08));
+      if (cycleIndex === 3) fitnessMult *= 0.80; // Semana 4 de descarga
+      if (isTaper) fitnessMult *= 0.65;
 
       const weekdayCap = state.goal.weekdayMin;
       const weekendCap = state.goal.weekendMin;
       const isGym = state.goal.strengthMode === 'gym';
 
-      const gearingNote = state.bike.gearing === 'semi-28'
-        ? 'Como tu pacha atrás es 11-28 (un poco dura), busca no atrancarte en las subidas y mantén el pedaleo ágil.'
-        : 'Usa tus piñones grandes atrás en las subidas para llevar las piernas sueltas al ritmo de pedaleo indicado.';
+      // Definir el enfoque de la semana para explicárselo al usuario arriba
+      const weekThemes = [
+        {
+          badge: `SEMANA ${weekNum}: BASE Y PEDALEO SUELTO`,
+          desc: 'Esta semana nos enfocamos en acostumbrar al corazón a trabajar a paso constante y mejorar la velocidad de tus piernas sin trancar los cambios.'
+        },
+        {
+          badge: `SEMANA ${weekNum}: FUERZA EN SUBIDA Y RESISTENCIA`,
+          desc: 'Esta semana cambiamos el estímulo: haremos bloques más largos sentados en el sillín con un cambio un poco más firme para ganar fuerza en las piernas en montaña.'
+        },
+        {
+          badge: `SEMANA ${weekNum}: CAMBIOS DE RITMO Y CAPACIDAD PULMONAR`,
+          desc: 'Semana de exigencia alta: repeticiones más intensas para enseñar a tu corazón a recuperarse rápido después de cada repecho o ataque.'
+        },
+        {
+          badge: `SEMANA ${weekNum}: DESCARGA ACTIVA Y SUPERCOMPENSACIÓN`,
+          desc: 'Semana más corta y suave a propósito: aquí tu cuerpo absorbe el trabajo de las 3 semanas anteriores y das el salto de nivel físico.'
+        }
+      ];
+      state.currentWeekTheme = isTaper
+        ? { badge: `SEMANA ${weekNum}: AFINACIÓN PRE-EVENTO`, desc: 'Reducimos el cansancio acumulado manteniendo cortos toques de ritmo para que llegues con las piernas frescas al día clave.' }
+        : weekThemes[cycleIndex];
 
-      const tueIsZ4 = (weekNum % 2 === 1);
-      const tueBaseWork = tueIsZ4 ? (weekdayCap <= 45 ? 6 : 8) : 4;
-      const tueBaseRest = 3;
-      const tueDesiredReps = Math.round((tueIsZ4 ? 4 : 6) * loadMult);
-      const tueFit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, tueBaseWork, tueBaseRest, tueDesiredReps);
+      // Configurar Martes según el tipo de semana (4 entrenamientos distintos según la semana)
+      let tueConfig;
+      if (cycleIndex === 0) {
+        // Semana 1: Progresiones de Ritmo Firme a Fuerte (Z4 cortos sostenidos)
+        const workM = Math.max(5, Math.min(10, Math.round(6 * fitnessMult)));
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, workM, 3, 4 + blockNumber);
+        tueConfig = {
+          title: `Series de Ritmo Fuerte Controlado (${fit.reps} × ${fit.workMin} min)`,
+          subtitle: `Semana ${weekNum} • Acostumbrar al corazón a sostener subidas alegres`,
+          zone: 4,
+          ...fit,
+          cadWorkMin: 86, cadWorkMax: 94,
+          details: `Hoy buscamos ritmo parejo: haz ${fit.reps} repeticiones de ${fit.workMin} minutos en Ritmo 4 con un pedaleo suelto (86-94 rpm). No arranques a tope; deja que las pulsaciones entren al rango durante el primer minuto.`
+        };
+      } else if (cycleIndex === 1) {
+        // Semana 2: Bloques largos de Umbral en Subida
+        const workM = Math.max(7, Math.min(14, Math.round(9 * fitnessMult)));
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, workM, 4, 3 + blockNumber);
+        tueConfig = {
+          title: `Escalones Largos de Resistencia en Subida (${fit.reps} × ${fit.workMin} min)`,
+          subtitle: `Semana ${weekNum} • Más minutos seguidos aguantando el paso fuerte`,
+          zone: 4,
+          ...fit,
+          cadWorkMin: 80, cadWorkMax: 88,
+          details: `Fíjate que esta semana las repeticiones duran más (${fit.workMin} min cada una) para aumentar tu aguante. Mantente sentado y respira profundo.`
+        };
+      } else if (cycleIndex === 2) {
+        // Semana 3: Explosividad y Pulmón (Ritmo 5 VO2max)
+        const workM = Math.max(3, Math.min(5, Math.round(3.5 * fitnessMult)));
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 12, 8, workM, 3, 6 + blockNumber);
+        tueConfig = {
+          title: `Repeticiones Intensas de Capacidad Pulmonar (${fit.reps} × ${fit.workMin} min)`,
+          subtitle: `Semana ${weekNum} • Techo aeróbico para no ahogarte en los repechos duros`,
+          zone: 5,
+          ...fit,
+          cadWorkMin: 92, cadWorkMax: 102,
+          details: `Semana de choque: son ${fit.reps} repeticiones más cortas (${fit.workMin} min) pero en Ritmo 5 (pulsaciones altas y pedaleo muy ágil por encima de 92 rpm). Recupera muy suave durante los ${fit.restMin} min de descanso.`
+        };
+      } else {
+        // Semana 4: Activaciones rápidas sin fatiga
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 12, 10, 4, 4, 3);
+        tueConfig = {
+          title: `Activación Ligera con Cambios de Ritmo (${fit.reps} × ${fit.workMin} min)`,
+          subtitle: `Semana ${weekNum} (Descarga) • Mantener chispa sin cansar las piernas`,
+          zone: 3,
+          ...fit,
+          cadWorkMin: 90, cadWorkMax: 98,
+          details: `Como esta es semana de recuperación y asimilación, solo hacemos ${fit.reps} bloques cortos en Ritmo 3 con piernas muy ágiles. Terminarás con sensación de frescura.`
+        };
+      }
 
-      const thuBaseWork = weekdayCap <= 45 ? 8 : (weekdayCap <= 60 ? 10 : 14);
-      const thuBaseRest = 4;
-      const thuDesiredReps = Math.round(3 * loadMult);
-      const thuFit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, thuBaseWork, thuBaseRest, thuDesiredReps);
+      // Configurar Jueves según el tipo de semana (Variando cadencia y fuerza)
+      let thuConfig;
+      if (cycleIndex === 0) {
+        const workM = Math.max(8, Math.min(16, Math.round(10 * fitnessMult)));
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, workM, 4, 3);
+        thuConfig = {
+          title: `Paso Firme Constante (${fit.reps} × ${fit.workMin} min en Ritmo 3)`,
+          subtitle: `Ajustado a tus ${weekdayCap} min • Ritmo crucero para devorar kilómetros`,
+          zone: 3,
+          ...fit,
+          cadWorkMin: 84, cadWorkMax: 92,
+          details: `Sostén ${fit.reps} bloques de ${fit.workMin} minutos en Ritmo 3 llevando un pedaleo fluido de 84 a 92 rpm.`
+        };
+      } else if (cycleIndex === 1) {
+        // Fuerza específica a baja cadencia (Torque)
+        const workM = Math.max(6, Math.min(12, Math.round(8 * fitnessMult)));
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, workM, 4, 4);
+        thuConfig = {
+          title: `Fuerza Específica en Pedales / Torque (${fit.reps} × ${fit.workMin} min a 68-75 rpm)`,
+          subtitle: `Semana ${weekNum} • Ganar potencia muscular en las piernas sin subir tanto el pulso`,
+          zone: 3,
+          ...fit,
+          cadWorkMin: 68, cadWorkMax: 75,
+          details: `Entrenamiento especial de fuerza: pon un piñón un poco más duro y pedalea sentado más lento a propósito (entre 68 y 75 pedaladas por minuto) empujando firme y parejo cada pedalada.`
+        };
+      } else if (cycleIndex === 2) {
+        const workM = Math.max(10, Math.min(18, Math.round(12 * fitnessMult)));
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, workM, 4, 3);
+        thuConfig = {
+          title: `Resistencia Muscular Prolongada (${fit.reps} × ${fit.workMin} min en Ritmo 3-4)`,
+          subtitle: `Semana ${weekNum} • Bloques largos para simular un puerto de montaña`,
+          zone: 3,
+          ...fit,
+          cadWorkMin: 78, cadWorkMax: 86,
+          details: `Aumentamos el tiempo de cada bloque a ${fit.workMin} minutos seguidos para que tus piernas se acostumbren a subidas largas sin aflojar el paso.`
+        };
+      } else {
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 10, 8, 4, 2);
+        thuConfig = {
+          title: `Rodaje Técnico de Pedaleo Redondo (${fit.reps} × ${fit.workMin} min)`,
+          subtitle: `Semana ${weekNum} (Descarga) • Oxigenar músculos y cuidar articulaciones`,
+          zone: 2,
+          ...fit,
+          cadWorkMin: 88, cadWorkMax: 96,
+          details: `Sesión suave en Ritmo 2 concentrándote en pedalear redondo sin dar pisotones bruscos.`
+        };
+      }
 
-      const satTotalTarget = Math.min(weekendCap, Math.max(weekdayCap, Math.round(weekendCap * 0.55)));
-      const satWarm = 10;
-      const satCool = 10;
+      // Sábado y Domingo escalados según la semana y el factor de rendimiento
+      const satTotalTarget = Math.min(weekendCap, Math.max(weekdayCap, Math.round(weekendCap * (cycleIndex === 3 ? 0.45 : 0.58))));
+      const satWarm = 10, satCool = 10;
       const satWork = Math.max(25, satTotalTarget - satWarm - satCool);
 
-      const sunTotalTarget = isDeload ? Math.round(weekendCap * 0.8) : (isTaper ? Math.round(weekendCap * 0.65) : weekendCap);
-      const sunWarm = 15;
-      const sunCool = 15;
-      const sunRest = 10;
-      const sunWorkEach = Math.max(25, Math.floor((sunTotalTarget - sunWarm - sunCool - sunRest) / 2));
+      const sunScale = cycleIndex === 0 ? 0.88 : (cycleIndex === 1 ? 0.95 : (cycleIndex === 2 ? 1.0 : 0.72));
+      const sunTotalTarget = Math.max(75, Math.min(weekendCap, Math.round(weekendCap * sunScale * (isTaper ? 0.65 : 1))));
+      const sunWarm = 15, sunCool = 15, sunRest = 10;
+      const sunWorkEach = Math.max(20, Math.floor((sunTotalTarget - sunWarm - sunCool - sunRest) / 2));
+
+      // Progresión también en las repeticiones de fortalecimiento sin bici
+      const baseLegReps = Math.min(16, Math.round(10 * fitnessMult));
+      const basePlankSec = Math.min(75, Math.round(40 * fitnessMult));
 
       state.plan = [
         {
@@ -1117,52 +1305,40 @@
           shortDay: 'LUN',
           type: 'rest',
           title: 'Día de Descanso y Recuperación Muscular',
-          subtitle: 'Hoy no se toca la bicicleta ni las pesas para que el cuerpo asimile el trabajo',
+          subtitle: 'Hoy no se toca la bicicleta ni las pesas para asimilar el entrenamiento',
           durationMin: 0,
           zone: 1,
-          details: 'El descanso es parte del entrenamiento: cuando descansas es cuando tus piernas se fortalecen. Si quieres, haz 10 minutos de estiramiento suave en casa.',
+          details: 'Cuando descansas es cuando tus fibras musculares se reparan y subes de nivel. Hidrátate bien y duerme al menos 7.5 horas.',
           nutrition: buildNutritionProtocol(0, 1, 'rest')
         },
         {
           day: 'Martes',
           shortDay: 'MAR',
           type: 'bike',
-          title: tueIsZ4 ? 'Repeticiones de Ritmo Fuerte Soportable (Ritmo 4)' : 'Repeticiones Cortas para Ganar Aire y Pulmón (Ritmo 5)',
-          subtitle: `Ajustado a tus ${weekdayCap} min disponibles entre semana`,
-          zone: tueIsZ4 ? 4 : 5,
-          warmMin: tueFit.warmMin,
-          reps: tueFit.reps,
-          workMin: tueFit.workMin,
-          restMin: tueFit.restMin,
-          coolMin: tueFit.coolMin,
-          cadWorkMin: tueIsZ4 ? 85 : 90,
-          cadWorkMax: tueIsZ4 ? 95 : 100,
-          cadWarmMin: 85,
-          cadWarmMax: 95,
-          cadRestMin: 80,
-          cadRestMax: 90,
-          details: `Cómo hacerlo fácil: Empieza suave durante ${tueFit.warmMin} minutos. Luego haz ${tueFit.reps} repeticiones fuertes de ${tueFit.workMin} minutos llevando tu corazón a las pulsaciones indicadas abajo, descansando ${tueFit.restMin} minutos suave entre cada una. ${gearingNote}`
+          ...tueConfig,
+          cadWarmMin: 85, cadWarmMax: 95,
+          cadRestMin: 80, cadRestMax: 90
         },
         {
           day: 'Miércoles',
           shortDay: 'MIÉ',
           type: 'strength',
-          title: 'Fortalecimiento sin Bici A: Piernas y Abdomen (Core)',
-          subtitle: isGym ? `Rutina con pesas/mancuernas (${Math.min(50, weekdayCap)} min)` : `Rutina en casa sin equipos (${Math.min(45, weekdayCap)} min)`,
+          title: `Fortalecimiento sin Bici A: Piernas y Abdomen (Nivel Sem. ${weekNum})`,
+          subtitle: isGym ? `Rutina con pesas (${Math.min(50, weekdayCap)} min)` : `Rutina en casa (${Math.min(45, weekdayCap)} min)`,
           durationMin: Math.min(50, weekdayCap),
           zone: 2,
           exercises: isGym ? [
-            'Calentamiento (8 min): Movimientos circulares de cadera y sentadillas sin peso.',
-            'Sentadilla a una pierna (Búlgara) o Sentadilla con mancuerna al pecho: 4 series de 10 repeticiones.',
-            'Peso Muerto con mancuernas (espalda recta sintiendo la parte de atrás del muslo): 3 series de 12 repeticiones.',
-            'Plancha abdominal (apoyado en antebrazos manteniendo el cuerpo recto): 3 series de 40 segundos.',
-            'Empinarse en las puntas de los pies (para fortalecer pantorrillas): 3 series de 15 repeticiones.'
+            'Calentamiento (8 min): Movilidad de cadera y activación de glúteos.',
+            `Sentadilla a una pierna (Búlgara) o con mancuerna: 4 series de ${baseLegReps} repeticiones por lado.`,
+            `Peso Muerto con mancuernas (espalda recta): 3 series de ${baseLegReps + 2} repeticiones.`,
+            `Plancha abdominal sosteniendo el cuerpo recto: 3 series de ${basePlankSec} segundos.`,
+            `Elevación de talones (pantorrillas): 3 series de ${baseLegReps + 5} repeticiones.`
           ] : [
-            'Calentamiento (8 min): Movilidad de cadera y subir/bajar la pelvis acostado boca arriba.',
-            'Pasos largos hacia atrás doblando rodilla (Zancadas) + Sentadilla en pared: 4 series de 12 repeticiones.',
-            'Puente de glúteo acostado boca arriba levantando cadera con una sola pierna: 3 series de 12 repeticiones.',
-            'Plancha abdominal en el piso: 3 series de 40 segundos.',
-            'Subir y bajar talones en un escalón (pantorrillas): 3 series de 20 repeticiones.'
+            'Calentamiento (8 min): Movilidad de cadera y puentes suaves.',
+            `Zancadas hacia atrás doblando rodilla + Sentadilla en pared: 4 series de ${baseLegReps + 2} repeticiones.`,
+            `Puente de glúteo acostado boca arriba a una pierna: 3 series de ${baseLegReps + 2} repeticiones.`,
+            `Plancha abdominal en el piso: 3 series de ${basePlankSec} segundos.`,
+            `Subir y bajar talones en un escalón: 3 series de ${baseLegReps + 8} repeticiones.`
           ],
           nutrition: buildNutritionProtocol(Math.min(50, weekdayCap), 2, 'strength')
         },
@@ -1170,41 +1346,28 @@
           day: 'Jueves',
           shortDay: 'JUE',
           type: 'bike',
-          title: 'Fuerza en los Pedales y Paso Firme (Ritmo 3)',
-          subtitle: `Ajustado a tus ${weekdayCap} min disponibles entre semana`,
-          zone: 3,
-          warmMin: thuFit.warmMin,
-          reps: thuFit.reps,
-          workMin: thuFit.workMin,
-          restMin: thuFit.restMin,
-          coolMin: thuFit.coolMin,
-          cadWorkMin: state.goal.terrain === 'mountain' ? 72 : 82,
-          cadWorkMax: state.goal.terrain === 'mountain' ? 80 : 90,
-          cadWarmMin: 85,
-          cadWarmMax: 95,
-          cadRestMin: 85,
-          cadRestMax: 95,
-          details: `Cómo hacerlo fácil: En los ${thuFit.reps} bloques de ${thuFit.workMin} minutos mantente sentado en el sillín, pon un cambio firme y lleva el pedaleo entre ${state.goal.terrain === 'mountain' ? '72 y 80' : '82 y 90'} pedaladas por minuto sin que las pulsaciones se pasen del límite. ${gearingNote}`
+          ...thuConfig,
+          cadWarmMin: 85, cadWarmMax: 95,
+          cadRestMin: 85, cadRestMax: 95
         },
         {
           day: 'Viernes',
           shortDay: 'VIE',
           type: 'strength',
-          title: 'Fortalecimiento sin Bici B: Espalda, Brazos y Cintura',
-          subtitle: 'Para que no te duelan el cuello, los hombros ni la espalda baja en la bici',
+          title: `Fortalecimiento sin Bici B: Espalda, Brazos y Cintura (Sem. ${weekNum})`,
+          subtitle: 'Para sostener la postura en la bici sin dolor de cuello ni cintura',
           durationMin: Math.min(45, weekdayCap),
           zone: 1,
           exercises: isGym ? [
-            'Jalar mancuerna o polea hacia el pecho (Remo para fortalecer la espalda): 3 series de 12 repeticiones.',
-            'Flexiones de pecho (o empujar mancuernas) para dar fuerza a los brazos en el manubrio: 3 series de 12 repeticiones.',
-            'Ejercicio "Perro-Pájaro" (en cuatro apoyos, estirar un brazo adelante y la pierna contraria atrás): 3 series de 12 repeticiones.',
-            'Estiramiento final de espalda, cuello y cadera: 10 minutos.'
+            `Remo con mancuerna o polea hacia el pecho (espalda): 3 series de ${baseLegReps + 2} repeticiones.`,
+            `Flexiones de pecho o Press con mancuernas (brazos y hombros): 3 series de ${baseLegReps} repeticiones.`,
+            `Ejercicio "Perro-Pájaro" (estabilidad de cintura): 3 series de ${baseLegReps + 2} repeticiones lentas.`,
+            'Estiramiento profundo de espalda, cuello y cadera: 10 minutos.'
           ] : [
-            'Jalar con una banda elástica o toalla en una puerta (espalda alta): 3 series de 15 repeticiones.',
-            'Flexiones de brazos en el piso o apoyado en una mesa: 3 series de 12 repeticiones.',
-            'Ejercicio en cuatro apoyos estirando brazo y pierna contraria (protege la columna lumbar): 3 series de 14 repeticiones.',
-            'Acostado boca abajo, levantar suavemente pecho y piernas 2 segundos: 3 series de 12 repeticiones.',
-            'Estiramiento de piernas y espalda: 10 minutos.'
+            `Remo con banda elástica o toalla en puerta (espalda): 3 series de ${baseLegReps + 4} repeticiones.`,
+            `Flexiones de brazos en el piso o apoyado en mesa: 3 series de ${baseLegReps} repeticiones.`,
+            `Estirar brazo y pierna contraria en cuatro apoyos: 3 series de ${baseLegReps + 4} repeticiones.`,
+            'Estiramiento de piernas y columna: 10 minutos.'
           ],
           nutrition: buildNutritionProtocol(Math.min(45, weekdayCap), 1, 'strength')
         },
@@ -1212,41 +1375,39 @@
           day: 'Sábado',
           shortDay: 'SÁB',
           type: state.goal.bikeDays >= 4 ? 'bike' : 'rest',
-          title: state.goal.bikeDays >= 4 ? 'Rodaje Cómodo de Resistencia y Pedaleo Suelto (Ritmo 2)' : 'Descanso Activo antes del Fondo del Domingo',
-          subtitle: state.goal.bikeDays >= 4 ? `Salida continua de ${satWarm + satWork + satCool} min a paso conversacional` : 'Guardar energías para la salida larga de mañana',
+          title: state.goal.bikeDays >= 4 ? `Rodaje Fluido de Cadencia Ágil (${satWarm + satWork + satCool} min)` : 'Descanso Activo antes del Fondo del Domingo',
+          subtitle: state.goal.bikeDays >= 4 ? `Semana ${weekNum} • Pedaleo rápido a pulsaciones controladas` : 'Guardar glucógeno para mañana',
           zone: 2,
           warmMin: satWarm,
           reps: 1,
           workMin: satWork,
           restMin: 0,
           coolMin: satCool,
-          cadWorkMin: 88,
-          cadWorkMax: 96,
-          cadWarmMin: 85,
-          cadWarmMax: 92,
-          cadRestMin: 85,
-          cadRestMax: 90,
-          details: 'Cómo hacerlo fácil: Lleva un pedaleo alegre y rapidito (88 a 96 pedaladas por minuto) manteniendo las pulsaciones controladas para guardar fuerzas para mañana.'
+          cadWorkMin: 88, cadWorkMax: 96,
+          cadWarmMin: 85, cadWarmMax: 92,
+          cadRestMin: 85, cadRestMax: 90,
+          details: 'Lleva un cambio suave que te permita pedalear rápido (88-96 rpm) sin que las pulsaciones se suban del Ritmo 2.'
         },
         {
           day: 'Domingo',
           shortDay: 'DOM',
           type: 'bike',
-          title: 'Salida Larga de Fin de Semana (Ritmo 2 a Ritmo 3)',
-          subtitle: `Ajustada exactamente a tu tiempo de fin de semana (${sunWarm + (2 * sunWorkEach) + sunRest + sunCool} min)`,
-          zone: 2,
+          title: cycleIndex === 2
+            ? `Gran Fondo con Final en Paso Firme (${sunWarm + (2 * sunWorkEach) + sunRest + sunCool} min)`
+            : `Salida Larga de Resistencia (${sunWarm + (2 * sunWorkEach) + sunRest + sunCool} min)`,
+          subtitle: `Semana ${weekNum} • Ajustado a tu disponibilidad de fin de semana`,
+          zone: cycleIndex === 2 ? 3 : 2,
           warmMin: sunWarm,
           reps: 2,
           workMin: sunWorkEach,
           restMin: sunRest,
           coolMin: sunCool,
-          cadWorkMin: 82,
-          cadWorkMax: 92,
-          cadWarmMin: 85,
-          cadWarmMax: 95,
-          cadRestMin: 80,
-          cadRestMax: 90,
-          details: 'Cómo hacerlo fácil: Es tu salida principal para ganar fondo. Dividimos el recorrido en dos bloques largos separados por 10 minutos suaves para estirar la espalda y comer en la bici.'
+          cadWorkMin: 82, cadWorkMax: 92,
+          cadWarmMin: 85, cadWarmMax: 95,
+          cadRestMin: 80, cadRestMax: 90,
+          details: cycleIndex === 2
+            ? 'Esta semana el fondo incluye exigencia de Ritmo 3 en las subidas para simular condiciones reales de evento. Sé muy estricto tomando agua cada 15 min.'
+            : 'Salida larga dividida en dos bloques con 10 minutos suaves en la mitad para comer y estirar la espalda.'
         }
       ];
 
@@ -1289,26 +1450,232 @@
     }
 
     // =========================================================================
-    // RENDERIZADO DEL PLAN Y ESTADO DE CUMPLIMIENTO GUARDADO
+    // CONEXIÓN EN VIVO CON LA API DE INTERVALS.ICU (LECTURA Y ADAPTACIÓN AUTOMÁTICA)
+    // =========================================================================
+    function openIntervalsSyncModal() {
+      document.getElementById('inIntervalsId').value = state.intervalsAuth.athleteId || '';
+      document.getElementById('inIntervalsKey').value = state.intervalsAuth.apiKey || '';
+      document.getElementById('intervalsSyncModal').classList.remove('hidden');
+    }
+
+    function closeIntervalsSyncModal() {
+      document.getElementById('intervalsSyncModal').classList.add('hidden');
+    }
+
+    function saveIntervalsCredentials() {
+      state.intervalsAuth.athleteId = document.getElementById('inIntervalsId').value.trim();
+      state.intervalsAuth.apiKey = document.getElementById('inIntervalsKey').value.trim();
+      saveStateToLocal();
+    }
+
+    async function fetchAndAnalyzeIntervalsActivities() {
+      const athleteId = document.getElementById('inIntervalsId').value.trim();
+      const apiKey = document.getElementById('inIntervalsKey').value.trim();
+
+      if (!athleteId || !apiKey) {
+        alert('Por favor escribe tu Athlete ID (ej. i123456) y tu API Key de Intervals.icu.');
+        return;
+      }
+
+      saveIntervalsCredentials();
+      const btn = document.getElementById('btnFetchIntervals');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Conectando con Intervals.icu...';
+      btn.disabled = true;
+
+      try {
+        // Consultar los últimos 14 días de actividades reales en Intervals.icu
+        const now = new Date();
+        const oldestDate = new Date();
+        oldestDate.setDate(now.getDate() - 14);
+        const oldestStr = oldestDate.toISOString().split('T')[0];
+        const newestStr = now.toISOString().split('T')[0];
+
+        const authHeader = 'Basic ' + btoa('API_KEY:' + apiKey);
+        const url = `https://intervals.icu/api/v1/athlete/${encodeURIComponent(athleteId)}/activities?oldest=${oldestStr}&newest=${newestStr}`;
+
+        const res = await fetch(url, {
+          headers: { 'Authorization': authHeader, 'Accept': 'application/json' }
+        });
+
+        if (!res.ok) {
+          throw new Error(`Intervals.icu respondió con código ${res.status}. Verifica tu Athlete ID y tu API Key.`);
+        }
+
+        const activities = await res.json();
+        const validRides = (activities || []).filter(a => a && a.moving_time > 300);
+
+        const listEl = document.getElementById('intervalsActivitiesList');
+        document.getElementById('intervalsFetchedContainer').classList.remove('hidden');
+        document.getElementById('intervalsCountBadge').textContent = `${validRides.length} sesiones en los últimos 14 días`;
+
+        if (validRides.length === 0) {
+          listEl.innerHTML = `<div class="p-3 rounded-xl bg-slate-900 text-xs text-slate-400">No encontramos entrenamientos subidos en los últimos 14 días en tu cuenta de Intervals.icu.</div>`;
+          document.getElementById('intervalsAiVerdict').textContent = 'Sube tu próxima salida desde OnelapFit a Intervals.icu y vuelve a tocar este botón para adaptar tu plan.';
+        } else {
+          // Mostrar cada salida real leída desde Intervals.icu
+          listEl.innerHTML = validRides.slice(0, 8).map(act => {
+            const min = Math.round((act.moving_time || 0) / 60);
+            const avgHR = act.average_heartrate ? Math.round(act.average_heartrate) : '--';
+            const maxHR = act.max_heartrate ? Math.round(act.max_heartrate) : '--';
+            const avgCad = act.average_cadence ? Math.round(act.average_cadence) : '--';
+            const load = act.icu_training_load ? Math.round(act.icu_training_load) : '--';
+            const dateStr = (act.start_date_local || '').split('T')[0];
+            return `
+              <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between text-xs">
+                <div>
+                  <div class="font-bold text-white">${act.name || 'Salida en Bici'} <span class="text-[10px] text-slate-400 mono">(${dateStr})</span></div>
+                  <div class="text-[11px] text-slate-300 mono mt-0.5">
+                    Tiempo: <strong>${min} min</strong> • Pulso Prom: <strong class="text-rose-300">${avgHR} ppm</strong> (Máx ${maxHR}) • Pedaleo: <strong class="text-cyan-300">${avgCad} rpm</strong> • Esfuerzo: ${load}
+                  </div>
+                </div>
+                <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">Leído</span>
+              </div>
+            `;
+          }).join('');
+
+          // Analizar tus datos reales y adaptar el plan automáticamente
+          const avgMinutesPerRide = Math.round(validRides.reduce((acc, a) => acc + (a.moving_time / 60), 0) / validRides.length);
+          const ridesWithHR = validRides.filter(a => a.average_heartrate > 80);
+          const avgHeartRateAll = ridesWithHR.length
+            ? Math.round(ridesWithHR.reduce((acc, a) => acc + a.average_heartrate, 0) / ridesWithHR.length)
+            : 0;
+          const observedPeakHR = validRides.reduce((max, a) => Math.max(max, a.max_heartrate || 0), 0);
+
+          let verdictLines = [];
+
+          // 1. Si en la vida real alcanzaste una pulsación máxima mayor a la que tenías configurada, la actualizamos
+          if (observedPeakHR > state.rider.maxHR + 2 && observedPeakHR < 215) {
+            verdictLines.push(`• Vimos que en tus salidas reales tu corazón llegó a ${observedPeakHR} ppm (tenías configurado ${state.rider.maxHR} ppm). Actualizamos tu FC Máxima real a ${observedPeakHR} ppm para que tus zonas sean exactas.`);
+            state.rider.maxHR = observedPeakHR;
+            document.getElementById('inMaxHR').value = observedPeakHR;
+          }
+
+          // 2. Evaluar volumen y control de pulsaciones para subir o bajar la exigencia de la siguiente semana
+          const hrRatio = avgHeartRateAll > 0 ? (avgHeartRateAll / state.rider.maxHR) : 0.75;
+
+          if (validRides.length >= 4 && hrRatio <= 0.83) {
+            state.weeklyProgressionFactor = Math.min(1.30, +(state.weeklyProgressionFactor + 0.06).toFixed(2));
+            verdictLines.push(`• ¡Excelente constancia! Completaste ${validRides.length} sesiones (promedio ${avgMinutesPerRide} min) manteniendo tus pulsaciones muy bien controladas (${avgHeartRateAll} ppm en promedio).`);
+            verdictLines.push(`• Ajuste aplicado: Subimos tu Nivel de Avance al ${Math.round(state.weeklyProgressionFactor * 100)}%. Tus siguientes entrenamientos tendrán intervalos más retadores y mayor tiempo efectivo en zona.`);
+          } else if (hrRatio > 0.86) {
+            state.weeklyProgressionFactor = Math.max(0.85, +(state.weeklyProgressionFactor - 0.05).toFixed(2));
+            verdictLines.push(`• Notamos que tu corazón trabajó bastante exigido en tus últimas salidas (promedio ${avgHeartRateAll} ppm, que es el ${Math.round(hrRatio * 100)}% de tu máximo).`);
+            verdictLines.push(`• Ajuste aplicado: Regulamos tu Nivel de Avance al ${Math.round(state.weeklyProgressionFactor * 100)}% para que consolides tu base sin acumular fatiga excesiva.`);
+          } else {
+            state.weeklyProgressionFactor = Math.min(1.25, +(state.weeklyProgressionFactor + 0.03).toFixed(2));
+            verdictLines.push(`• Registramos ${validRides.length} salidas reales con un promedio de ${avgMinutesPerRide} min y ${avgHeartRateAll || '--'} ppm.`);
+            verdictLines.push(`• Ajuste aplicado: Incrementamos progresivamente tu Nivel de Avance al ${Math.round(state.weeklyProgressionFactor * 100)}% para la próxima semana.`);
+          }
+
+          const summaryText = verdictLines.join('\n');
+          state.intervalsAuth.lastSyncSummary = summaryText;
+          state.intervalsAuth.lastSyncDate = new Date().toLocaleDateString('es-CO');
+
+          document.getElementById('intervalsAiVerdict').textContent = summaryText;
+
+          // Recalcular el plan con los nuevos parámetros adaptados
+          readInputsAndComputeMetrics();
+          buildWeekSchedule(state.currentWeek);
+          renderPlanUI();
+          renderSyncUI();
+          saveStateToLocal();
+        }
+      } catch (err) {
+        alert('No se pudo conectar con Intervals.icu: ' + err.message);
+      } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    }
+
+    // Subir el entrenamiento del día directamente al calendario de Intervals.icu vía API
+    async function pushWorkoutDirectlyToIntervals() {
+      const athleteId = state.intervalsAuth.athleteId;
+      const apiKey = state.intervalsAuth.apiKey;
+
+      if (!athleteId || !apiKey) {
+        alert('Primero conecta tu Athlete ID y API Key en el botón "Conectar Intervals.icu" arriba a la derecha.');
+        openIntervalsSyncModal();
+        return;
+      }
+
+      const dayIdx = state.selectedDayForIntervalsExport;
+      const w = state.plan[dayIdx];
+      const syntax = buildIntervalsWorkoutSyntax(dayIdx);
+
+      const defaultDate = new Date().toISOString().split('T')[0];
+      const targetDate = prompt(`¿En qué fecha del calendario de Intervals.icu quieres agendar "${w.title}"? (Formato AAAA-MM-DD):`, defaultDate);
+      if (!targetDate) return;
+
+      const btn = document.getElementById('btnDirectPushIntervals');
+      const oldHtml = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Subiendo a Intervals.icu...';
+      btn.disabled = true;
+
+      try {
+        const authHeader = 'Basic ' + btoa('API_KEY:' + apiKey);
+        const url = `https://intervals.icu/api/v1/athlete/${encodeURIComponent(athleteId)}/events`;
+        const payload = {
+          category: 'WORKOUT',
+          start_date_local: `${targetDate}T06:00:00`,
+          type: 'Ride',
+          name: `VeloPlan Sem${state.currentWeek} - ${w.title}`,
+          description: syntax
+        };
+
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Authorization': authHeader,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          throw new Error(`Código ${res.status}. Verifica tu API Key.`);
+        }
+
+        alert(`✅ ¡Entrenamiento subido directamente a tu calendario de Intervals.icu para el ${targetDate}!\n\nAhora solo abre OnelapFit en tu celular y dale Sincronizar hacia tu Magene C706.`);
+        closeIntervalsModal();
+      } catch (e) {
+        alert('Error al subir a Intervals.icu: ' + e.message);
+      } finally {
+        btn.innerHTML = oldHtml;
+        btn.disabled = false;
+      }
+    }
+
+    // =========================================================================
+    // RENDERIZADO DEL PLAN Y ESTADO DE ADAPTACIÓN
     // =========================================================================
     function renderPlanUI() {
-      const hasPM = state.bike.hasPM;
-      const modeExplain = document.getElementById('planModeExplain');
-      if (hasPM) {
-        modeExplain.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40';
-        modeExplain.innerHTML = '<i class="fa-solid fa-bolt mr-1"></i>Tu Ciclocomputador te guiará por: POTENCIA + PULSO + CADENCIA';
-      } else {
-        modeExplain.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40';
-        modeExplain.innerHTML = '<i class="fa-solid fa-heart-pulse mr-1"></i>Tu Ciclocomputador te guiará por: PULSACIONES (FC) + CADENCIA';
-      }
+      const theme = state.currentWeekTheme || { badge: `SEMANA ${state.currentWeek}`, desc: '' };
+      document.getElementById('planPhaseBadge').textContent = theme.badge;
+      document.getElementById('planFocusDescription').textContent = theme.desc;
+
+      const pctLevel = Math.round(state.weeklyProgressionFactor * 100);
+      document.getElementById('fitnessLevelBadge').innerHTML =
+        `<i class="fa-solid fa-arrow-trend-up mr-1"></i>Nivel Adaptativo: ${pctLevel}%`;
 
       document.getElementById('planHeaderTitle').textContent =
         `Plan de ${state.rider.name} — Semana ${state.currentWeek} de ${state.totalWeeks}`;
       document.getElementById('planSubSummary').textContent =
-        `Tiempo configurado: ${state.goal.weekdayMin} min entre semana / ${(state.goal.weekendMin / 60).toFixed(1)} horas fin de semana • Pulsación Máx: ${state.rider.maxHR} ppm • Potencia Ref.: ${state.rider.ftpCalculated} W`;
+        `Horario: ${state.goal.weekdayMin} min entre semana / ${(state.goal.weekendMin / 60).toFixed(1)} h fin de semana • Pulso Máx: ${state.rider.maxHR} ppm • Potencia Ref.: ${state.rider.ftpCalculated} W`;
 
       document.getElementById('zonesRefMeta').textContent =
-        `Tus límites: Corazón máx ${state.rider.maxHR} ppm | Fuerza ref. ${state.rider.ftpCalculated} W`;
+        `Corazón máx ${state.rider.maxHR} ppm | Fuerza ref. ${state.rider.ftpCalculated} W`;
+
+      // Mostrar banner de adaptación de Intervals.icu si existe
+      const adaptBanner = document.getElementById('intervalsAdaptationBanner');
+      if (state.intervalsAuth.lastSyncSummary) {
+        adaptBanner.classList.remove('hidden');
+        document.getElementById('intervalsAdaptationSummary').textContent = state.intervalsAuth.lastSyncSummary;
+        document.getElementById('intervalsLastSyncDate').textContent = `Última lectura: ${state.intervalsAuth.lastSyncDate || 'Hoy'}`;
+      } else {
+        adaptBanner.classList.add('hidden');
+      }
 
       const zGrid = document.getElementById('zonesGrid');
       zGrid.innerHTML = state.zones.map(z => `
@@ -1464,7 +1831,7 @@
             <div class="pt-2 border-t border-slate-800 space-y-2">
               <div class="grid grid-cols-3 gap-1.5">
                 <button onclick="openIntervalsExport(${idx})" class="py-2 px-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-[11px] flex items-center justify-center gap-1">
-                  <i class="fa-solid fa-paste"></i> Intervals (Magene)
+                  <i class="fa-solid fa-cloud-arrow-up"></i> Enviar a Intervals
                 </button>
                 <button onclick="downloadBinaryFIT(${idx})" class="py-2 px-2 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 font-bold text-[11px] flex items-center justify-center gap-1">
                   <i class="fa-solid fa-microchip"></i> Archivo .FIT
@@ -1474,7 +1841,7 @@
                 </button>
               </div>
               <button onclick="openFeedbackModal(${idx})" class="w-full py-2 rounded-xl bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-500/40 text-indigo-200 font-bold text-xs flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-envelope-open-text"></i> ${savedLog ? 'Ver / Editar mi registro de hoy' : 'Marcar como Cumplido y Recibir Consejos al Correo'}
+                <i class="fa-solid fa-envelope-open-text"></i> ${savedLog ? 'Ver / Editar mi registro de hoy' : 'Registrar Entreno Manual y Recibir Consejo'}
               </button>
             </div>
           </div>
@@ -1502,13 +1869,10 @@
             </div>
             <div class="flex flex-wrap gap-1.5">
               <button onclick="openIntervalsExport(${d.idx})" class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs">
-                <i class="fa-solid fa-copy mr-1"></i>Copiar para Intervals (Magene)
+                <i class="fa-solid fa-cloud-arrow-up mr-1"></i>Enviar / Copiar para Intervals
               </button>
               <button onclick="downloadBinaryFIT(${d.idx})" class="px-3 py-1.5 rounded-lg bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-bold text-xs">
                 <i class="fa-solid fa-download mr-1"></i>.FIT
-              </button>
-              <button onclick="downloadWorkoutZWO(${d.idx})" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 font-bold text-xs">
-                .ZWO
               </button>
             </div>
           </div>
@@ -1562,6 +1926,7 @@
     }
 
     function openIntervalsExport(dayIdx) {
+      state.selectedDayForIntervalsExport = dayIdx;
       const w = state.plan[dayIdx];
       const syntax = buildIntervalsWorkoutSyntax(dayIdx);
       const modal = document.getElementById('intervalsModal');
@@ -1570,7 +1935,7 @@
 
       sub.innerHTML = state.bike.hasPM
         ? `<span class="text-amber-300 font-bold">Modo Con Potenciómetro:</span> Tu ciclocomputador te guiará con <strong>Potencia + Cadencia</strong> y te mostrará las <strong>Pulsaciones (${w.targets.hrWorkMin}-${w.targets.hrWorkMax} ppm)</strong> en el texto.`
-        : `<span class="text-rose-300 font-bold">Modo Sin Potenciómetro Activo:</span> Pega este texto en la descripción del entrenamiento en Intervals.icu. Tu <strong>Magene C706 te guiará con tus Pulsaciones (${w.targets.hrWorkMin}-${w.targets.hrWorkMax} ppm) y tu Pedaleo (${w.targets.cadWorkMin}-${w.targets.cadWorkMax} rpm)</strong>.`;
+        : `<span class="text-rose-300 font-bold">Modo Sin Potenciómetro Activo:</span> Puedes copiar este texto o tocar el botón morado <strong>"Subir Directo al Calendario de Intervals.icu"</strong> para que aparezca de inmediato en OnelapFit y en tu Magene C706.`;
 
       area.value = syntax;
       modal.classList.remove('hidden');
@@ -1732,7 +2097,7 @@
       const cadAvgRest = Math.round((t.cadRestMin + t.cadRestMax) / 2);
 
       let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<workout_file>\n`;
-      xml += `  <author>VeloPlan Pro 3.2</author>\n`;
+      xml += `  <author>VeloPlan Pro 3.3</author>\n`;
       xml += `  <name>S${state.currentWeek}_${w.day}_Pulso_${t.hrWorkMin}-${t.hrWorkMax}ppm</name>\n`;
       xml += `  <description>Pulso: ${t.hrWorkMin}-${t.hrWorkMax} ppm | Potencia: ${t.wWorkMin}-${t.wWorkMax} W | Pedaleo: ${t.cadWorkMin}-${t.cadWorkMax} rpm</description>\n`;
       xml += `  <sportType>bike</sportType>\n  <workout>\n`;
@@ -1765,7 +2130,7 @@
     }
 
     // =========================================================================
-    // RETROALIMENTACIÓN EN LENGUAJE CLARO + GUARDADO PERMANENTE DEL DÍA CUMPLIDO
+    // RETROALIMENTACIÓN MANUAL Y ADAPTACIÓN PROGRESIVA
     // =========================================================================
     function openFeedbackModal(dayIdx) {
       state.selectedDayForFeedback = dayIdx;
@@ -1802,7 +2167,6 @@
       const realCAD = parseInt(document.getElementById('fbRealCAD').value) || 0;
       const rpe = parseInt(document.getElementById('fbRPE').value) || 6;
 
-      // Guardar el cumplimiento en la base de datos local
       const logKey = `W${state.currentWeek}_D${idx}`;
       state.completedLogs[logKey] = {
         status,
@@ -1811,6 +2175,16 @@
         rpe,
         date: new Date().toISOString()
       };
+
+      // Adaptar progresivamente tu factor según el resultado reportado
+      if (status === 'full' && rpe <= 7) {
+        state.weeklyProgressionFactor = Math.min(1.30, +(state.weeklyProgressionFactor + 0.02).toFixed(2));
+      } else if (status === 'skipped' || rpe >= 9) {
+        state.weeklyProgressionFactor = Math.max(0.85, +(state.weeklyProgressionFactor - 0.02).toFixed(2));
+      }
+
+      readInputsAndComputeMetrics();
+      buildWeekSchedule(state.currentWeek);
       saveStateToLocal();
       renderPlanUI();
 
@@ -1820,35 +2194,31 @@
       } else if (w.type === 'bike' && w.targets) {
         const t = w.targets;
         if (realHR > t.hrWorkMax + 5) {
-          evalLine = `• Tus pulsaciones promedio (${realHR} latidos por minuto) estuvieron más altas de lo que buscábamos hoy (${t.hrWorkMin} a ${t.hrWorkMax} ppm).\n• ¿Qué significa esto en palabras sencillas? Que tu corazón tuvo que trabajar horas extra. Casi siempre pasa por tres cosas: hizo mucho calor, te faltó tomar agua seguido, o venías cansado de días anteriores. En tu próxima salida toma unos sorbos más de agua con sales y regula un poquito el esfuerzo al empezar las subidas.`;
+          evalLine = `• Tus pulsaciones promedio (${realHR} latidos por minuto) estuvieron más altas de lo que buscábamos hoy (${t.hrWorkMin} a ${t.hrWorkMax} ppm).\n• ¿Qué significa esto en palabras sencillas? Que tu corazón tuvo que trabajar horas extra. Casi siempre pasa por calor, falta de agua o cansancio acumulado. En tu próxima salida toma más agua con sales y regula un poquito el esfuerzo al empezar las subidas.`;
         } else if (realHR >= t.hrWorkMin && realHR <= t.hrWorkMax) {
-          evalLine = `• ¡Hiciste el entrenamiento en el punto exacto! Mantuviste tus pulsaciones en ${realHR} latidos por minuto, justo dentro de la meta de hoy (${t.hrWorkMin} a ${t.hrWorkMax} ppm) y con un pedaleo de ${realCAD} rpm.\n• ¿Qué significa esto? Que trabajaste exactamente lo que tu cuerpo necesitaba hoy para ganar resistencia sin quemar tus músculos de más.`;
+          evalLine = `• ¡Hiciste el entrenamiento en el punto exacto! Mantuviste tus pulsaciones en ${realHR} latidos por minuto, justo dentro de la meta de hoy (${t.hrWorkMin} a ${t.hrWorkMax} ppm) y con un pedaleo de ${realCAD} rpm.\n• Tu Nivel Adaptativo subió a ${Math.round(state.weeklyProgressionFactor * 100)}%.`;
         } else {
-          evalLine = `• Tus pulsaciones promedio (${realHR} latidos por minuto) estuvieron más bajas de la meta de hoy (${t.hrWorkMin} a ${t.hrWorkMax} ppm).\n• ¿Qué significa esto? Si sentías que ibas cómodo, en la próxima puedes apretar un poquito más el paso. Pero si sentías las piernas pesadas y aun así el corazón no subía de pulsaciones, es una señal típica de que tus piernas están cansadas y necesitan comer y dormir bien hoy.`;
-        }
-
-        if (realCAD > 0 && realCAD < t.cadWorkMin - 5) {
-          evalLine += `\n• Ojo con el pedaleo: Hoy llevaste ${realCAD} pedaladas por minuto (un cambio un poco duro/atrancado). Intenta usar un piñón más suave atrás para llegar a ${t.cadWorkMin}-${t.cadWorkMax} rpm y así cuidar tus rodillas.`;
+          evalLine = `• Tus pulsaciones promedio (${realHR} latidos por minuto) estuvieron más bajas de la meta de hoy (${t.hrWorkMin} a ${t.hrWorkMax} ppm). Si te sentiste con buenas piernas, la próxima semana el plan te exigirá un escalón más.`;
         }
       } else {
-        evalLine = `• ¡Muy bien por cumplir tus ejercicios de fortalecimiento fuera de la bici! Terminaste con un cansancio de ${rpe} sobre 10. Estos ejercicios son tu seguro de vida para no sufrir dolores de rodilla ni de cintura en las salidas largas.`;
+        evalLine = `• ¡Muy bien por cumplir tus ejercicios de fortalecimiento fuera de la bici! Terminaste con un cansancio de ${rpe} sobre 10.`;
       }
 
       let tomorrowAdvice = '';
       if (nextDay.type === 'rest') {
-        tomorrowAdvice = `• Mañana (${nextDay.day}) te toca DÍA DE DESCANSO.\n• Qué debes hacer: No salgas a montar. Cuando descansas es cuando tus músculos absorben el entrenamiento de hoy y se vuelven más fuertes. Toma unos ${nextDay.nutrition.totalMl} ml de agua durante el día y procura dormir al menos 7 u 8 horas.`;
+        tomorrowAdvice = `• Mañana (${nextDay.day}) te toca DÍA DE DESCANSO.\n• Qué debes hacer: No salgas a montar. Toma unos ${nextDay.nutrition.totalMl} ml de agua durante el día y procura dormir 7 u 8 horas.`;
       } else if (nextDay.type === 'strength') {
-        tomorrowAdvice = `• Mañana (${nextDay.day}) te tocan EJERCICIOS SIN BICICLETA (${nextDay.title}, ${nextDay.durationMin} min).\n• Qué debes tener en cuenta: Como hoy terminaste con un cansancio de ${rpe} sobre 10, ${rpe >= 8 ? 'mañana haz los ejercicios suave y quítale 1 serie a cada ejercicio de piernas para que te recuperes bien.' : 'mañana puedes hacer la rutina completa cuidando hacer bien cada movimiento sin afán.'}`;
+        tomorrowAdvice = `• Mañana (${nextDay.day}) te tocan EJERCICIOS SIN BICICLETA (${nextDay.title}, ${nextDay.durationMin} min).`;
       } else {
         const nt = nextDay.targets;
-        tomorrowAdvice = `• Mañana (${nextDay.day}) te toca BICICLETA: "${nextDay.title}" durante ${nextDay.durationMin} minutos.\n• Tus metas para mañana: Mantener las pulsaciones entre ${nt.hrWorkMin} y ${nt.hrWorkMax} ppm, con un pedaleo suelto de ${nt.cadWorkMin} a ${nt.cadWorkMax} rpm (Potencia equivalente: ${nt.wWorkMin}-${nt.wWorkMax} W).\n• Si mañana al despertar sientes las piernas muy adoloridas porque hoy terminaste en ${rpe}/10, haz el entrenamiento en el límite bajito de las pulsaciones (${nt.hrWorkMin} ppm) sin forzar.`;
+        tomorrowAdvice = `• Mañana (${nextDay.day}) te toca BICICLETA: "${nextDay.title}" durante ${nextDay.durationMin} minutos.\n• Tus metas para mañana: Pulsaciones entre ${nt.hrWorkMin} y ${nt.hrWorkMax} ppm, con pedaleo de ${nt.cadWorkMin} a ${nt.cadWorkMax} rpm.`;
       }
 
       const fullReport =
         `Hola ${state.rider.name}, aquí tienes el resumen claro de tu entrenamiento de hoy:\n` +
         `--------------------------------------------------\n` +
         `Día evaluado: ${w.day} — ${w.title} (Semana ${state.currentWeek})\n` +
-        `¿Lo completaste?: ${status === 'full' ? 'Sí, completo' : (status === 'partial' ? 'Parcialmente' : 'Hoy no se entrenó')} | Cansancio: ${rpe} de 10\n\n` +
+        `Nivel Adaptativo Actual: ${Math.round(state.weeklyProgressionFactor * 100)}%\n\n` +
         `1. ¿CÓMO ESTUVO TU ENTRENAMIENTO DE HOY?\n${evalLine}\n\n` +
         `2. ¿QUÉ DEBES COMER Y TOMAR AHORA MISMO PARA RECUPERAR?\n• ${w.nutrition.after}\n\n` +
         `3. ¿QUÉ DEBES TENER EN CUENTA PARA MAÑANA (${nextDay.day.toUpperCase()})?\n${tomorrowAdvice}`;
@@ -1870,40 +2240,8 @@
       window.open(`https://wa.me/?text=${text}`, '_blank');
     }
 
-    function closeWeekAndAdapt() {
-      // Contar cuántos días ya registró como cumplidos en esta semana
-      let autoCount = 0;
-      for (let i = 0; i < 7; i++) {
-        const log = state.completedLogs[`W${state.currentWeek}_D${i}`];
-        if (log && log.status !== 'skipped') autoCount++;
-      }
-
-      const answer = prompt(
-        `¡Terminaste la Semana ${state.currentWeek}!\n\nDe los entrenamientos programados para esta semana, ¿cuántos pudiste hacer (del 1 al 6)?`,
-        String(autoCount > 0 ? autoCount : 5)
-      );
-      if (answer === null) return;
-      const done = parseInt(answer) || 4;
-
-      if (done >= 5) {
-        state.weeklyProgressionFactor = Math.min(1.25, state.weeklyProgressionFactor + 0.05);
-      } else if (done <= 2) {
-        state.weeklyProgressionFactor = Math.max(0.8, state.weeklyProgressionFactor - 0.08);
-      }
-
-      if (state.currentWeek < state.totalWeeks) {
-        state.currentWeek += 1;
-      }
-      populateWeekSelector();
-      buildWeekSchedule(state.currentWeek);
-      renderPlanUI();
-      renderSyncUI();
-      saveStateToLocal();
-      alert(`¡Listo! Pasamos a la Semana ${state.currentWeek} de ${state.totalWeeks} y quedó guardado tu avance.`);
-    }
-
     // =========================================================================
-    // RESPALDO Y RESTAURACIÓN EN ARCHIVO .JSON (PARA PASAR ENTRE PC Y CELULAR)
+    // RESPALDO Y RESTAURACIÓN EN ARCHIVO .JSON
     // =========================================================================
     function openBackupModal() {
       document.getElementById('backupModal').classList.remove('hidden');
@@ -2018,10 +2356,9 @@
     }
 
     // =========================================================================
-    // ARRANQUE INICIAL: PRIMERO RECUPERA LA MEMORIA GUARDADA Y LUEGO DIBUJA
+    // ARRANQUE INICIAL
     // =========================================================================
     window.addEventListener('DOMContentLoaded', () => {
-      // Inicializar fecha por defecto solo si aún no hay una guardada
       const d = new Date();
       d.setDate(d.getDate() + 56);
       document.getElementById('inEventDate').value = d.toISOString().split('T')[0];
@@ -2033,7 +2370,6 @@
         renderPlanUI();
         renderSyncUI();
 
-        // Si ya tenías datos guardados, te abre directo en la pestaña donde estabas (ej. Mi Plan)
         if (hadSavedData && state.lastActiveTab) {
           switchTab(state.lastActiveTab);
         }
