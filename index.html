@@ -1,0 +1,2044 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="VeloPlan Pro" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>VeloPlan Pro v3.2 — Con Memoria Persistente</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #090d16;
+      color: #f8fafc;
+      -webkit-tap-highlight-color: transparent;
+      padding-bottom: 92px;
+    }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .glass {
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(51, 65, 85, 0.6);
+    }
+    .bottom-nav {
+      padding-bottom: env(safe-area-inset-bottom, 12px);
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+  </style>
+</head>
+<body class="min-h-screen selection:bg-emerald-500 selection:text-slate-950">
+
+  <!-- ENCABEZADO SUPERIOR -->
+  <header class="sticky top-0 z-40 glass border-b border-slate-800/90 px-3 py-2.5">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/20">
+          <i class="fa-solid fa-person-biking text-lg"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white">VeloPlan <span class="text-emerald-400">PRO 3.2</span></h1>
+            <span id="saveStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>Guardado Automático
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-400">Siempre activos: <span class="text-rose-400 font-semibold">Pulsaciones (FC)</span> • <span class="text-amber-400 font-semibold">Fuerza (Potencia)</span> • <span class="text-cyan-400 font-semibold">Pedaleo (Cadencia)</span></p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-1.5">
+        <button onclick="openLiveTimerModal()" class="px-2.5 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/40 text-cyan-300 text-xs font-semibold flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-stopwatch"></i>
+          <span class="hidden sm:inline">Reloj de Agua</span>
+        </button>
+        <button onclick="openBackupModal()" class="px-2.5 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-300 text-xs font-semibold flex items-center gap-1.5 transition" title="Respaldar o restaurar tus datos">
+          <i class="fa-solid fa-database"></i>
+          <span>Mis Datos</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENEDOR PRINCIPAL -->
+  <main class="max-w-6xl mx-auto px-3 sm:px-5 pt-4 space-y-5">
+
+    <!-- PASO 1: DATOS DEL CICLISTA -->
+    <section id="tab-step1" class="tab-panel space-y-4">
+      <div class="glass rounded-2xl p-4 sm:p-6">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Paso 1 de 3</span>
+            <h2 class="text-lg sm:text-xl font-bold text-white">Tus Datos Básicos (Se guardan automáticamente)</h2>
+          </div>
+          <i class="fa-solid fa-id-card-clip text-2xl text-slate-600"></i>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Tu Nombre</label>
+            <input id="inName" type="text" value="Diego Montoya" oninput="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Tu Correo (Para enviarte los consejos post-entreno)</label>
+            <input id="inEmail" type="email" value="" placeholder="tucorreo@dominio.com" oninput="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Edad (años)</label>
+            <input id="inAge" type="number" value="42" min="14" max="85" oninput="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white mono focus:border-emerald-400 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Peso (kg)</label>
+            <input id="inWeight" type="number" value="72" step="0.5" min="38" max="150" oninput="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white mono focus:border-emerald-400 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Estatura (cm)</label>
+            <input id="inHeight" type="number" value="175" min="135" max="215" oninput="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white mono focus:border-emerald-400 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Tu Experiencia en la Bicicleta</label>
+            <select id="inLevel" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none">
+              <option value="beginner">Principiante (Llevo menos de 1 año montando seguido)</option>
+              <option value="intermediate" selected>Intermedio (Monto hace 1 a 3 años regularmente)</option>
+              <option value="advanced">Avanzado (Llevo más de 3 años y aguanto salidas duras)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mt-5 pt-4 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="p-3.5 rounded-xl bg-rose-950/25 border border-rose-500/30">
+            <label class="block text-xs font-bold text-rose-300 mb-1">
+              <i class="fa-solid fa-heart-pulse mr-1"></i>Pulsaciones Máximas (FC Máx)
+            </label>
+            <input id="inMaxHR" type="number" value="182" min="0" max="220" oninput="autoSaveInputs()" class="w-full rounded-lg bg-slate-900 border border-rose-500/40 px-3 py-1.5 text-sm text-white mono" />
+            <p class="text-[11px] text-slate-400 mt-1">El número más alto de latidos al que llega tu corazón a tope. <strong>Si no lo sabes, pon 0</strong> y lo calculamos con tu edad.</p>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-rose-950/25 border border-rose-500/30">
+            <label class="block text-xs font-bold text-rose-300 mb-1">
+              <i class="fa-solid fa-bed mr-1"></i>Pulsaciones en Reposo
+            </label>
+            <input id="inRestHR" type="number" value="56" min="35" max="100" oninput="autoSaveInputs()" class="w-full rounded-lg bg-slate-900 border border-rose-500/40 px-3 py-1.5 text-sm text-white mono" />
+            <p class="text-[11px] text-slate-400 mt-1">Tus latidos cuando estás tranquilo o recién despierto (lo normal es entre 50 y 70).</p>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-amber-950/25 border border-amber-500/30">
+            <label class="block text-xs font-bold text-amber-300 mb-1">
+              <i class="fa-solid fa-bolt mr-1"></i>Potencia Sostenible (Vatios)
+            </label>
+            <input id="inFTP" type="number" value="0" min="0" max="500" placeholder="0 = Calcular automático" oninput="autoSaveInputs()" class="w-full rounded-lg bg-slate-900 border border-amber-500/40 px-3 py-1.5 text-sm text-white mono" />
+            <p class="text-[11px] text-slate-400 mt-1">Fuerza en vatios que sostienes por 1 hora. <strong>Si no tienes potenciómetro, déjalo en 0</strong>.</p>
+          </div>
+        </div>
+
+        <div class="mt-5 flex justify-end">
+          <button onclick="switchTab('step2')" class="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm flex items-center gap-2 transition">
+            Siguiente: Tu Bicicleta y Dispositivos <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PASO 2: BICICLETA Y DISPOSITIVOS -->
+    <section id="tab-step2" class="tab-panel hidden space-y-4">
+      <div class="glass rounded-2xl p-4 sm:p-6">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Paso 2 de 3</span>
+            <h2 class="text-lg sm:text-xl font-bold text-white">Tu Bicicleta y Sensores</h2>
+          </div>
+          <i class="fa-solid fa-gears text-2xl text-slate-600"></i>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Marca y Modelo de tu Bicicleta</label>
+            <input id="inBikeBrand" type="text" value="Giant TCR Advanced" oninput="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Talla del Marco</label>
+            <select id="inBikeSize" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
+              <option value="XS">XS (47-49 cm)</option>
+              <option value="S">S (50-52 cm)</option>
+              <option value="M" selected>M (53-55 cm)</option>
+              <option value="L">L (56-58 cm)</option>
+              <option value="XL">XL (59+ cm)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Grupo de Cambios y Velocidades</label>
+            <select id="inGroupset" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
+              <option value="Shimano 105 (11v)" selected>Shimano 105 (11v / 12v)</option>
+              <option value="Shimano Ultegra">Shimano Ultegra / Dura-Ace</option>
+              <option value="Shimano Tiagra/Sora">Shimano Tiagra / Sora (9-10v)</option>
+              <option value="SRAM Rival/Force">SRAM Rival / Force AXS</option>
+              <option value="MTB 1x12">Todoterreno MTB / Gravel (1 solo plato)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Relación de Platos y Pacha (Piñones)</label>
+            <select id="inGearing" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
+              <option value="compact-34" selected>Platos 50/34 con pacha suave 11-32 o 11-34 (Cómoda para subir)</option>
+              <option value="semi-28">Platos 52/36 con pacha dura 11-28 (Más pesada en loma)</option>
+              <option value="semi-30">Platos 52/36 con pacha intermedia 11-30 / 11-32</option>
+              <option value="standard">Platos grandes 53/39 con pacha 11-28 (Para terreno plano)</option>
+              <option value="mtb">Monoplato 32T/34T con pacha grande 10-51</option>
+            </select>
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-semibold text-slate-300 mb-1">¿Qué Ciclocomputador tienes?</label>
+            <select id="inHeadUnit" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-emerald-500/50 px-3 py-2 text-sm text-white font-semibold">
+              <option value="magene" selected>Magene C706 / C606 / C506 (Se carga con Intervals.icu + OnelapFit)</option>
+              <option value="garmin">Garmin Edge (530, 540, 830, 840, 1040)</option>
+              <option value="wahoo">Wahoo ELEMNT (BOLT / ROAM)</option>
+              <option value="igpsport">iGPSPORT (BSC200, BSC300, iGS630)</option>
+              <option value="hammerhead">Hammerhead Karoo 2 / 3</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mt-5 pt-4 border-t border-slate-800">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
+            ¿Qué sensores tienes conectados a tu bicicleta?
+          </h3>
+          <p class="text-xs text-slate-400 mb-3">
+            La aplicación <strong>siempre te mostrará los 3 datos (Pulsaciones, Potencia y Cadencia)</strong>. Pero si <strong>NO marcas Potenciómetro</strong>, el archivo para tu Magene C706 te guiará con tus <strong>Pulsaciones (Banda Cardíaca) + Cadencia</strong>.
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-900/90 border border-rose-500/40 cursor-pointer hover:bg-slate-800/80 transition">
+              <input id="chkHR" type="checkbox" checked onchange="autoSaveInputs()" class="mt-1 w-4 h-4 accent-rose-500" />
+              <div>
+                <div class="text-sm font-bold text-rose-300"><i class="fa-solid fa-heart-pulse mr-1"></i>Banda Cardíaca (Pulsaciones)</div>
+                <p class="text-[11px] text-slate-400">Mide los latidos de tu corazón por minuto (`ppm`).</p>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-900/90 border border-amber-500/40 cursor-pointer hover:bg-slate-800/80 transition">
+              <input id="chkPM" type="checkbox" onchange="autoSaveInputs()" class="mt-1 w-4 h-4 accent-amber-500" />
+              <div>
+                <div class="text-sm font-bold text-amber-300"><i class="fa-solid fa-bolt mr-1"></i>Potenciómetro (Fuerza en Vatios)</div>
+                <p class="text-[11px] text-slate-400"><strong>Desmárcalo si no tienes.</strong> Así tu Magene te mostrará el objetivo en Pulsaciones.</p>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-900/90 border border-cyan-500/40 cursor-pointer hover:bg-slate-800/80 transition">
+              <input id="chkCAD" type="checkbox" checked onchange="autoSaveInputs()" class="mt-1 w-4 h-4 accent-cyan-500" />
+              <div>
+                <div class="text-sm font-bold text-cyan-300"><i class="fa-solid fa-rotate mr-1"></i>Sensor de Cadencia (Pedaleo)</div>
+                <p class="text-[11px] text-slate-400">Mide cuántas pedaladas das por minuto (`rpm`).</p>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="mt-5 flex justify-between">
+          <button onclick="switchTab('step1')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm">
+            <i class="fa-solid fa-arrow-left mr-1"></i> Anterior
+          </button>
+          <button onclick="switchTab('step3')" class="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm flex items-center gap-2">
+            Siguiente: Tu Tiempo Disponible y Meta <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PASO 3: OBJETIVO Y TIEMPO DISPONIBLE -->
+    <section id="tab-step3" class="tab-panel hidden space-y-4">
+      <div class="glass rounded-2xl p-4 sm:p-6">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Paso 3 de 3</span>
+            <h2 class="text-lg sm:text-xl font-bold text-white">Tu Objetivo y Tiempo Disponible para Entrenar</h2>
+          </div>
+          <i class="fa-solid fa-clock text-2xl text-emerald-400"></i>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-emerald-950/25 border border-emerald-500/40 mb-5">
+          <h3 class="text-xs font-extrabold uppercase tracking-wider text-emerald-300 mb-3 flex items-center gap-1.5">
+            <i class="fa-solid fa-calendar-day"></i> ¿Cuánto tiempo libre tienes para montar?
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-white mb-1">
+                Tiempo por día ENTRE SEMANA (Mar a Vie)
+              </label>
+              <select id="inWeekdayMin" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-emerald-500/50 px-3 py-2.5 text-sm text-emerald-300 font-bold">
+                <option value="45">45 minutos (Entreno corto y al grano)</option>
+                <option value="60" selected>1 hora (60 minutos)</option>
+                <option value="75">1 hora y 15 min (75 minutos)</option>
+                <option value="90">1 hora y media (90 minutos)</option>
+                <option value="120">2 horas (120 minutos)</option>
+              </select>
+              <p class="text-[11px] text-slate-400 mt-1">Ningún entrenamiento entre semana se pasará de este tiempo.</p>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-white mb-1">
+                Tiempo para el Fondo del FIN DE SEMANA
+              </label>
+              <select id="inWeekendMin" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-emerald-500/50 px-3 py-2.5 text-sm text-emerald-300 font-bold">
+                <option value="90">1 hora y media (90 min)</option>
+                <option value="120">2 horas (120 min)</option>
+                <option value="150" selected>2 horas y media (150 min)</option>
+                <option value="180">3 horas (180 min)</option>
+                <option value="240">4 horas (240 min - Salida larga)</option>
+                <option value="300">5 horas (300 min - Gran Fondo)</option>
+              </select>
+              <p class="text-[11px] text-slate-400 mt-1">Calcularemos tus descansos, comida y agua según estas horas.</p>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-white mb-1">
+                ¿Cuántos días a la semana puedes usar la bici?
+              </label>
+              <select id="inBikeDays" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2.5 text-sm text-white font-semibold">
+                <option value="3">3 días de Bici + 2 de Fortalecimiento + 2 Descanso</option>
+                <option value="4" selected>4 días de Bici + 2 de Fortalecimiento + 1 Descanso</option>
+                <option value="5">5 días de Bici + 1 de Fortalecimiento + 1 Descanso</option>
+              </select>
+              <p class="text-[11px] text-slate-400 mt-1">En los días sin bici incluimos ejercicios para piernas, abdomen y espalda.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">¿Cuál es tu Meta Principal?</label>
+            <select id="inGoalType" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
+              <option value="granfondo" selected>Preparar un Evento o Competencia</option>
+              <option value="climbing">Subir Mejor en Montaña sin Ahogarme</option>
+              <option value="structured">Montar con Orden y Mejorar mi Salud</option>
+              <option value="crit">Ganar Velocidad en Terreno Rápido</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Fecha de la Competencia (o Meta)</label>
+            <input id="inEventDate" type="date" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white mono" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">¿Cómo es el terreno donde montas?</label>
+            <select id="inTerrain" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
+              <option value="mountain" selected>Montaña / Subidas Largas</option>
+              <option value="rolling">Columpios / Subidas y Bajadas Cortas</option>
+              <option value="flat">Terreno Plano</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">¿Dónde harás el fortalecimiento sin bici?</label>
+            <select id="inStrengthMode" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
+              <option value="gym" selected>Con Pesas / Mancuernas o Gimnasio</option>
+              <option value="home">En Casa (Con tu propio peso / Sin equipos)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Clima donde entrenas normalmente (Para calcular cuánta agua debes tomar)</label>
+          <select id="inClimate" onchange="autoSaveInputs()" class="w-full sm:w-1/2 rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
+            <option value="warm" selected>Caluroso o Húmedo (24°C a 32°C — Ej. Cali / Valle / Costa)</option>
+            <option value="temperate">Templado (16°C a 23°C — Ej. Medellín / Eje Cafetero)</option>
+            <option value="cold">Frío / Páramo (Menos de 15°C — Ej. Bogotá / Boyacá)</option>
+          </select>
+        </div>
+
+        <div class="mt-6 flex flex-wrap justify-between items-center gap-3">
+          <button onclick="switchTab('step2')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm">
+            <i class="fa-solid fa-arrow-left mr-1"></i> Anterior
+          </button>
+          <button onclick="saveAndGeneratePlan()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 text-slate-950 font-extrabold text-sm shadow-lg shadow-emerald-500/25 flex items-center gap-2">
+            <i class="fa-solid fa-floppy-disk"></i> Guardar Mis Datos y Ver Mi Plan
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 4: MI PLAN SEMANAL -->
+    <section id="tab-plan" class="tab-panel hidden space-y-4">
+
+      <div class="glass rounded-2xl p-4 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-l-4 border-l-emerald-400">
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span id="planPhaseBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+              ETAPA: GANANDO FUERZA Y RESISTENCIA
+            </span>
+            <span id="planModeExplain" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">
+              Ciclocomputador guiado por: PULSACIONES (FC)
+            </span>
+          </div>
+          <h2 id="planHeaderTitle" class="text-lg sm:text-xl font-extrabold text-white mt-1">Plan Semanal de Entrenamiento</h2>
+          <p id="planSubSummary" class="text-xs text-slate-300 mt-0.5"></p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto justify-end">
+          <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5">
+            <label class="text-xs font-semibold text-slate-400">Semana:</label>
+            <select id="selActiveWeek" onchange="changeActiveWeek(this.value)" class="bg-transparent text-xs font-bold text-emerald-400 focus:outline-none mono"></select>
+          </div>
+          <button onclick="closeWeekAndAdapt()" class="px-3 py-2 rounded-xl bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-500/40 text-indigo-300 text-xs font-bold flex items-center gap-1.5 transition">
+            <i class="fa-solid fa-chart-line"></i> Terminé la Semana (Ajustar la Siguiente)
+          </button>
+        </div>
+      </div>
+
+      <!-- TABLA DE RITMOS EXPLICADOS EN SENCILLO -->
+      <div class="glass rounded-2xl p-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-3">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-200">
+            <i class="fa-solid fa-gauge-high mr-1.5 text-emerald-400"></i>Guía Rápida de tus 5 Ritmos (Explicados en sencillo)
+          </h3>
+          <span id="zonesRefMeta" class="text-[11px] text-slate-400 mono"></span>
+        </div>
+        <div id="zonesGrid" class="grid grid-cols-1 sm:grid-cols-5 gap-2.5"></div>
+      </div>
+
+      <!-- TARJETAS DE LOS 7 DÍAS -->
+      <div id="weeklyCardsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
+    </section>
+
+    <!-- SECCIÓN 5: PASAR AL CICLOCOMPUTADOR -->
+    <section id="tab-sync" class="tab-panel hidden space-y-4">
+      <div class="glass rounded-2xl p-4 sm:p-6 space-y-5">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Pasar al Ciclocomputador</span>
+            <h2 class="text-lg sm:text-xl font-extrabold text-white">Cargar tus Entrenamientos al Magene C706, Garmin o Wahoo</h2>
+          </div>
+          <i class="fa-solid fa-satellite-dish text-2xl text-emerald-400"></i>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-700 space-y-2">
+          <div class="flex items-center gap-2 text-sm font-bold text-white">
+            <i class="fa-solid fa-circle-info text-cyan-400"></i>
+            ¿Cómo salen los 3 objetivos (Pulsaciones, Potencia y Cadencia) en tu aparato?
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Todos los archivos llevan los 3 datos. Si marcaste que <strong>NO tienes potenciómetro</strong>, el código que copias para <strong>Intervals.icu / OnelapFit</strong> le ordena a tu Magene C706 mostrarte la barra de <span class="text-rose-400 font-bold">Pulsaciones del Corazón (FC)</span> y tu <span class="text-cyan-400 font-bold">Velocidad de Pedaleo (Cadencia)</span> como objetivos principales, y te escribe los <span class="text-amber-400 font-bold">Vatios de Potencia</span> en el título del bloque.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3">
+            Entrenamientos de Bicicleta de esta Semana
+          </h3>
+          <div id="syncWorkoutsList" class="space-y-3"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL 1: TEXTO COPIADO PARA INTERVALS.ICU -->
+  <div id="intervalsModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass rounded-2xl max-w-lg w-full p-5 border border-emerald-500/40 space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-extrabold text-white flex items-center gap-2">
+          <i class="fa-solid fa-clipboard-check text-emerald-400"></i>
+          Texto Listo para Intervals.icu → OnelapFit (Magene)
+        </h3>
+        <button onclick="closeIntervalsModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <p id="intervalsModalSubtitle" class="text-xs text-slate-300"></p>
+      <textarea id="intervalsModalTextarea" readonly rows="10" class="w-full rounded-xl bg-slate-950 border border-slate-700 p-3 text-xs mono text-emerald-300 focus:outline-none"></textarea>
+      <div class="flex flex-wrap justify-between items-center gap-2">
+        <button onclick="copyIntervalsTextarea()" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-1.5">
+          <i class="fa-solid fa-copy"></i> Copiar Texto
+        </button>
+        <button onclick="closeIntervalsModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: RETROALIMENTACIÓN EN LENGUAJE SENCILLO Y ENVÍO AL CORREO -->
+  <div id="feedbackModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass rounded-2xl max-w-lg w-full p-5 border border-cyan-500/40 space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between">
+        <h3 id="fbModalTitle" class="text-base font-extrabold text-white">¿Cómo te fue hoy en el entrenamiento?</h3>
+        <button onclick="closeFeedbackModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <p class="text-xs text-slate-300">
+        Este registro queda <strong>guardado en tu aplicación</strong> para recordar qué días ya cumpliste y ajustar la próxima semana.
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div>
+          <label class="block text-[11px] font-bold text-slate-300 mb-1">¿Pudiste completarlo?</label>
+          <select id="fbCompleted" class="w-full rounded-lg bg-slate-900 border border-slate-700 px-2.5 py-2 text-xs text-white">
+            <option value="full">Sí, lo hice completo</option>
+            <option value="partial">Hice solo una parte</option>
+            <option value="skipped">Hoy no pude entrenar</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-rose-300 mb-1">Pulsaciones Promedio (ppm)</label>
+          <input id="fbRealHR" type="number" placeholder="Ej. 145" class="w-full rounded-lg bg-slate-900 border border-slate-700 px-2.5 py-2 text-xs text-white mono" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-cyan-300 mb-1">Pedaleo Promedio (rpm)</label>
+          <input id="fbRealCAD" type="number" placeholder="Ej. 85" class="w-full rounded-lg bg-slate-900 border border-slate-700 px-2.5 py-2 text-xs text-white mono" />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-bold text-slate-300 mb-1">¿Qué tan cansado terminaste hoy? (Del 1 al 10)</label>
+        <input id="fbRPE" type="range" min="1" max="10" value="6" oninput="document.getElementById('fbRPEVal').textContent=this.value" class="w-full accent-emerald-400" />
+        <div class="flex justify-between text-[11px] text-slate-400">
+          <span>1 (Muy fresco)</span>
+          <span class="font-bold text-emerald-400">Sensación de cansancio: <span id="fbRPEVal">6</span> de 10</span>
+          <span>10 (Agotado / Al límite)</span>
+        </div>
+      </div>
+
+      <button onclick="processWorkoutFeedback()" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-extrabold text-xs">
+        Guardar Cumplimiento y Ver Consejos para Mañana
+      </button>
+
+      <div id="fbResultBox" class="hidden p-3.5 rounded-xl bg-slate-900 border border-slate-700 space-y-3">
+        <div id="fbDiagnosisText" class="text-xs text-slate-200 leading-relaxed whitespace-pre-line"></div>
+        <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-800">
+          <button onclick="sendFeedbackByEmail()" class="px-3 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-1.5">
+            <i class="fa-solid fa-envelope"></i> Enviarme este Consejo al Correo
+          </button>
+          <button onclick="sendFeedbackByWhatsApp()" class="px-3 py-2 rounded-lg bg-green-600 hover:bg-green-500 text-white font-bold text-xs flex items-center gap-1.5">
+            <i class="fa-brands fa-whatsapp"></i> Enviarlo a mi WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: GESTIÓN DE DATOS Y RESPALDO (PARA QUE NUNCA SE PIERDAN) -->
+  <div id="backupModal" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass rounded-2xl max-w-lg w-full p-5 border border-emerald-500/40 space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-extrabold text-white flex items-center gap-2">
+          <i class="fa-solid fa-database text-emerald-400"></i>
+          Memoria y Respaldo de tus Datos
+        </h3>
+        <button onclick="closeBackupModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="p-3.5 rounded-xl bg-emerald-950/25 border border-emerald-500/30 text-xs text-slate-200 space-y-1">
+        <div class="font-bold text-emerald-300"><i class="fa-solid fa-circle-check mr-1"></i>Estado de la memoria interna: Activa</div>
+        <p class="text-[11px] text-slate-300">
+          Tus datos (perfil, bicicleta, horarios, semana actual y entrenamientos cumplidos) se están guardando automáticamente en la memoria interna de este dispositivo (`localStorage` + `IndexedDB`).
+        </p>
+      </div>
+
+      <div class="space-y-2">
+        <h4 class="text-xs font-bold text-white">Copia de Seguridad (Para pasar tus datos del PC al Celular o guardarlos)</h4>
+        <p class="text-[11px] text-slate-400">
+          Si configuraste todo en el computador y quieres pasarlo idéntico al celular sin volver a llenar nada, descarga tu archivo de respaldo y cárgaselo en el teléfono:
+        </p>
+        <div class="flex flex-wrap gap-2 pt-1">
+          <button onclick="exportProfileBackup()" class="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-1.5">
+            <i class="fa-solid fa-download"></i> Descargar Copia de Mis Datos (.json)
+          </button>
+          <label class="px-3.5 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 font-bold text-xs flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-upload"></i> Cargar Copia Guardada
+            <input type="file" accept=".json" onchange="importProfileBackup(event)" class="hidden" />
+          </label>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-slate-800 flex justify-between items-center">
+        <button onclick="resetAllData()" class="text-xs text-rose-400 hover:text-rose-300 font-semibold">
+          <i class="fa-solid fa-trash-can mr-1"></i>Borrar todo y empezar de cero
+        </button>
+        <button onclick="closeBackupModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: RELOJ DE ALERTAS DE AGUA Y COMIDA -->
+  <div id="liveTimerModal" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass rounded-2xl max-w-md w-full p-5 border border-cyan-500/40 space-y-4 text-center">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold uppercase tracking-wider text-cyan-400"><i class="fa-solid fa-bell mr-1"></i>Avisador de Agua y Comida en Ruta</span>
+        <button onclick="closeLiveTimerModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <div id="liveTimerClock" class="text-4xl font-extrabold mono text-white py-2">00:00:00</div>
+      <p id="liveTimerTargets" class="text-xs text-slate-300 bg-slate-900/90 p-3 rounded-xl border border-slate-800"></p>
+      <div id="liveTimerAlertBanner" class="hidden p-3 rounded-xl bg-amber-500/20 border border-amber-400 text-amber-200 text-xs font-bold"></div>
+      <div class="flex justify-center gap-2">
+        <button onclick="startLiveRideTimer()" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs">
+          <i class="fa-solid fa-play mr-1"></i>Iniciar Reloj
+        </button>
+        <button onclick="pauseLiveRideTimer()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-200 font-bold text-xs">
+          <i class="fa-solid fa-pause mr-1"></i>Pausar
+        </button>
+        <button onclick="testBeepAlert()" class="px-4 py-2 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-bold text-xs">
+          <i class="fa-solid fa-volume-high mr-1"></i>Probar Sonido
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BARRA DE NAVEGACIÓN INFERIOR -->
+  <nav class="fixed bottom-0 left-0 right-0 z-40 glass border-t border-slate-800 bottom-nav">
+    <div class="max-w-xl mx-auto grid grid-cols-5 px-2 pt-1.5">
+      <button onclick="switchTab('step1')" id="nav-step1" class="nav-btn flex flex-col items-center py-1.5 text-emerald-400">
+        <i class="fa-solid fa-user-check text-base"></i>
+        <span class="text-[10px] font-bold mt-0.5">1. Ciclista</span>
+      </button>
+      <button onclick="switchTab('step2')" id="nav-step2" class="nav-btn flex flex-col items-center py-1.5 text-slate-400">
+        <i class="fa-solid fa-bicycle text-base"></i>
+        <span class="text-[10px] font-bold mt-0.5">2. Mi Bici</span>
+      </button>
+      <button onclick="switchTab('step3')" id="nav-step3" class="nav-btn flex flex-col items-center py-1.5 text-slate-400">
+        <i class="fa-solid fa-clock text-base"></i>
+        <span class="text-[10px] font-bold mt-0.5">3. Mi Tiempo</span>
+      </button>
+      <button onclick="switchTab('plan')" id="nav-plan" class="nav-btn flex flex-col items-center py-1.5 text-slate-400">
+        <i class="fa-solid fa-calendar-check text-base"></i>
+        <span class="text-[10px] font-bold mt-0.5">Mi Plan</span>
+      </button>
+      <button onclick="switchTab('sync')" id="nav-sync" class="nav-btn flex flex-col items-center py-1.5 text-slate-400">
+        <i class="fa-solid fa-download text-base"></i>
+        <span class="text-[10px] font-bold mt-0.5">Pasar a Bici</span>
+      </button>
+    </div>
+  </nav>
+
+  <script>
+    // =========================================================================
+    // CLAVE DE BASE DE DATOS LOCAL Y ESTADO GLOBAL (VELOPLAN PRO v3.2)
+    // =========================================================================
+    const STORAGE_KEY = 'veloplan_pro_v32_database';
+
+    const state = {
+      hasSavedProfile: false,
+      lastActiveTab: 'step1',
+      rider: {
+        name: 'Diego Montoya',
+        email: '',
+        age: 42,
+        weight: 72,
+        height: 175,
+        level: 'intermediate',
+        maxHR: 182,
+        restHR: 56,
+        lthr: 162,
+        ftp: 0,
+        ftpCalculated: 205,
+        ftpEstimated: true
+      },
+      bike: {
+        brand: 'Giant TCR Advanced',
+        size: 'M',
+        groupset: 'Shimano 105 (11v)',
+        gearing: 'compact-34',
+        headUnit: 'magene',
+        hasHR: true,
+        hasPM: false,
+        hasCAD: true
+      },
+      goal: {
+        type: 'granfondo',
+        eventDate: '',
+        terrain: 'mountain',
+        weekdayMin: 60,
+        weekendMin: 150,
+        bikeDays: 4,
+        strengthMode: 'gym',
+        climate: 'warm'
+      },
+      totalWeeks: 8,
+      currentWeek: 1,
+      weeklyProgressionFactor: 1.0,
+      completedLogs: {}, // Guarda qué entrenamientos ya hiciste: { "W1_D1": { status, realHR, realCAD, rpe } }
+      zones: [],
+      plan: [],
+      selectedDayForFeedback: 0,
+      lastFeedbackReport: ''
+    };
+
+    // =========================================================================
+    // MOTOR DE PERSISTENCIA DOBLE: LOCALSTORAGE + INDEXEDDB
+    // =========================================================================
+    function saveStateToLocal() {
+      const payload = {
+        hasSavedProfile: true,
+        lastActiveTab: state.lastActiveTab,
+        rider: state.rider,
+        bike: state.bike,
+        goal: state.goal,
+        totalWeeks: state.totalWeeks,
+        currentWeek: state.currentWeek,
+        weeklyProgressionFactor: state.weeklyProgressionFactor,
+        completedLogs: state.completedLogs
+      };
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+        flashSaveIndicator();
+      } catch (e) {}
+
+      // Respaldo adicional en IndexedDB del navegador para evitar borrados en iOS
+      try {
+        const req = indexedDB.open('VeloPlanDB', 1);
+        req.onupgradeneeded = function(ev) {
+          const db = ev.target.result;
+          if (!db.objectStoreNames.contains('profile')) {
+            db.createObjectStore('profile');
+          }
+        };
+        req.onsuccess = function(ev) {
+          const db = ev.target.result;
+          const tx = db.transaction('profile', 'readwrite');
+          tx.objectStore('profile').put(payload, 'main');
+        };
+      } catch (e) {}
+    }
+
+    function loadStateFromLocal(callback) {
+      let loaded = null;
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) loaded = JSON.parse(raw);
+      } catch (e) {}
+
+      if (loaded && loaded.rider) {
+        applyLoadedDataToStateAndForm(loaded);
+        callback(true);
+        return;
+      }
+
+      // Si no estaba en localStorage, buscar en IndexedDB
+      try {
+        const req = indexedDB.open('VeloPlanDB', 1);
+        req.onupgradeneeded = function(ev) {
+          const db = ev.target.result;
+          if (!db.objectStoreNames.contains('profile')) {
+            db.createObjectStore('profile');
+          }
+        };
+        req.onsuccess = function(ev) {
+          const db = ev.target.result;
+          const tx = db.transaction('profile', 'readonly');
+          const getReq = tx.objectStore('profile').get('main');
+          getReq.onsuccess = function() {
+            if (getReq.result && getReq.result.rider) {
+              applyLoadedDataToStateAndForm(getReq.result);
+              callback(true);
+            } else {
+              callback(false);
+            }
+          };
+          getReq.onerror = function() { callback(false); };
+        };
+        req.onerror = function() { callback(false); };
+      } catch (e) {
+        callback(false);
+      }
+    }
+
+    // Volcar los datos guardados hacia las casillas HTML para no perderlos nunca
+    function applyLoadedDataToStateAndForm(data) {
+      state.hasSavedProfile = Boolean(data.hasSavedProfile);
+      state.lastActiveTab = data.lastActiveTab || 'plan';
+      if (data.rider) Object.assign(state.rider, data.rider);
+      if (data.bike) Object.assign(state.bike, data.bike);
+      if (data.goal) Object.assign(state.goal, data.goal);
+      if (data.totalWeeks) state.totalWeeks = data.totalWeeks;
+      if (data.currentWeek) state.currentWeek = data.currentWeek;
+      if (data.weeklyProgressionFactor) state.weeklyProgressionFactor = data.weeklyProgressionFactor;
+      if (data.completedLogs) state.completedLogs = data.completedLogs;
+
+      // Rellenar los campos del formulario HTML con los datos recuperados
+      document.getElementById('inName').value = state.rider.name || '';
+      document.getElementById('inEmail').value = state.rider.email || '';
+      document.getElementById('inAge').value = state.rider.age || 42;
+      document.getElementById('inWeight').value = state.rider.weight || 72;
+      document.getElementById('inHeight').value = state.rider.height || 175;
+      document.getElementById('inLevel').value = state.rider.level || 'intermediate';
+      document.getElementById('inMaxHR').value = state.rider.maxHR || 0;
+      document.getElementById('inRestHR').value = state.rider.restHR || 56;
+      document.getElementById('inFTP').value = state.rider.ftpEstimated ? 0 : (state.rider.ftp || 0);
+
+      document.getElementById('inBikeBrand').value = state.bike.brand || '';
+      document.getElementById('inBikeSize').value = state.bike.size || 'M';
+      document.getElementById('inGroupset').value = state.bike.groupset || 'Shimano 105 (11v)';
+      document.getElementById('inGearing').value = state.bike.gearing || 'compact-34';
+      document.getElementById('inHeadUnit').value = state.bike.headUnit || 'magene';
+      document.getElementById('chkHR').checked = Boolean(state.bike.hasHR);
+      document.getElementById('chkPM').checked = Boolean(state.bike.hasPM);
+      document.getElementById('chkCAD').checked = Boolean(state.bike.hasCAD);
+
+      document.getElementById('inGoalType').value = state.goal.type || 'granfondo';
+      if (state.goal.eventDate) {
+        document.getElementById('inEventDate').value = state.goal.eventDate;
+      }
+      document.getElementById('inTerrain').value = state.goal.terrain || 'mountain';
+      document.getElementById('inWeekdayMin').value = String(state.goal.weekdayMin || 60);
+      document.getElementById('inWeekendMin').value = String(state.goal.weekendMin || 150);
+      document.getElementById('inBikeDays').value = String(state.goal.bikeDays || 4);
+      document.getElementById('inStrengthMode').value = state.goal.strengthMode || 'gym';
+      document.getElementById('inClimate').value = state.goal.climate || 'warm';
+    }
+
+    function flashSaveIndicator() {
+      const badge = document.getElementById('saveStatusBadge');
+      if (!badge) return;
+      badge.innerHTML = '<i class="fa-solid fa-check mr-1"></i>Datos Guardados';
+      badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/30 text-emerald-200 border border-emerald-400';
+      setTimeout(() => {
+        badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>Memoria Activa';
+        badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+      }, 1500);
+    }
+
+    // Se ejecuta cada vez que el usuario modifica cualquier campo en los pasos 1, 2 o 3
+    function autoSaveInputs() {
+      readInputsAndComputeMetrics();
+      buildWeekSchedule(state.currentWeek);
+      renderPlanUI();
+      renderSyncUI();
+      saveStateToLocal();
+    }
+
+    function saveAndGeneratePlan() {
+      state.lastActiveTab = 'plan';
+      readInputsAndComputeMetrics();
+      populateWeekSelector();
+      buildWeekSchedule(state.currentWeek);
+      renderPlanUI();
+      renderSyncUI();
+      saveStateToLocal();
+      switchTab('plan');
+    }
+
+    function switchTab(tabId) {
+      state.lastActiveTab = tabId;
+      document.querySelectorAll('.tab-panel').forEach(el => el.classList.add('hidden'));
+      document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('text-emerald-400');
+        btn.classList.add('text-slate-400');
+      });
+      const activeNav = document.getElementById('nav-' + tabId);
+      if (activeNav) {
+        activeNav.classList.remove('text-slate-400');
+        activeNav.classList.add('text-emerald-400');
+      }
+      saveStateToLocal();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // =========================================================================
+    // CÁLCULO DE LAS 5 ZONAS CON NOMBRES SENCILLOS Y HUMANOS
+    // =========================================================================
+    function readInputsAndComputeMetrics() {
+      state.rider.name = document.getElementById('inName').value.trim() || 'Ciclista';
+      state.rider.email = document.getElementById('inEmail').value.trim() || '';
+      state.rider.age = parseInt(document.getElementById('inAge').value) || 40;
+      state.rider.weight = parseFloat(document.getElementById('inWeight').value) || 72;
+      state.rider.height = parseInt(document.getElementById('inHeight').value) || 175;
+      state.rider.level = document.getElementById('inLevel').value;
+
+      const rawMaxHR = parseInt(document.getElementById('inMaxHR').value) || 0;
+      state.rider.maxHR = rawMaxHR > 120 ? rawMaxHR : Math.round(208 - (0.7 * state.rider.age));
+      state.rider.restHR = parseInt(document.getElementById('inRestHR').value) || 58;
+      state.rider.lthr = Math.round(state.rider.maxHR * 0.89);
+
+      const rawFTP = parseInt(document.getElementById('inFTP').value) || 0;
+      if (rawFTP >= 80) {
+        state.rider.ftp = rawFTP;
+        state.rider.ftpCalculated = rawFTP;
+        state.rider.ftpEstimated = false;
+      } else {
+        const wkgMap = { beginner: 2.2, intermediate: 2.85, advanced: 3.5 };
+        state.rider.ftp = 0;
+        state.rider.ftpCalculated = Math.round(state.rider.weight * (wkgMap[state.rider.level] || 2.8));
+        state.rider.ftpEstimated = true;
+      }
+
+      state.bike.brand = document.getElementById('inBikeBrand').value;
+      state.bike.size = document.getElementById('inBikeSize').value;
+      state.bike.groupset = document.getElementById('inGroupset').value;
+      state.bike.gearing = document.getElementById('inGearing').value;
+      state.bike.headUnit = document.getElementById('inHeadUnit').value;
+      state.bike.hasHR = document.getElementById('chkHR').checked;
+      state.bike.hasPM = document.getElementById('chkPM').checked;
+      state.bike.hasCAD = document.getElementById('chkCAD').checked;
+
+      state.goal.type = document.getElementById('inGoalType').value;
+      state.goal.eventDate = document.getElementById('inEventDate').value;
+      state.goal.terrain = document.getElementById('inTerrain').value;
+      state.goal.weekdayMin = parseInt(document.getElementById('inWeekdayMin').value) || 60;
+      state.goal.weekendMin = parseInt(document.getElementById('inWeekendMin').value) || 150;
+      state.goal.bikeDays = parseInt(document.getElementById('inBikeDays').value) || 4;
+      state.goal.strengthMode = document.getElementById('inStrengthMode').value;
+      state.goal.climate = document.getElementById('inClimate').value;
+
+      if (state.goal.eventDate) {
+        const diffMs = new Date(state.goal.eventDate) - new Date();
+        const w = Math.ceil(diffMs / (1000 * 60 * 60 * 24 * 7));
+        state.totalWeeks = Math.max(4, Math.min(24, w));
+      } else {
+        state.totalWeeks = 8;
+      }
+
+      const maxHR = state.rider.maxHR;
+      const ftp = state.rider.ftpCalculated;
+
+      state.zones = [
+        {
+          z: 1,
+          name: 'Ritmo 1: Paseo Suave',
+          feel: 'Puedes cantar o charlar sin cansarte. Sirve para soltar las piernas.',
+          color: 'border-slate-500/50 bg-slate-900/70 text-slate-200',
+          hrMin: Math.round(maxHR * 0.55),
+          hrMax: Math.round(maxHR * 0.65),
+          hrPctText: '55-65% HR',
+          wMin: Math.round(ftp * 0.45),
+          wMax: Math.round(ftp * 0.55),
+          pwrPct: 0.52,
+          pwrPctText: '45-55%',
+          cadMin: 85,
+          cadMax: 95
+        },
+        {
+          z: 2,
+          name: 'Ritmo 2: Fondo Cómodo',
+          feel: 'Puedes hablar en frases completas. Es el ritmo para aguantar varias horas.',
+          color: 'border-sky-500/50 bg-sky-950/30 text-sky-200',
+          hrMin: Math.round(maxHR * 0.66),
+          hrMax: Math.round(maxHR * 0.76),
+          hrPctText: '66-76% HR',
+          wMin: Math.round(ftp * 0.56),
+          wMax: Math.round(ftp * 0.75),
+          pwrPct: 0.68,
+          pwrPctText: '60-75%',
+          cadMin: 85,
+          cadMax: 95
+        },
+        {
+          z: 3,
+          name: 'Ritmo 3: Paso Firme',
+          feel: 'Respiración profunda; solo dices frases cortas. Ideal para subir a buen paso.',
+          color: 'border-emerald-500/50 bg-emerald-950/30 text-emerald-200',
+          hrMin: Math.round(maxHR * 0.77),
+          hrMax: Math.round(maxHR * 0.84),
+          hrPctText: '77-84% HR',
+          wMin: Math.round(ftp * 0.76),
+          wMax: Math.round(ftp * 0.90),
+          pwrPct: 0.85,
+          pwrPctText: '78-90%',
+          cadMin: state.goal.terrain === 'mountain' ? 75 : 85,
+          cadMax: state.goal.terrain === 'mountain' ? 85 : 95
+        },
+        {
+          z: 4,
+          name: 'Ritmo 4: Esfuerzo Fuerte',
+          feel: 'Cuesta hablar; sientes ardor controlado en las piernas para subir rápido.',
+          color: 'border-amber-500/50 bg-amber-950/30 text-amber-200',
+          hrMin: Math.round(maxHR * 0.85),
+          hrMax: Math.round(maxHR * 0.91),
+          hrPctText: '85-91% HR',
+          wMin: Math.round(ftp * 0.91),
+          wMax: Math.round(ftp * 1.05),
+          pwrPct: 0.97,
+          pwrPctText: '92-102%',
+          cadMin: state.goal.terrain === 'mountain' ? 72 : 85,
+          cadMax: state.goal.terrain === 'mountain' ? 82 : 95
+        },
+        {
+          z: 5,
+          name: 'Ritmo 5: Tope de Capacidad',
+          feel: 'No puedes hablar; respiración al máximo para esfuerzos cortos de 3 a 5 minutos.',
+          color: 'border-rose-500/50 bg-rose-950/30 text-rose-200',
+          hrMin: Math.round(maxHR * 0.92),
+          hrMax: Math.round(maxHR * 0.98),
+          hrPctText: '92-98% HR',
+          wMin: Math.round(ftp * 1.06),
+          wMax: Math.round(ftp * 1.20),
+          pwrPct: 1.12,
+          pwrPctText: '106-118%',
+          cadMin: 90,
+          cadMax: 105
+        }
+      ];
+    }
+
+    // =========================================================================
+    // ALIMENTACIÓN E HIDRATACIÓN EN LENGUAJE CLARO
+    // =========================================================================
+    function buildNutritionProtocol(durationMin, zoneNumber, workoutType) {
+      const weight = state.rider.weight;
+      const climateBonus = state.goal.climate === 'warm' ? 180 : (state.goal.climate === 'temperate' ? 80 : 0);
+
+      if (workoutType === 'rest') {
+        const dailyWater = Math.round(weight * 35);
+        return {
+          mlPerHour: 0,
+          mlEvery15: 0,
+          totalMl: dailyWater,
+          carbsPerHour: 0,
+          before: 'Hoy tu cuerpo repara los músculos. Toma agua normal durante el día y come buena proteína (huevos, pollo, pescado o legumbres).',
+          during: `Sin entrenamiento hoy. Procura tomar unos ${dailyWater} ml de agua (${Math.round(dailyWater / 250)} vasos) repartidos en el día.`,
+          after: 'En la noche come ligero y duerme bien; el descanso es cuando tus piernas realmente ganan fuerza.'
+        };
+      }
+
+      if (workoutType === 'strength') {
+        const mlH = 500 + Math.round(climateBonus * 0.5);
+        return {
+          mlPerHour: mlH,
+          mlEvery15: Math.round(mlH / 4),
+          totalMl: Math.round((durationMin / 60) * mlH),
+          carbsPerHour: 20,
+          before: '1 hora antes: 1 banano o 1 tostada con queso/mantequilla de maní y un café o vaso de agua.',
+          during: `Toma unos ${Math.round(mlH / 4)} ml de agua (4 o 5 sorbos grandes) cada 15 minutos mientras haces los ejercicios.`,
+          after: 'Al terminar (primeros 30 min): Come proteína para reparar las fibras musculares (3 huevos, atún, pollo o 1 batido de proteína).'
+        };
+      }
+
+      const baseMl = zoneNumber >= 4 ? 720 : (zoneNumber === 3 ? 640 : 550);
+      const mlPerHour = Math.round(baseMl + climateBonus + (weight - 70) * 4);
+      const mlEvery15 = Math.round(mlPerHour / 4);
+      const totalMl = Math.round((durationMin / 60) * mlPerHour);
+
+      let carbsPerHour = 35;
+      let foodExample = '1 banano mediano, o 1 bocadillo de guayaba grande, o 1 barra de cereal';
+      if (durationMin >= 120 || zoneNumber >= 4) {
+        carbsPerHour = 60;
+        foodExample = '1 gel energético + 1 bocadillo (o 1 banano + bebida con sales y carbohidratos en la caramañola)';
+      } else if (durationMin >= 75 || zoneNumber === 3) {
+        carbsPerHour = 45;
+        foodExample = '1 barra energética o 2 bocadillos de guayaba o 1 gel cada 40 minutos';
+      }
+
+      const sips = Math.max(3, Math.round(mlEvery15 / 35));
+
+      return {
+        mlPerHour,
+        mlEvery15,
+        totalMl,
+        carbsPerHour,
+        before: `1 hora y media antes de salir: Come algo fácil de digerir (un plato de avena con banano, o 2 tostadas con mermelada/miel y café) + 1 vaso grande de agua (350 ml).`,
+        during: `Agua: Toma ${sips} sorbos buenos (${mlEvery15} ml) cada 15 minutos (en total necesitas ${totalMl} ml para esta salida, ponle electrolitos o una pizca de sal si hace calor). Comida en la bici: Consume ${foodExample} (${carbsPerHour}g de energía por hora).`,
+        after: `Apenas te bajes de la bici (primeros 30 min): Toma 2 vasos de agua (500 ml) y combina energía + proteína (yogur con fruta y avena, o huevos con pan/arepa) para no sentir las piernas pesadas mañana.`
+      };
+    }
+
+    function populateWeekSelector() {
+      const sel = document.getElementById('selActiveWeek');
+      sel.innerHTML = '';
+      for (let w = 1; w <= state.totalWeeks; w++) {
+        const opt = document.createElement('option');
+        opt.value = w;
+        const isDeload = (w % 4 === 0 && w < state.totalWeeks);
+        const isTaper = (w === state.totalWeeks);
+        const tag = isTaper ? ' (Semana Suave Pre-Evento)' : (isDeload ? ' (Semana de Recuperación)' : '');
+        opt.textContent = `Semana ${w} de ${state.totalWeeks}${tag}`;
+        if (w === state.currentWeek) opt.selected = true;
+        sel.appendChild(opt);
+      }
+    }
+
+    function changeActiveWeek(weekNum) {
+      state.currentWeek = parseInt(weekNum) || 1;
+      buildWeekSchedule(state.currentWeek);
+      renderPlanUI();
+      renderSyncUI();
+      saveStateToLocal();
+    }
+
+    function fitIntervalsToAvailableTime(availMin, warmMin, coolMin, workMin, restMin, desiredReps) {
+      const usable = Math.max(15, availMin - warmMin - coolMin);
+      let reps = desiredReps;
+      while (reps > 1 && ((reps * workMin) + ((reps - 1) * restMin)) > usable) {
+        reps--;
+      }
+      const blocksTime = (reps * workMin) + ((reps - 1) * restMin);
+      const leftover = Math.max(0, availMin - (warmMin + blocksTime + coolMin));
+      const finalWarm = warmMin + Math.floor(leftover / 2);
+      const finalCool = coolMin + (leftover - Math.floor(leftover / 2));
+      return { reps, warmMin: finalWarm, coolMin: finalCool, workMin, restMin };
+    }
+
+    function buildWeekSchedule(weekNum) {
+      const z1 = state.zones[0];
+      const z2 = state.zones[1];
+
+      const isDeload = (weekNum % 4 === 0 && weekNum < state.totalWeeks);
+      const isTaper = (weekNum === state.totalWeeks);
+      let loadMult = 1 + ((weekNum - 1) * 0.05) * state.weeklyProgressionFactor;
+      if (isDeload) loadMult = 0.80;
+      if (isTaper) loadMult = 0.65;
+
+      const weekdayCap = state.goal.weekdayMin;
+      const weekendCap = state.goal.weekendMin;
+      const isGym = state.goal.strengthMode === 'gym';
+
+      const gearingNote = state.bike.gearing === 'semi-28'
+        ? 'Como tu pacha atrás es 11-28 (un poco dura), busca no atrancarte en las subidas y mantén el pedaleo ágil.'
+        : 'Usa tus piñones grandes atrás en las subidas para llevar las piernas sueltas al ritmo de pedaleo indicado.';
+
+      const tueIsZ4 = (weekNum % 2 === 1);
+      const tueBaseWork = tueIsZ4 ? (weekdayCap <= 45 ? 6 : 8) : 4;
+      const tueBaseRest = 3;
+      const tueDesiredReps = Math.round((tueIsZ4 ? 4 : 6) * loadMult);
+      const tueFit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, tueBaseWork, tueBaseRest, tueDesiredReps);
+
+      const thuBaseWork = weekdayCap <= 45 ? 8 : (weekdayCap <= 60 ? 10 : 14);
+      const thuBaseRest = 4;
+      const thuDesiredReps = Math.round(3 * loadMult);
+      const thuFit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, thuBaseWork, thuBaseRest, thuDesiredReps);
+
+      const satTotalTarget = Math.min(weekendCap, Math.max(weekdayCap, Math.round(weekendCap * 0.55)));
+      const satWarm = 10;
+      const satCool = 10;
+      const satWork = Math.max(25, satTotalTarget - satWarm - satCool);
+
+      const sunTotalTarget = isDeload ? Math.round(weekendCap * 0.8) : (isTaper ? Math.round(weekendCap * 0.65) : weekendCap);
+      const sunWarm = 15;
+      const sunCool = 15;
+      const sunRest = 10;
+      const sunWorkEach = Math.max(25, Math.floor((sunTotalTarget - sunWarm - sunCool - sunRest) / 2));
+
+      state.plan = [
+        {
+          day: 'Lunes',
+          shortDay: 'LUN',
+          type: 'rest',
+          title: 'Día de Descanso y Recuperación Muscular',
+          subtitle: 'Hoy no se toca la bicicleta ni las pesas para que el cuerpo asimile el trabajo',
+          durationMin: 0,
+          zone: 1,
+          details: 'El descanso es parte del entrenamiento: cuando descansas es cuando tus piernas se fortalecen. Si quieres, haz 10 minutos de estiramiento suave en casa.',
+          nutrition: buildNutritionProtocol(0, 1, 'rest')
+        },
+        {
+          day: 'Martes',
+          shortDay: 'MAR',
+          type: 'bike',
+          title: tueIsZ4 ? 'Repeticiones de Ritmo Fuerte Soportable (Ritmo 4)' : 'Repeticiones Cortas para Ganar Aire y Pulmón (Ritmo 5)',
+          subtitle: `Ajustado a tus ${weekdayCap} min disponibles entre semana`,
+          zone: tueIsZ4 ? 4 : 5,
+          warmMin: tueFit.warmMin,
+          reps: tueFit.reps,
+          workMin: tueFit.workMin,
+          restMin: tueFit.restMin,
+          coolMin: tueFit.coolMin,
+          cadWorkMin: tueIsZ4 ? 85 : 90,
+          cadWorkMax: tueIsZ4 ? 95 : 100,
+          cadWarmMin: 85,
+          cadWarmMax: 95,
+          cadRestMin: 80,
+          cadRestMax: 90,
+          details: `Cómo hacerlo fácil: Empieza suave durante ${tueFit.warmMin} minutos. Luego haz ${tueFit.reps} repeticiones fuertes de ${tueFit.workMin} minutos llevando tu corazón a las pulsaciones indicadas abajo, descansando ${tueFit.restMin} minutos suave entre cada una. ${gearingNote}`
+        },
+        {
+          day: 'Miércoles',
+          shortDay: 'MIÉ',
+          type: 'strength',
+          title: 'Fortalecimiento sin Bici A: Piernas y Abdomen (Core)',
+          subtitle: isGym ? `Rutina con pesas/mancuernas (${Math.min(50, weekdayCap)} min)` : `Rutina en casa sin equipos (${Math.min(45, weekdayCap)} min)`,
+          durationMin: Math.min(50, weekdayCap),
+          zone: 2,
+          exercises: isGym ? [
+            'Calentamiento (8 min): Movimientos circulares de cadera y sentadillas sin peso.',
+            'Sentadilla a una pierna (Búlgara) o Sentadilla con mancuerna al pecho: 4 series de 10 repeticiones.',
+            'Peso Muerto con mancuernas (espalda recta sintiendo la parte de atrás del muslo): 3 series de 12 repeticiones.',
+            'Plancha abdominal (apoyado en antebrazos manteniendo el cuerpo recto): 3 series de 40 segundos.',
+            'Empinarse en las puntas de los pies (para fortalecer pantorrillas): 3 series de 15 repeticiones.'
+          ] : [
+            'Calentamiento (8 min): Movilidad de cadera y subir/bajar la pelvis acostado boca arriba.',
+            'Pasos largos hacia atrás doblando rodilla (Zancadas) + Sentadilla en pared: 4 series de 12 repeticiones.',
+            'Puente de glúteo acostado boca arriba levantando cadera con una sola pierna: 3 series de 12 repeticiones.',
+            'Plancha abdominal en el piso: 3 series de 40 segundos.',
+            'Subir y bajar talones en un escalón (pantorrillas): 3 series de 20 repeticiones.'
+          ],
+          nutrition: buildNutritionProtocol(Math.min(50, weekdayCap), 2, 'strength')
+        },
+        {
+          day: 'Jueves',
+          shortDay: 'JUE',
+          type: 'bike',
+          title: 'Fuerza en los Pedales y Paso Firme (Ritmo 3)',
+          subtitle: `Ajustado a tus ${weekdayCap} min disponibles entre semana`,
+          zone: 3,
+          warmMin: thuFit.warmMin,
+          reps: thuFit.reps,
+          workMin: thuFit.workMin,
+          restMin: thuFit.restMin,
+          coolMin: thuFit.coolMin,
+          cadWorkMin: state.goal.terrain === 'mountain' ? 72 : 82,
+          cadWorkMax: state.goal.terrain === 'mountain' ? 80 : 90,
+          cadWarmMin: 85,
+          cadWarmMax: 95,
+          cadRestMin: 85,
+          cadRestMax: 95,
+          details: `Cómo hacerlo fácil: En los ${thuFit.reps} bloques de ${thuFit.workMin} minutos mantente sentado en el sillín, pon un cambio firme y lleva el pedaleo entre ${state.goal.terrain === 'mountain' ? '72 y 80' : '82 y 90'} pedaladas por minuto sin que las pulsaciones se pasen del límite. ${gearingNote}`
+        },
+        {
+          day: 'Viernes',
+          shortDay: 'VIE',
+          type: 'strength',
+          title: 'Fortalecimiento sin Bici B: Espalda, Brazos y Cintura',
+          subtitle: 'Para que no te duelan el cuello, los hombros ni la espalda baja en la bici',
+          durationMin: Math.min(45, weekdayCap),
+          zone: 1,
+          exercises: isGym ? [
+            'Jalar mancuerna o polea hacia el pecho (Remo para fortalecer la espalda): 3 series de 12 repeticiones.',
+            'Flexiones de pecho (o empujar mancuernas) para dar fuerza a los brazos en el manubrio: 3 series de 12 repeticiones.',
+            'Ejercicio "Perro-Pájaro" (en cuatro apoyos, estirar un brazo adelante y la pierna contraria atrás): 3 series de 12 repeticiones.',
+            'Estiramiento final de espalda, cuello y cadera: 10 minutos.'
+          ] : [
+            'Jalar con una banda elástica o toalla en una puerta (espalda alta): 3 series de 15 repeticiones.',
+            'Flexiones de brazos en el piso o apoyado en una mesa: 3 series de 12 repeticiones.',
+            'Ejercicio en cuatro apoyos estirando brazo y pierna contraria (protege la columna lumbar): 3 series de 14 repeticiones.',
+            'Acostado boca abajo, levantar suavemente pecho y piernas 2 segundos: 3 series de 12 repeticiones.',
+            'Estiramiento de piernas y espalda: 10 minutos.'
+          ],
+          nutrition: buildNutritionProtocol(Math.min(45, weekdayCap), 1, 'strength')
+        },
+        {
+          day: 'Sábado',
+          shortDay: 'SÁB',
+          type: state.goal.bikeDays >= 4 ? 'bike' : 'rest',
+          title: state.goal.bikeDays >= 4 ? 'Rodaje Cómodo de Resistencia y Pedaleo Suelto (Ritmo 2)' : 'Descanso Activo antes del Fondo del Domingo',
+          subtitle: state.goal.bikeDays >= 4 ? `Salida continua de ${satWarm + satWork + satCool} min a paso conversacional` : 'Guardar energías para la salida larga de mañana',
+          zone: 2,
+          warmMin: satWarm,
+          reps: 1,
+          workMin: satWork,
+          restMin: 0,
+          coolMin: satCool,
+          cadWorkMin: 88,
+          cadWorkMax: 96,
+          cadWarmMin: 85,
+          cadWarmMax: 92,
+          cadRestMin: 85,
+          cadRestMax: 90,
+          details: 'Cómo hacerlo fácil: Lleva un pedaleo alegre y rapidito (88 a 96 pedaladas por minuto) manteniendo las pulsaciones controladas para guardar fuerzas para mañana.'
+        },
+        {
+          day: 'Domingo',
+          shortDay: 'DOM',
+          type: 'bike',
+          title: 'Salida Larga de Fin de Semana (Ritmo 2 a Ritmo 3)',
+          subtitle: `Ajustada exactamente a tu tiempo de fin de semana (${sunWarm + (2 * sunWorkEach) + sunRest + sunCool} min)`,
+          zone: 2,
+          warmMin: sunWarm,
+          reps: 2,
+          workMin: sunWorkEach,
+          restMin: sunRest,
+          coolMin: sunCool,
+          cadWorkMin: 82,
+          cadWorkMax: 92,
+          cadWarmMin: 85,
+          cadWarmMax: 95,
+          cadRestMin: 80,
+          cadRestMax: 90,
+          details: 'Cómo hacerlo fácil: Es tu salida principal para ganar fondo. Dividimos el recorrido en dos bloques largos separados por 10 minutos suaves para estirar la espalda y comer en la bici.'
+        }
+      ];
+
+      const ftp = state.rider.ftpCalculated;
+      state.plan.forEach(item => {
+        if (item.type === 'bike') {
+          const zObj = state.zones[item.zone - 1] || state.zones[1];
+          const totalMin = item.warmMin + (item.reps * item.workMin) + ((item.reps > 1 ? item.reps - 1 : 0) * item.restMin) + item.coolMin;
+          item.durationMin = totalMin;
+
+          item.targets = {
+            hrWorkMin: zObj.hrMin,
+            hrWorkMax: zObj.hrMax,
+            hrWorkPct: zObj.hrPctText,
+            hrWarmMin: z1.hrMin,
+            hrWarmMax: z2.hrMin + 4,
+            hrRestMin: z1.hrMin,
+            hrRestMax: z1.hrMax,
+            wWorkMin: zObj.wMin,
+            wWorkMax: zObj.wMax,
+            wWorkPct: zObj.pwrPct,
+            wWorkPctText: zObj.pwrPctText,
+            wWarmMin: z1.wMin,
+            wWarmMax: z2.wMin,
+            wRestMin: Math.round(ftp * 0.48),
+            wRestMax: Math.round(ftp * 0.56),
+            cadWorkMin: item.cadWorkMin,
+            cadWorkMax: item.cadWorkMax,
+            cadWarmMin: item.cadWarmMin,
+            cadWarmMax: item.cadWarmMax,
+            cadRestMin: item.cadRestMin,
+            cadRestMax: item.cadRestMax
+          };
+
+          item.nutrition = buildNutritionProtocol(totalMin, item.zone, 'bike');
+        } else if (item.type === 'rest' && !item.nutrition) {
+          item.nutrition = buildNutritionProtocol(0, 1, 'rest');
+        }
+      });
+    }
+
+    // =========================================================================
+    // RENDERIZADO DEL PLAN Y ESTADO DE CUMPLIMIENTO GUARDADO
+    // =========================================================================
+    function renderPlanUI() {
+      const hasPM = state.bike.hasPM;
+      const modeExplain = document.getElementById('planModeExplain');
+      if (hasPM) {
+        modeExplain.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40';
+        modeExplain.innerHTML = '<i class="fa-solid fa-bolt mr-1"></i>Tu Ciclocomputador te guiará por: POTENCIA + PULSO + CADENCIA';
+      } else {
+        modeExplain.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40';
+        modeExplain.innerHTML = '<i class="fa-solid fa-heart-pulse mr-1"></i>Tu Ciclocomputador te guiará por: PULSACIONES (FC) + CADENCIA';
+      }
+
+      document.getElementById('planHeaderTitle').textContent =
+        `Plan de ${state.rider.name} — Semana ${state.currentWeek} de ${state.totalWeeks}`;
+      document.getElementById('planSubSummary').textContent =
+        `Tiempo configurado: ${state.goal.weekdayMin} min entre semana / ${(state.goal.weekendMin / 60).toFixed(1)} horas fin de semana • Pulsación Máx: ${state.rider.maxHR} ppm • Potencia Ref.: ${state.rider.ftpCalculated} W`;
+
+      document.getElementById('zonesRefMeta').textContent =
+        `Tus límites: Corazón máx ${state.rider.maxHR} ppm | Fuerza ref. ${state.rider.ftpCalculated} W`;
+
+      const zGrid = document.getElementById('zonesGrid');
+      zGrid.innerHTML = state.zones.map(z => `
+        <div class="p-3 rounded-xl border ${z.color} flex flex-col justify-between space-y-2">
+          <div>
+            <div class="text-xs font-extrabold">${z.name}</div>
+            <p class="text-[11px] opacity-85 mt-0.5 leading-snug">${z.feel}</p>
+          </div>
+          <div class="space-y-0.5 pt-1 border-t border-white/10">
+            <div class="text-[11px] mono flex items-center justify-between">
+              <span class="text-rose-300 font-bold"><i class="fa-solid fa-heart-pulse mr-1"></i>Pulso:</span>
+              <span>${z.hrMin}-${z.hrMax} ppm</span>
+            </div>
+            <div class="text-[11px] mono flex items-center justify-between">
+              <span class="text-amber-300 font-bold"><i class="fa-solid fa-bolt mr-1"></i>Fuerza:</span>
+              <span>${z.wMin}-${z.wMax} W</span>
+            </div>
+            <div class="text-[11px] mono flex items-center justify-between">
+              <span class="text-cyan-300 font-bold"><i class="fa-solid fa-rotate mr-1"></i>Pedaleo:</span>
+              <span>${z.cadMin}-${z.cadMax} rpm</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      const cardsGrid = document.getElementById('weeklyCardsGrid');
+      cardsGrid.innerHTML = state.plan.map((d, idx) => {
+        const logKey = `W${state.currentWeek}_D${idx}`;
+        const savedLog = state.completedLogs[logKey];
+        const doneBadge = savedLog
+          ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-500 text-slate-950"><i class="fa-solid fa-check mr-1"></i>CUMPLIDO (${savedLog.realHR ? savedLog.realHR + ' ppm' : 'RPE ' + savedLog.rpe})</span>`
+          : '';
+
+        if (d.type === 'rest') {
+          return `
+            <div class="glass rounded-2xl p-4 border border-slate-800 flex flex-col justify-between space-y-3">
+              <div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-extrabold uppercase tracking-wider text-slate-400">${d.day}</span>
+                  <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-800 text-slate-300">DÍA DE DESCANSO</span>
+                </div>
+                <h3 class="text-base font-bold text-white mt-1">${d.title}</h3>
+                <p class="text-xs text-slate-300 mt-1 leading-relaxed">${d.details}</p>
+              </div>
+              <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-300 space-y-1">
+                <div class="font-bold text-cyan-300"><i class="fa-solid fa-droplet mr-1"></i>Alimentación y Agua en tu Día de Descanso</div>
+                <p class="text-[11px] text-slate-300">${d.nutrition.before}</p>
+                <p class="text-[11px] text-slate-400">${d.nutrition.during}</p>
+              </div>
+            </div>
+          `;
+        }
+
+        if (d.type === 'strength') {
+          return `
+            <div class="glass rounded-2xl p-4 border ${savedLog ? 'border-emerald-400' : 'border-purple-500/30'} flex flex-col justify-between space-y-3">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between flex-wrap gap-1">
+                  <span class="text-xs font-extrabold uppercase tracking-wider text-purple-300">${d.day} • ${d.durationMin} MINUTOS</span>
+                  <div class="flex items-center gap-1">
+                    ${doneBadge}
+                    <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                      <i class="fa-solid fa-dumbbell mr-1"></i>SIN BICICLETA
+                    </span>
+                  </div>
+                </div>
+                <h3 class="text-base font-bold text-white">${d.title}</h3>
+                <p class="text-[11px] text-slate-400">${d.subtitle}</p>
+                <ul class="space-y-1.5 pt-1 text-xs text-slate-200">
+                  ${d.exercises.map(ex => `<li class="flex items-start gap-2"><i class="fa-solid fa-check text-purple-400 mt-1 text-[10px]"></i><span>${ex}</span></li>`).join('')}
+                </ul>
+              </div>
+              <div class="space-y-2 pt-2 border-t border-slate-800">
+                <div class="p-2.5 rounded-xl bg-cyan-950/25 border border-cyan-500/30 text-[11px] text-slate-300 space-y-1">
+                  <div><strong class="text-emerald-300">Antes:</strong> ${d.nutrition.before}</div>
+                  <div><strong class="text-cyan-300">Agua:</strong> ${d.nutrition.during}</div>
+                  <div><strong class="text-purple-300">Al terminar:</strong> ${d.nutrition.after}</div>
+                </div>
+                <button onclick="openFeedbackModal(${idx})" class="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs">
+                  <i class="fa-solid fa-clipboard-check mr-1 text-emerald-400"></i>${savedLog ? 'Ver / Editar mi registro de hoy' : 'Marcar como Cumplido y Recibir Consejo'}
+                </button>
+              </div>
+            </div>
+          `;
+        }
+
+        const t = d.targets;
+        const structureText = d.reps > 1
+          ? `Empieza con <strong>${d.warmMin} min suaves</strong> + Haz <strong>${d.reps} repeticiones de ${d.workMin} min</strong> (descansando ${d.restMin} min suave entre cada una) + Termina con <strong>${d.coolMin} min suaves</strong>`
+          : `Empieza con <strong>${d.warmMin} min suaves</strong> + Mantén <strong>${d.workMin} min seguidos a ritmo constante</strong> + Termina con <strong>${d.coolMin} min suaves</strong>`;
+
+        return `
+          <div class="glass rounded-2xl p-4 border ${savedLog ? 'border-emerald-400 ring-1 ring-emerald-400/40' : 'border-emerald-500/35'} flex flex-col justify-between space-y-3">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between flex-wrap gap-1">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-400">${d.day} • ${d.durationMin} MINUTOS EN TOTAL</span>
+                <div class="flex items-center gap-1">
+                  ${doneBadge}
+                  <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    RITMO ${d.zone}
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <h3 class="text-base font-extrabold text-white">${d.title}</h3>
+                <p class="text-[11px] text-emerald-300/90 font-medium">${d.subtitle}</p>
+                <p class="text-xs text-slate-200 mt-1.5 bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">${structureText}</p>
+              </div>
+
+              <div class="grid grid-cols-3 gap-2">
+                <div class="p-2.5 rounded-xl bg-rose-950/35 border ${!state.bike.hasPM ? 'border-rose-400 ring-1 ring-rose-400/50' : 'border-rose-500/30'}">
+                  <div class="flex items-center justify-between text-[10px] font-bold text-rose-300">
+                    <span><i class="fa-solid fa-heart-pulse mr-1"></i>PULSACIONES</span>
+                    ${!state.bike.hasPM ? '<span class="px-1 rounded bg-rose-500 text-slate-950 text-[9px]">GUÍA</span>' : ''}
+                  </div>
+                  <div class="text-sm sm:text-base font-extrabold text-white mono mt-0.5">${t.hrWorkMin}-${t.hrWorkMax} <span class="text-[10px] font-normal text-rose-200">ppm</span></div>
+                  <div class="text-[10px] text-slate-400 mono">En suave: ${t.hrRestMin}-${t.hrRestMax}</div>
+                </div>
+
+                <div class="p-2.5 rounded-xl bg-amber-950/35 border ${state.bike.hasPM ? 'border-amber-400 ring-1 ring-amber-400/50' : 'border-amber-500/30'}">
+                  <div class="flex items-center justify-between text-[10px] font-bold text-amber-300">
+                    <span><i class="fa-solid fa-bolt mr-1"></i>POTENCIA</span>
+                    ${state.bike.hasPM ? '<span class="px-1 rounded bg-amber-400 text-slate-950 text-[9px]">GUÍA</span>' : ''}
+                  </div>
+                  <div class="text-sm sm:text-base font-extrabold text-white mono mt-0.5">${t.wWorkMin}-${t.wWorkMax} <span class="text-[10px] font-normal text-amber-200">W</span></div>
+                  <div class="text-[10px] text-slate-400 mono">En suave: ${t.wRestMin}-${t.wRestMax} W</div>
+                </div>
+
+                <div class="p-2.5 rounded-xl bg-cyan-950/35 border border-cyan-500/40">
+                  <div class="flex items-center justify-between text-[10px] font-bold text-cyan-300">
+                    <span><i class="fa-solid fa-rotate mr-1"></i>PEDALEO</span>
+                  </div>
+                  <div class="text-sm sm:text-base font-extrabold text-white mono mt-0.5">${t.cadWorkMin}-${t.cadWorkMax} <span class="text-[10px] font-normal text-cyan-200">rpm</span></div>
+                  <div class="text-[10px] text-slate-400 mono">En suave: ${t.cadRestMin}-${t.cadRestMax}</div>
+                </div>
+              </div>
+
+              <p class="text-xs text-slate-300 leading-relaxed">${d.details}</p>
+
+              <div class="p-3 rounded-xl bg-slate-900/95 border border-cyan-500/30 space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-[11px] font-bold text-cyan-300">
+                    <i class="fa-solid fa-bottle-droplet mr-1"></i>Agua en esta salida: ${d.nutrition.mlEvery15} ml cada 15 min (Total: ${d.nutrition.totalMl} ml)
+                  </span>
+                </div>
+                <div class="text-[11px] text-slate-300"><strong class="text-emerald-300">Antes de salir:</strong> ${d.nutrition.before}</div>
+                <div class="text-[11px] text-slate-300"><strong class="text-cyan-300">Durante el recorrido:</strong> ${d.nutrition.during}</div>
+                <div class="text-[11px] text-slate-300"><strong class="text-purple-300">Al llegar a casa:</strong> ${d.nutrition.after}</div>
+              </div>
+            </div>
+
+            <div class="pt-2 border-t border-slate-800 space-y-2">
+              <div class="grid grid-cols-3 gap-1.5">
+                <button onclick="openIntervalsExport(${idx})" class="py-2 px-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-[11px] flex items-center justify-center gap-1">
+                  <i class="fa-solid fa-paste"></i> Intervals (Magene)
+                </button>
+                <button onclick="downloadBinaryFIT(${idx})" class="py-2 px-2 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 font-bold text-[11px] flex items-center justify-center gap-1">
+                  <i class="fa-solid fa-microchip"></i> Archivo .FIT
+                </button>
+                <button onclick="downloadWorkoutZWO(${idx})" class="py-2 px-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-[11px] flex items-center justify-center gap-1">
+                  <i class="fa-solid fa-file-code"></i> .ZWO
+                </button>
+              </div>
+              <button onclick="openFeedbackModal(${idx})" class="w-full py-2 rounded-xl bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-500/40 text-indigo-200 font-bold text-xs flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-envelope-open-text"></i> ${savedLog ? 'Ver / Editar mi registro de hoy' : 'Marcar como Cumplido y Recibir Consejos al Correo'}
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderSyncUI() {
+      const list = document.getElementById('syncWorkoutsList');
+      const bikeDays = state.plan
+        .map((d, idx) => ({ ...d, idx }))
+        .filter(d => d.type === 'bike');
+
+      list.innerHTML = bikeDays.map(d => {
+        const t = d.targets;
+        return `
+          <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <div class="text-xs font-bold text-emerald-400">${d.day} — ${d.title} (${d.durationMin} min)</div>
+              <div class="text-[11px] text-slate-300 mono mt-0.5">
+                <span class="text-rose-300">Pulso: ${t.hrWorkMin}-${t.hrWorkMax} ppm</span> •
+                <span class="text-amber-300">Potencia: ${t.wWorkMin}-${t.wWorkMax} W</span> •
+                <span class="text-cyan-300">Pedaleo: ${t.cadWorkMin}-${t.cadWorkMax} rpm</span>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <button onclick="openIntervalsExport(${d.idx})" class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs">
+                <i class="fa-solid fa-copy mr-1"></i>Copiar para Intervals (Magene)
+              </button>
+              <button onclick="downloadBinaryFIT(${d.idx})" class="px-3 py-1.5 rounded-lg bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-bold text-xs">
+                <i class="fa-solid fa-download mr-1"></i>.FIT
+              </button>
+              <button onclick="downloadWorkoutZWO(${d.idx})" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 font-bold text-xs">
+                .ZWO
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // =========================================================================
+    // EXPORTADORES PARA INTERVALS.ICU, .FIT Y .ZWO
+    // =========================================================================
+    function buildIntervalsWorkoutSyntax(dayIdx) {
+      const w = state.plan[dayIdx];
+      const t = w.targets;
+      const hasPM = state.bike.hasPM;
+
+      const warmTarget = hasPM
+        ? `50-65% cadence=${t.cadWarmMin}-${t.cadWarmMax}`
+        : `58-68% HR cadence=${t.cadWarmMin}-${t.cadWarmMax}`;
+
+      const mainTarget = hasPM
+        ? `${t.wWorkPctText} cadence=${t.cadWorkMin}-${t.cadWorkMax}`
+        : `${t.hrWorkPct} cadence=${t.cadWorkMin}-${t.cadWorkMax}`;
+
+      const restTarget = hasPM
+        ? `50% cadence=${t.cadRestMin}-${t.cadRestMax}`
+        : `55-64% HR cadence=${t.cadRestMin}-${t.cadRestMax}`;
+
+      const coolTarget = hasPM
+        ? `45-55% cadence=80-90`
+        : `55-62% HR cadence=80-90`;
+
+      let txt = `${w.day}: ${w.title} (${w.durationMin} min)\n`;
+      txt += `Agua: Toma ${w.nutrition.mlEvery15}ml cada 15 min (Total ${w.nutrition.totalMl}ml)\n\n`;
+
+      txt += `Calentamiento\n`;
+      txt += `- Empezar suave [Pulso ${t.hrWarmMin}-${t.hrWarmMax}ppm | Pot ${t.wWarmMin}-${t.wWarmMax}W] ${w.warmMin}m ${warmTarget}\n\n`;
+
+      if (w.reps > 1) {
+        txt += `Serie Principal ${w.reps}x\n`;
+        txt += `- Ritmo ${w.zone} [Pulso ${t.hrWorkMin}-${t.hrWorkMax}ppm | Pot ${t.wWorkMin}-${t.wWorkMax}W | Agua ${w.nutrition.mlEvery15}ml] ${w.workMin}m ${mainTarget}\n`;
+        txt += `- Recuperar suave [Pulso ${t.hrRestMin}-${t.hrRestMax}ppm | Pot ${t.wRestMin}-${t.wRestMax}W] ${w.restMin}m ${restTarget}\n\n`;
+      } else {
+        txt += `Bloque Principal\n`;
+        txt += `- Paso constante [Pulso ${t.hrWorkMin}-${t.hrWorkMax}ppm | Pot ${t.wWorkMin}-${t.wWorkMax}W | Agua ${w.nutrition.mlEvery15}ml c/15m] ${w.workMin}m ${mainTarget}\n\n`;
+      }
+
+      txt += `Enfriamiento\n`;
+      txt += `- Soltar piernas suave [Pulso menor a ${t.hrRestMax}ppm] ${w.coolMin}m ${coolTarget}\n`;
+
+      return txt;
+    }
+
+    function openIntervalsExport(dayIdx) {
+      const w = state.plan[dayIdx];
+      const syntax = buildIntervalsWorkoutSyntax(dayIdx);
+      const modal = document.getElementById('intervalsModal');
+      const sub = document.getElementById('intervalsModalSubtitle');
+      const area = document.getElementById('intervalsModalTextarea');
+
+      sub.innerHTML = state.bike.hasPM
+        ? `<span class="text-amber-300 font-bold">Modo Con Potenciómetro:</span> Tu ciclocomputador te guiará con <strong>Potencia + Cadencia</strong> y te mostrará las <strong>Pulsaciones (${w.targets.hrWorkMin}-${w.targets.hrWorkMax} ppm)</strong> en el texto.`
+        : `<span class="text-rose-300 font-bold">Modo Sin Potenciómetro Activo:</span> Pega este texto en la descripción del entrenamiento en Intervals.icu. Tu <strong>Magene C706 te guiará con tus Pulsaciones (${w.targets.hrWorkMin}-${w.targets.hrWorkMax} ppm) y tu Pedaleo (${w.targets.cadWorkMin}-${w.targets.cadWorkMax} rpm)</strong>.`;
+
+      area.value = syntax;
+      modal.classList.remove('hidden');
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(syntax).catch(() => {});
+      }
+    }
+
+    function copyIntervalsTextarea() {
+      const area = document.getElementById('intervalsModalTextarea');
+      area.select();
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(area.value);
+      } else {
+        document.execCommand('copy');
+      }
+      alert('¡Texto copiado! Abre Intervals.icu -> Add Workout -> Pega este texto en el cuadro Description y sincroniza OnelapFit.');
+    }
+
+    function closeIntervalsModal() {
+      document.getElementById('intervalsModal').classList.add('hidden');
+    }
+
+    function computeFitCRC(bytes, length) {
+      const crcTable = [
+        0x0000, 0xCC01, 0xD801, 0x1400, 0xF001, 0x3C00, 0x2800, 0xE401,
+        0xA001, 0x6C00, 0x7800, 0xB401, 0x5000, 0x9C01, 0x8801, 0x4400
+      ];
+      let crc = 0;
+      for (let i = 0; i < length; i++) {
+        const byte = bytes[i];
+        let tmp = crcTable[crc & 0xF];
+        crc = (crc >> 4) & 0x0FFF;
+        crc = crc ^ tmp ^ crcTable[byte & 0xF];
+        tmp = crcTable[crc & 0xF];
+        crc = (crc >> 4) & 0x0FFF;
+        crc = crc ^ tmp ^ crcTable[(byte >> 4) & 0xF];
+      }
+      return crc;
+    }
+
+    function downloadBinaryFIT(dayIdx) {
+      const w = state.plan[dayIdx];
+      const t = w.targets;
+      const hasPM = state.bike.hasPM;
+
+      const steps = [];
+      steps.push({
+        name: `Suave FC:${t.hrWarmMin}-${t.hrWarmMax} CAD:${t.cadWarmMin}`,
+        durSec: w.warmMin * 60,
+        hrLow: t.hrWarmMin + 100,
+        hrHigh: t.hrWarmMax + 100,
+        wLow: t.wWarmMin + 1000,
+        wHigh: t.wWarmMax + 1000
+      });
+
+      const loops = Math.max(1, w.reps);
+      for (let r = 0; r < loops; r++) {
+        steps.push({
+          name: `R${w.zone} FC:${t.hrWorkMin}-${t.hrWorkMax} CAD:${t.cadWorkMin}-${t.cadWorkMax}`,
+          durSec: w.workMin * 60,
+          hrLow: t.hrWorkMin + 100,
+          hrHigh: t.hrWorkMax + 100,
+          wLow: t.wWorkMin + 1000,
+          wHigh: t.wWorkMax + 1000
+        });
+        if (w.reps > 1 && r < loops - 1) {
+          steps.push({
+            name: `Rec FC:${t.hrRestMin}-${t.hrRestMax} CAD:${t.cadRestMin}`,
+            durSec: w.restMin * 60,
+            hrLow: t.hrRestMin + 100,
+            hrHigh: t.hrRestMax + 100,
+            wLow: t.wRestMin + 1000,
+            wHigh: t.wRestMax + 1000
+          });
+        }
+      }
+
+      steps.push({
+        name: `Soltar FC:${t.hrRestMin}-${t.hrRestMax}`,
+        durSec: w.coolMin * 60,
+        hrLow: t.hrRestMin + 100,
+        hrHigh: t.hrRestMax + 100,
+        wLow: t.wRestMin + 1000,
+        wHigh: t.wRestMax + 1000
+      });
+
+      const dataBytes = [];
+      const pushU8 = v => dataBytes.push(v & 0xFF);
+      const pushU16 = v => { dataBytes.push(v & 0xFF, (v >> 8) & 0xFF); };
+      const pushU32 = v => {
+        dataBytes.push(v & 0xFF, (v >> 8) & 0xFF, (v >> 16) & 0xFF, (v >> 24) & 0xFF);
+      };
+      const pushFixedStr = (str, len) => {
+        for (let i = 0; i < len; i++) {
+          pushU8(i < str.length ? str.charCodeAt(i) : 0);
+        }
+      };
+
+      dataBytes.push(0x40, 0x00, 0x00, 0x00, 0x00, 0x04,
+        0x00, 0x01, 0x00, 0x01, 0x02, 0x84, 0x02, 0x02, 0x84, 0x04, 0x04, 0x86
+      );
+      pushU8(0x00); pushU8(5); pushU16(1); pushU16(1);
+      pushU32(Math.floor(Date.now() / 1000) - 631065600);
+
+      dataBytes.push(0x41, 0x00, 0x00, 26, 0x00, 0x03,
+        0x04, 0x01, 0x00, 0x06, 0x02, 0x84, 0x08, 16, 0x07
+      );
+      pushU8(0x01); pushU8(2); pushU16(steps.length);
+      pushFixedStr(`S${state.currentWeek}_${w.shortDay}_R${w.zone}`, 16);
+
+      dataBytes.push(0x42, 0x00, 0x00, 27, 0x00, 0x08,
+        254, 0x02, 0x84, 0x00, 24, 0x07, 0x01, 0x01, 0x00, 0x02, 0x04, 0x86,
+        0x03, 0x01, 0x00, 0x04, 0x04, 0x86, 0x05, 0x04, 0x86, 0x06, 0x04, 0x86
+      );
+
+      steps.forEach((st, idx) => {
+        pushU8(0x02);
+        pushU16(idx);
+        pushFixedStr(st.name, 24);
+        pushU8(0);
+        pushU32(st.durSec * 1000);
+        pushU8(hasPM ? 4 : 1);
+        pushU32(0);
+        pushU32(hasPM ? st.wLow : st.hrLow);
+        pushU32(hasPM ? st.wHigh : st.hrHigh);
+      });
+
+      const dataLen = dataBytes.length;
+      const header = [
+        14, 0x10, 0x6C, 0x08,
+        dataLen & 0xFF, (dataLen >> 8) & 0xFF, (dataLen >> 16) & 0xFF, (dataLen >> 24) & 0xFF,
+        0x2E, 0x46, 0x49, 0x54
+      ];
+      const hdrCRC = computeFitCRC(header, 12);
+      header.push(hdrCRC & 0xFF, (hdrCRC >> 8) & 0xFF);
+
+      const fullFile = new Uint8Array(header.length + dataBytes.length + 2);
+      fullFile.set(header, 0);
+      fullFile.set(dataBytes, header.length);
+      const fileCRC = computeFitCRC(fullFile, header.length + dataBytes.length);
+      fullFile[fullFile.length - 2] = fileCRC & 0xFF;
+      fullFile[fullFile.length - 1] = (fileCRC >> 8) & 0xFF;
+
+      const blob = new Blob([fullFile], { type: 'application/octet-stream' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      const modeTag = hasPM ? 'POT_FC_CAD' : 'FC_CAD_POT';
+      a.download = `VeloPlan_S${state.currentWeek}_${w.shortDay}_${modeTag}.fit`;
+      a.click();
+    }
+
+    function downloadWorkoutZWO(dayIdx) {
+      const w = state.plan[dayIdx];
+      const t = w.targets;
+      const cadAvgWork = Math.round((t.cadWorkMin + t.cadWorkMax) / 2);
+      const cadAvgWarm = Math.round((t.cadWarmMin + t.cadWarmMax) / 2);
+      const cadAvgRest = Math.round((t.cadRestMin + t.cadRestMax) / 2);
+
+      let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<workout_file>\n`;
+      xml += `  <author>VeloPlan Pro 3.2</author>\n`;
+      xml += `  <name>S${state.currentWeek}_${w.day}_Pulso_${t.hrWorkMin}-${t.hrWorkMax}ppm</name>\n`;
+      xml += `  <description>Pulso: ${t.hrWorkMin}-${t.hrWorkMax} ppm | Potencia: ${t.wWorkMin}-${t.wWorkMax} W | Pedaleo: ${t.cadWorkMin}-${t.cadWorkMax} rpm</description>\n`;
+      xml += `  <sportType>bike</sportType>\n  <workout>\n`;
+
+      xml += `    <Warmup Duration="${w.warmMin * 60}" PowerLow="0.48" PowerHigh="0.65" Cadence="${cadAvgWarm}">\n`;
+      xml += `      <textevent timeoffset="10" message="EMPEZAR SUAVE: Pulso ${t.hrWarmMin}-${t.hrWarmMax} ppm | Pedaleo ${t.cadWarmMin}-${t.cadWarmMax} rpm"/>\n`;
+      xml += `    </Warmup>\n`;
+
+      if (w.reps > 1) {
+        xml += `    <IntervalsT Repeat="${w.reps}" OnDuration="${w.workMin * 60}" OffDuration="${w.restMin * 60}" OnPower="${t.wWorkPct}" OffPower="0.52" Cadence="${cadAvgWork}" CadenceResting="${cadAvgRest}">\n`;
+        xml += `      <textevent timeoffset="5" message="BLOQUE PRINCIPAL: Mantener pulso entre ${t.hrWorkMin} y ${t.hrWorkMax} ppm con ${t.cadWorkMin}-${t.cadWorkMax} rpm"/>\n`;
+        xml += `      <textevent timeoffset="300" message="AGUA: Toma ${w.nutrition.mlEvery15} ml de liquido"/>\n`;
+        xml += `    </IntervalsT>\n`;
+      } else {
+        xml += `    <SteadyState Duration="${w.workMin * 60}" Power="${t.wWorkPct}" Cadence="${cadAvgWork}">\n`;
+        xml += `      <textevent timeoffset="10" message="PASO CONSTANTE: Pulso ${t.hrWorkMin}-${t.hrWorkMax} ppm | Pedaleo ${t.cadWorkMin}-${t.cadWorkMax} rpm"/>\n`;
+        xml += `      <textevent timeoffset="900" message="AGUA (15m): Toma ${w.nutrition.mlEvery15} ml"/>\n`;
+        xml += `    </SteadyState>\n`;
+      }
+
+      xml += `    <Cooldown Duration="${w.coolMin * 60}" PowerLow="0.58" PowerHigh="0.45" Cadence="85">\n`;
+      xml += `      <textevent timeoffset="10" message="SOLTAR PIERNAS: Baja tus pulsaciones a ${t.hrRestMin}-${t.hrRestMax} ppm"/>\n`;
+      xml += `    </Cooldown>\n  </workout>\n</workout_file>`;
+
+      const blob = new Blob([xml], { type: 'application/octet-stream' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `VeloPlan_S${state.currentWeek}_${w.shortDay}.zwo`;
+      a.click();
+    }
+
+    // =========================================================================
+    // RETROALIMENTACIÓN EN LENGUAJE CLARO + GUARDADO PERMANENTE DEL DÍA CUMPLIDO
+    // =========================================================================
+    function openFeedbackModal(dayIdx) {
+      state.selectedDayForFeedback = dayIdx;
+      const w = state.plan[dayIdx];
+      const logKey = `W${state.currentWeek}_D${dayIdx}`;
+      const existing = state.completedLogs[logKey];
+
+      document.getElementById('fbModalTitle').textContent = `¿Cómo te fue el ${w.day}?`;
+      document.getElementById('fbResultBox').classList.add('hidden');
+
+      if (existing) {
+        document.getElementById('fbCompleted').value = existing.status || 'full';
+        document.getElementById('fbRealHR').value = existing.realHR || '';
+        document.getElementById('fbRealCAD').value = existing.realCAD || '';
+        document.getElementById('fbRPE').value = existing.rpe || 6;
+        document.getElementById('fbRPEVal').textContent = existing.rpe || 6;
+      } else if (w.type === 'bike' && w.targets) {
+        document.getElementById('fbRealHR').value = Math.round((w.targets.hrWorkMin + w.targets.hrWorkMax) / 2);
+        document.getElementById('fbRealCAD').value = Math.round((w.targets.cadWorkMin + w.targets.cadWorkMax) / 2);
+      }
+      document.getElementById('feedbackModal').classList.remove('hidden');
+    }
+
+    function closeFeedbackModal() {
+      document.getElementById('feedbackModal').classList.add('hidden');
+    }
+
+    function processWorkoutFeedback() {
+      const idx = state.selectedDayForFeedback;
+      const w = state.plan[idx];
+      const nextDay = state.plan[(idx + 1) % 7];
+      const status = document.getElementById('fbCompleted').value;
+      const realHR = parseInt(document.getElementById('fbRealHR').value) || 0;
+      const realCAD = parseInt(document.getElementById('fbRealCAD').value) || 0;
+      const rpe = parseInt(document.getElementById('fbRPE').value) || 6;
+
+      // Guardar el cumplimiento en la base de datos local
+      const logKey = `W${state.currentWeek}_D${idx}`;
+      state.completedLogs[logKey] = {
+        status,
+        realHR,
+        realCAD,
+        rpe,
+        date: new Date().toISOString()
+      };
+      saveStateToLocal();
+      renderPlanUI();
+
+      let evalLine = '';
+      if (status === 'skipped') {
+        evalLine = '• Hoy no pudiste entrenar, pero tranquilo: lo más importante es NO intentar "castigarte" mañana haciendo el doble de tiempo. Simplemente sigue con el día que toca mañana con normalidad.';
+      } else if (w.type === 'bike' && w.targets) {
+        const t = w.targets;
+        if (realHR > t.hrWorkMax + 5) {
+          evalLine = `• Tus pulsaciones promedio (${realHR} latidos por minuto) estuvieron más altas de lo que buscábamos hoy (${t.hrWorkMin} a ${t.hrWorkMax} ppm).\n• ¿Qué significa esto en palabras sencillas? Que tu corazón tuvo que trabajar horas extra. Casi siempre pasa por tres cosas: hizo mucho calor, te faltó tomar agua seguido, o venías cansado de días anteriores. En tu próxima salida toma unos sorbos más de agua con sales y regula un poquito el esfuerzo al empezar las subidas.`;
+        } else if (realHR >= t.hrWorkMin && realHR <= t.hrWorkMax) {
+          evalLine = `• ¡Hiciste el entrenamiento en el punto exacto! Mantuviste tus pulsaciones en ${realHR} latidos por minuto, justo dentro de la meta de hoy (${t.hrWorkMin} a ${t.hrWorkMax} ppm) y con un pedaleo de ${realCAD} rpm.\n• ¿Qué significa esto? Que trabajaste exactamente lo que tu cuerpo necesitaba hoy para ganar resistencia sin quemar tus músculos de más.`;
+        } else {
+          evalLine = `• Tus pulsaciones promedio (${realHR} latidos por minuto) estuvieron más bajas de la meta de hoy (${t.hrWorkMin} a ${t.hrWorkMax} ppm).\n• ¿Qué significa esto? Si sentías que ibas cómodo, en la próxima puedes apretar un poquito más el paso. Pero si sentías las piernas pesadas y aun así el corazón no subía de pulsaciones, es una señal típica de que tus piernas están cansadas y necesitan comer y dormir bien hoy.`;
+        }
+
+        if (realCAD > 0 && realCAD < t.cadWorkMin - 5) {
+          evalLine += `\n• Ojo con el pedaleo: Hoy llevaste ${realCAD} pedaladas por minuto (un cambio un poco duro/atrancado). Intenta usar un piñón más suave atrás para llegar a ${t.cadWorkMin}-${t.cadWorkMax} rpm y así cuidar tus rodillas.`;
+        }
+      } else {
+        evalLine = `• ¡Muy bien por cumplir tus ejercicios de fortalecimiento fuera de la bici! Terminaste con un cansancio de ${rpe} sobre 10. Estos ejercicios son tu seguro de vida para no sufrir dolores de rodilla ni de cintura en las salidas largas.`;
+      }
+
+      let tomorrowAdvice = '';
+      if (nextDay.type === 'rest') {
+        tomorrowAdvice = `• Mañana (${nextDay.day}) te toca DÍA DE DESCANSO.\n• Qué debes hacer: No salgas a montar. Cuando descansas es cuando tus músculos absorben el entrenamiento de hoy y se vuelven más fuertes. Toma unos ${nextDay.nutrition.totalMl} ml de agua durante el día y procura dormir al menos 7 u 8 horas.`;
+      } else if (nextDay.type === 'strength') {
+        tomorrowAdvice = `• Mañana (${nextDay.day}) te tocan EJERCICIOS SIN BICICLETA (${nextDay.title}, ${nextDay.durationMin} min).\n• Qué debes tener en cuenta: Como hoy terminaste con un cansancio de ${rpe} sobre 10, ${rpe >= 8 ? 'mañana haz los ejercicios suave y quítale 1 serie a cada ejercicio de piernas para que te recuperes bien.' : 'mañana puedes hacer la rutina completa cuidando hacer bien cada movimiento sin afán.'}`;
+      } else {
+        const nt = nextDay.targets;
+        tomorrowAdvice = `• Mañana (${nextDay.day}) te toca BICICLETA: "${nextDay.title}" durante ${nextDay.durationMin} minutos.\n• Tus metas para mañana: Mantener las pulsaciones entre ${nt.hrWorkMin} y ${nt.hrWorkMax} ppm, con un pedaleo suelto de ${nt.cadWorkMin} a ${nt.cadWorkMax} rpm (Potencia equivalente: ${nt.wWorkMin}-${nt.wWorkMax} W).\n• Si mañana al despertar sientes las piernas muy adoloridas porque hoy terminaste en ${rpe}/10, haz el entrenamiento en el límite bajito de las pulsaciones (${nt.hrWorkMin} ppm) sin forzar.`;
+      }
+
+      const fullReport =
+        `Hola ${state.rider.name}, aquí tienes el resumen claro de tu entrenamiento de hoy:\n` +
+        `--------------------------------------------------\n` +
+        `Día evaluado: ${w.day} — ${w.title} (Semana ${state.currentWeek})\n` +
+        `¿Lo completaste?: ${status === 'full' ? 'Sí, completo' : (status === 'partial' ? 'Parcialmente' : 'Hoy no se entrenó')} | Cansancio: ${rpe} de 10\n\n` +
+        `1. ¿CÓMO ESTUVO TU ENTRENAMIENTO DE HOY?\n${evalLine}\n\n` +
+        `2. ¿QUÉ DEBES COMER Y TOMAR AHORA MISMO PARA RECUPERAR?\n• ${w.nutrition.after}\n\n` +
+        `3. ¿QUÉ DEBES TENER EN CUENTA PARA MAÑANA (${nextDay.day.toUpperCase()})?\n${tomorrowAdvice}`;
+
+      state.lastFeedbackReport = fullReport;
+      document.getElementById('fbDiagnosisText').textContent = fullReport;
+      document.getElementById('fbResultBox').classList.remove('hidden');
+    }
+
+    function sendFeedbackByEmail() {
+      const email = state.rider.email || 'correo@ejemplo.com';
+      const subject = encodeURIComponent(`Consejos de tu Entrenamiento (${state.plan[state.selectedDayForFeedback].day}) - VeloPlan`);
+      const body = encodeURIComponent(state.lastFeedbackReport);
+      window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    }
+
+    function sendFeedbackByWhatsApp() {
+      const text = encodeURIComponent(state.lastFeedbackReport);
+      window.open(`https://wa.me/?text=${text}`, '_blank');
+    }
+
+    function closeWeekAndAdapt() {
+      // Contar cuántos días ya registró como cumplidos en esta semana
+      let autoCount = 0;
+      for (let i = 0; i < 7; i++) {
+        const log = state.completedLogs[`W${state.currentWeek}_D${i}`];
+        if (log && log.status !== 'skipped') autoCount++;
+      }
+
+      const answer = prompt(
+        `¡Terminaste la Semana ${state.currentWeek}!\n\nDe los entrenamientos programados para esta semana, ¿cuántos pudiste hacer (del 1 al 6)?`,
+        String(autoCount > 0 ? autoCount : 5)
+      );
+      if (answer === null) return;
+      const done = parseInt(answer) || 4;
+
+      if (done >= 5) {
+        state.weeklyProgressionFactor = Math.min(1.25, state.weeklyProgressionFactor + 0.05);
+      } else if (done <= 2) {
+        state.weeklyProgressionFactor = Math.max(0.8, state.weeklyProgressionFactor - 0.08);
+      }
+
+      if (state.currentWeek < state.totalWeeks) {
+        state.currentWeek += 1;
+      }
+      populateWeekSelector();
+      buildWeekSchedule(state.currentWeek);
+      renderPlanUI();
+      renderSyncUI();
+      saveStateToLocal();
+      alert(`¡Listo! Pasamos a la Semana ${state.currentWeek} de ${state.totalWeeks} y quedó guardado tu avance.`);
+    }
+
+    // =========================================================================
+    // RESPALDO Y RESTAURACIÓN EN ARCHIVO .JSON (PARA PASAR ENTRE PC Y CELULAR)
+    // =========================================================================
+    function openBackupModal() {
+      document.getElementById('backupModal').classList.remove('hidden');
+    }
+
+    function closeBackupModal() {
+      document.getElementById('backupModal').classList.add('hidden');
+    }
+
+    function exportProfileBackup() {
+      saveStateToLocal();
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const blob = new Blob([raw], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `VeloPlan_Datos_${state.rider.name.replace(/\s+/g, '_')}.json`;
+      a.click();
+    }
+
+    function importProfileBackup(ev) {
+      const file = ev.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = JSON.parse(e.target.result);
+          applyLoadedDataToStateAndForm(data);
+          readInputsAndComputeMetrics();
+          populateWeekSelector();
+          buildWeekSchedule(state.currentWeek);
+          renderPlanUI();
+          renderSyncUI();
+          saveStateToLocal();
+          closeBackupModal();
+          switchTab('plan');
+          alert('✅ ¡Tus datos y progreso fueron restaurados correctamente!');
+        } catch (err) {
+          alert('El archivo seleccionado no es válido.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetAllData() {
+      if (!confirm('¿Estás seguro de borrar tus datos guardados y volver a los valores iniciales?')) return;
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+
+    // =========================================================================
+    // RELOJ EN RUTA DE AGUA Y COMIDA
+    // =========================================================================
+    let rideTimerInterval = null;
+    let rideSeconds = 0;
+
+    function openLiveTimerModal() {
+      const bikeDay = state.plan.find(d => d.type === 'bike') || {
+        nutrition: { mlEvery15: 175, mlPerHour: 700, carbsPerHour: 50 }
+      };
+      document.getElementById('liveTimerTargets').innerHTML =
+        `Este reloj sonará cada <strong>15 minutos</strong> para recordarte tomar <strong>${bikeDay.nutrition.mlEvery15} ml de agua</strong> y cada <strong>40 minutos</strong> para que comas algo en la bici.`;
+      document.getElementById('liveTimerModal').classList.remove('hidden');
+    }
+
+    function closeLiveTimerModal() {
+      document.getElementById('liveTimerModal').classList.add('hidden');
+    }
+
+    function testBeepAlert() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, ctx.currentTime);
+        gain.gain.setValueAtTime(0.25, ctx.currentTime);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.35);
+      } catch (e) {}
+    }
+
+    function startLiveRideTimer() {
+      if (rideTimerInterval) return;
+      testBeepAlert();
+      rideTimerInterval = setInterval(() => {
+        rideSeconds++;
+        const hrs = String(Math.floor(rideSeconds / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((rideSeconds % 3600) / 60)).padStart(2, '0');
+        const secs = String(rideSeconds % 60).padStart(2, '0');
+        document.getElementById('liveTimerClock').textContent = `${hrs}:${mins}:${secs}`;
+
+        const banner = document.getElementById('liveTimerAlertBanner');
+        const bikeDay = state.plan.find(d => d.type === 'bike') || { nutrition: { mlEvery15: 175, carbsPerHour: 50 } };
+
+        if (rideSeconds > 0 && rideSeconds % 900 === 0) {
+          testBeepAlert();
+          banner.classList.remove('hidden');
+          banner.textContent = `💧 ¡Ya pasaron 15 min! Toma ${bikeDay.nutrition.mlEvery15} ml de agua ahora.`;
+        } else if (rideSeconds > 0 && rideSeconds % 2400 === 0) {
+          testBeepAlert();
+          banner.classList.remove('hidden');
+          banner.textContent = `🍌 ¡40 minutos de ruta! Come un bocadillo, barra o medio banano ahora.`;
+        }
+      }, 1000);
+    }
+
+    function pauseLiveRideTimer() {
+      clearInterval(rideTimerInterval);
+      rideTimerInterval = null;
+    }
+
+    // =========================================================================
+    // ARRANQUE INICIAL: PRIMERO RECUPERA LA MEMORIA GUARDADA Y LUEGO DIBUJA
+    // =========================================================================
+    window.addEventListener('DOMContentLoaded', () => {
+      // Inicializar fecha por defecto solo si aún no hay una guardada
+      const d = new Date();
+      d.setDate(d.getDate() + 56);
+      document.getElementById('inEventDate').value = d.toISOString().split('T')[0];
+
+      loadStateFromLocal((hadSavedData) => {
+        readInputsAndComputeMetrics();
+        populateWeekSelector();
+        buildWeekSchedule(state.currentWeek);
+        renderPlanUI();
+        renderSyncUI();
+
+        // Si ya tenías datos guardados, te abre directo en la pestaña donde estabas (ej. Mi Plan)
+        if (hadSavedData && state.lastActiveTab) {
+          switchTab(state.lastActiveTab);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
