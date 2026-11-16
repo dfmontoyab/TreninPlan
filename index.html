@@ -163,7 +163,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
             <label class="block text-xs font-semibold text-stone-300 mb-1">Marca / Modelo</label>
-            <input id="inBikeBrand" type="text" value="BMC Teammachine" oninput="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white" />
+            <input id="inBikeBrand" type="text" value="Giant TCR" oninput="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white" />
           </div>
           <div>
             <label class="block text-xs font-semibold text-stone-300 mb-1">Talla</label>
@@ -638,7 +638,7 @@
   </nav>
 
   <script>
-    const STORAGE_KEY = 'trenin_plan_v37_database';
+    const STORAGE_KEY = 'trenin_plan_v38_database';
 
     const state = {
       hasSavedProfile: false,
@@ -684,7 +684,7 @@
         lastSyncDate: ''
       },
       intervalsActivities: [],
-      planStartDate: '', // Fecha en que se inició el plan
+      planStartDate: '',
       totalWeeks: 12,
       currentWeek: 1,
       maxUnlockedWeek: 1,
@@ -804,8 +804,17 @@
 
     function saveAndGeneratePlan() {
       state.lastActiveTab = 'plan';
-      if (!state.planStartDate) state.planStartDate = new Date().toISOString();
+      if (!state.planStartDate) {
+        // Fijar el inicio en el lunes de la semana pasada (ej. 9 de noviembre de 2026 para que la semana pasada sea la 1 y hoy 16 sea la 2)
+        const d = new Date();
+        const day = d.getDay();
+        const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Lunes
+        const monday = new Date(d.setDate(diff));
+        monday.setDate(monday.getDate() - 7); // Retroceder 7 días para que Semana 1 sea la pasada
+        state.planStartDate = monday.toISOString();
+      }
       readInputsAndComputeMetrics();
+      calculateAllowedWeekByCalendar();
       populateWeekSelector();
       buildWeekSchedule(state.currentWeek);
       renderPlanUI();
@@ -924,7 +933,15 @@
     }
 
     function getWeekDateRangeStr(weekNum) {
-      const start = new Date(state.planStartDate || Date.now());
+      if (!state.planStartDate) {
+        const d = new Date();
+        const day = d.getDay();
+        const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+        const monday = new Date(d.setDate(diff));
+        monday.setDate(monday.getDate() - 7);
+        state.planStartDate = monday.toISOString();
+      }
+      const start = new Date(state.planStartDate);
       start.setDate(start.getDate() + (weekNum - 1) * 7);
       const end = new Date(start);
       end.setDate(end.getDate() + 6);
@@ -932,7 +949,23 @@
       return `${start.toLocaleDateString('es-ES', options)} al ${end.toLocaleDateString('es-ES', options)}`;
     }
 
+    function calculateAllowedWeekByCalendar() {
+      if (!state.planStartDate) return 1;
+      const start = new Date(state.planStartDate);
+      start.setHours(0,0,0,0);
+      const now = new Date();
+      now.setHours(0,0,0,0);
+      const diffTime = now - start;
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      const calendarWeek = Math.floor(diffDays / 7) + 1;
+      // Permitir desbloquear hasta la semana actual por calendario, más la que el usuario haya cerrado formalmente
+      const allowed = Math.max(state.maxUnlockedWeek, Math.min(state.totalWeeks, calendarWeek));
+      state.maxUnlockedWeek = allowed;
+      return allowed;
+    }
+
     function populateWeekSelector() {
+      calculateAllowedWeekByCalendar();
       const sel = document.getElementById('selActiveWeek');
       sel.innerHTML = '';
       for (let w = 1; w <= state.totalWeeks; w++) {
@@ -949,8 +982,9 @@
 
     function changeActiveWeek(weekNum) {
       weekNum = parseInt(weekNum);
+      calculateAllowedWeekByCalendar();
       if (weekNum > state.maxUnlockedWeek) {
-        alert('⚠️ Esta semana aún está bloqueada. Debes completar y cerrar el balance de la semana anterior para desbloquearla.');
+        alert('⚠️ Esta semana aún está bloqueada por calendario. No puedes avanzar a semanas futuras antes de tiempo.');
         document.getElementById('selActiveWeek').value = state.currentWeek;
         return;
       }
@@ -972,9 +1006,6 @@
       return { reps, warmMin: warmMin + Math.floor(leftover / 2), coolMin: coolMin + (leftover - Math.floor(leftover / 2)), workMin, restMin };
     }
 
-    // =========================================================================
-    // GENERADOR DINÁMICO DE LA SEMANA ACTIVA
-    // =========================================================================
     function buildWeekSchedule(weekNum) {
       const z1 = state.zones[0];
       const z2 = state.zones[1];
@@ -1082,7 +1113,7 @@
     }
 
     // =========================================================================
-    // FILTRADO ESTRICTO DE ACTIVIDADES POR LA FECHA DE LA SEMANA ACTUAL
+    // EMPAREJAMIENTO ESTRICTO DE INTERVALS.ICU BASADO EN EL RANGO DE FECHA DE LA SEMANA
     // =========================================================================
     function matchIntervalsActivitiesToCurrentWeek() {
       if (!state.intervalsActivities || state.intervalsActivities.length === 0) return;
@@ -1095,6 +1126,7 @@
       weekEnd.setDate(weekEnd.getDate() + 7);
       weekEnd.setHours(23,59,59,999);
 
+      // Limpiar logs previos de esta semana para evitar datos residuales de semanas pasadas
       state.plan.forEach((dayItem, idx) => {
         if (dayItem.type !== 'bike') return;
         const logKey = `W${state.currentWeek}_D${idx}`;
@@ -1118,7 +1150,6 @@
             load: matchingAct.icu_training_load ? Math.round(matchingAct.icu_training_load) : 0
           };
         } else {
-          // Si no hay actividad real en esta semana estricta, limpiar log viejo residual
           delete state.completedLogs[logKey];
         }
       });
@@ -1162,7 +1193,14 @@
           state.intervalsAuth.lastSyncDate = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
           state.intervalsAuth.lastSyncSummary = `Sintonía perfecta: ${state.intervalsActivities.length} actividades leídas de Intervals.icu.`;
         }
-        if (!state.planStartDate) state.planStartDate = new Date().toISOString();
+        if (!state.planStartDate) {
+          const d = new Date();
+          const day = d.getDay();
+          const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+          const monday = new Date(d.setDate(diff));
+          monday.setDate(monday.getDate() - 7);
+          state.planStartDate = monday.toISOString();
+        }
         readInputsAndComputeMetrics();
         buildWeekSchedule(state.currentWeek);
         renderPlanUI();
@@ -1191,7 +1229,7 @@
             <span class="text-amber-400 mono">${Math.round(a.moving_time/60)}m | ${Math.round(a.average_heartrate||0)}ppm</span>
           </div>
         `).join('');
-        document.getElementById('intervalsAiVerdict').textContent = '¡Listo! Las salidas reales ya están enlazadas estrictamente a su semana correspondiente.';
+        document.getElementById('intervalsAiVerdict').textContent = '¡Listo! Las salidas reales ya están enlazadas estrictamente al calendario de esta semana.';
       } catch (err) { alert(err.message); }
       finally { btn.innerHTML = 'Sincronizar Mis Entrenamientos Ahora'; btn.disabled = false; }
     }
@@ -1253,7 +1291,7 @@
         const syncedStrip = savedLog && savedLog.source === 'intervals' ? `<div class="p-2.5 rounded-xl bg-amber-950/40 border border-amber-500/50 text-xs text-amber-300 font-bold">✔ Sincronizado Intervals: ${savedLog.durationMin} min | Pulso: ${savedLog.realHR} ppm</div>` : '';
 
         return `
-          <div class="glass rounded-2xl p-4 border ${savedLog ? 'border-amber-400 ring-1 ring-amber-400/40' : 'border-amber-500/35'} space-y-3">
+          <div class="glass rounded-2xl p-4 border ${savedLog ? 'border-amber-400 ring-1 ring-amber-400/40' : 'border-emerald-500/35'} space-y-3">
             <div class="flex justify-between"><span class="text-xs font-bold text-amber-400">${d.day} • ${d.durationMin} MIN</span><span class="px-2 py-0.5 text-[10px] font-bold bg-amber-500/20 text-amber-300 rounded">ZONA ${d.zone}</span></div>
             <div>
               <h3 class="text-base font-extrabold text-white">${d.title}</h3>
@@ -1321,8 +1359,7 @@
         }
       }
 
-      let weekVerdict = `BALANCE TOTAL DE LA SEMANA ${state.currentWeek}:\n`;
-      weekVerdict += `• Fechas del ciclo: ${getWeekDateRangeStr(state.currentWeek)}\n`;
+      let weekVerdict = `BALANCE TOTAL DE LA SEMANA ${state.currentWeek} (${getWeekDateRangeStr(state.currentWeek)}):\n`;
       weekVerdict += `• Salidas de bicicleta completadas: ${bikeCount} de 4 programadas.\n`;
       weekVerdict += `• Carga total de estrés acumulado: ${totalLoadSum} puntos TSS.\n`;
       weekVerdict += `• Cumplimiento de fuerza: ${strengthStatus === 'all' ? 'Óptimo (ambas sesiones)' : (strengthStatus === 'partial' ? 'Parcial' : 'Incompleto')}.\n`;
@@ -1386,7 +1423,6 @@
 
       let realData = state.completedLogs[logKey];
       if ((!realData || realData.source !== 'intervals') && state.intervalsActivities.length > 0) {
-        // Buscar estrictamente dentro de la semana actual
         const planStartDate = state.planStartDate ? new Date(state.planStartDate) : new Date();
         const weekStart = new Date(planStartDate);
         weekStart.setDate(weekStart.getDate() + (state.currentWeek - 1) * 7);
@@ -1428,30 +1464,26 @@
       const t = w.targets;
       let analysisLines = [];
 
-      // 1. Fatiga y Carga (Training Load)
       const loadVal = realData.load || Math.round(realData.durationMin * 0.7);
-      analysisLines.push(`• **Fatiga y Carga de Entrenamiento (Training Load):** Hoy acumulaste **${loadVal} puntos de estrés**. Es el volumen de fatiga que le inyectaste a tu organismo. Controlar esto evita que llegues fundido al fin de semana.`);
+      analysisLines.push(`• **Fatiga y Carga de Entrenamiento (Training Load):** Hoy acumulaste **${loadVal} puntos de estrés**. Es el volumen de fatiga que le inyectaste a tu organismo. Controlار esto evita que llegues fundido al fin de semana.`);
 
-      // 2. Pulso Meta vs Real (FTP / Umbral)
       if (w.zone >= 4) {
         analysisLines.push(`• **Evaluación de Pulso y FTP (Umbral):** Tu objetivo era mantener el pulso entre **${t.hrWorkMin} y ${t.hrWorkMax} ppm** en los bloques fuertes. Tu promedio real fue de **${realData.realHR} ppm**.\n  ${realData.realHR <= t.hrWorkMax ? '¡Excelente ejecución! Te mantuviste dentro de la ventana de umbral sin disparar el ácido láctico prematuramente.' : 'Te pasaste del techo de pulso objetivo. Esto indica que la intensidad fue más alta de lo planeado (por calor o terreno); mañana regula más el esfuerzo.'}`);
       } else {
         analysisLines.push(`• **Control Aeróbico (Zona ${w.zone}):** Buscábamos un fondo controlado (${t.hrWorkMin}-${t.hrWorkMax} ppm). Tu promedio real fue de **${realData.realHR} ppm**. ${realData.realHR <= t.hrWorkMax ? 'Lograste mantener el motor en modo aeróbico puro, ideal para la oxidación de grasas y base.' : 'El pulso se elevó por encima de la zona aeróbica; cuida no acelerar el paso en los repechos.'}`);
       }
 
-      // 3. Cadencia y recomendación explícita de piñón
       if (realData.realCAD > 0) {
         if (realData.realCAD < t.cadWorkMin - 3) {
-          analysisLines.push(`• **Análisis de Cadencia y Desarrollo:** Llevaste un promedio de **${realData.realCAD} rpm** (la meta era de ${t.cadWorkMin}-${t.cadWorkMax} rpm). Fuiste un poco atrancado/pesado. Te aconsejo que en la próxima salida **subas uno o dos piñones atrás (uses una relación más suave)** para desahogar las rodillas, descansar los cuádriceps y mantener la agilidad.`);
+          analysisLines.push(`• **Análisis de Cadencia (${realData.realCAD} rpm frente a meta de ${t.cadWorkMin}-${t.cadWorkMax} rpm):** Noté que fuiste un poco atrancado. Te aconsejo que en la próxima salida de este tipo **subas uno o dos piñones atrás (uses un piñón más grande)** para desahogar las rodillas, descansar los cuádriceps y mantener las piernas ágiles.`);
         } else {
-          analysisLines.push(`• **Análisis de Cadencia:** ¡Muy buena cadencia de **${realData.realCAD} rpm**! Demuestra eficiencia de pedaleo y protección articular.`);
+          analysisLines.push(`• **Análisis de Cadencia (${realData.realCAD} rpm):** ¡Muy buen trabajo de pedaleo! Te mantuviste dentro del rango ágil, protegiendo tus articulaciones.`);
         }
       }
 
-      // 4. Nutrición e hidratación
-      analysisLines.push(`• **Protocolo Nutricional:** Para esta sesión debías consumir **${w.nutrition.totalMl} ml** de líquido y **${w.nutrition.carbsPerHour}g** de carbohidratos por hora. Al llegar a casa, recuerda priorizar la ventana de recuperación con carbohidrato y proteína.`);
+      analysisLines.push(`• **Protocolo Nutricional:** Para esta sesión debías consumir **${w.nutrition.totalMl} ml** de líquido y **${w.nutrition.carbsPerHour}g** de carbohidratos por hora.`);
 
-      let nextAdvice = `• **Consejo para mañana (${nextDay.day}):** Tienes "${nextDay.title}". Sigue las pautas de recuperación y descansa adecuadamente.`;
+      let nextAdvice = `• **Para mañana (${nextDay.day}):** Tienes "${nextDay.title}". Sigue las pautas de recuperación y pedalea con control.`;
 
       const report = `Hola ${state.rider.name || 'Ciclista'}, análisis profesional detallado de tu salida:\n\n` + analysisLines.join('\n\n') + `\n\n` + nextAdvice;
       state.lastFeedbackReport = report;
@@ -1572,6 +1604,7 @@
       document.getElementById('inEventDate').value = new Date(Date.now() + 56*86400000).toISOString().split('T')[0];
       loadStateFromLocal((hadData) => {
         readInputsAndComputeMetrics();
+        calculateAllowedWeekByCalendar();
         populateWeekSelector();
         buildWeekSchedule(state.currentWeek);
         renderPlanUI();
