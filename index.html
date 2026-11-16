@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Veltempo" />
+  <meta name="apple-mobile-web-app-title" content="trenin_plan" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#0f172a" />
-  <title>Veltempo — Tu Plan de Ciclismo Inteligente</title>
+  <title>trenin_plan — Tu Plan de Ciclismo Inteligente</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <style>
@@ -45,12 +45,12 @@
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white">Veltempo <span class="text-emerald-400">PRO</span></h1>
+            <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white">trenin<span class="text-emerald-400">_plan</span></h1>
             <span id="saveStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
               <i class="fa-solid fa-cloud-arrow-up mr-1"></i>Sincronizado
             </span>
           </div>
-          <p class="text-[11px] text-slate-400">Intervals.icu • <span class="text-rose-400 font-semibold">Pulso</span> • <span class="text-amber-400 font-semibold">FTP</span> • <span class="text-cyan-400 font-semibold">Cadencia</span></p>
+          <p class="text-[11px] text-slate-400">Coach Pro • <span class="text-rose-400 font-semibold">Pulso</span> • <span class="text-amber-400 font-semibold">FTP</span> • <span class="text-cyan-400 font-semibold">Cadencia</span></p>
         </div>
       </div>
 
@@ -86,11 +86,11 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Tu Nombre</label>
-            <input id="inName" type="text" value="Diego Montoya" oninput="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none" />
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Nombre y Apellido</label>
+            <input id="inName" type="text" value="" placeholder="Nombre Apellido" oninput="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none" />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Tu Correo (Para consejos post-entreno)</label>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Correo (Para consejos post-entreno)</label>
             <input id="inEmail" type="email" value="" placeholder="tucorreo@dominio.com" oninput="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none" />
           </div>
           <div>
@@ -205,21 +205,15 @@
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-900/90 border border-rose-500/40 cursor-pointer">
               <input id="chkHR" type="checkbox" checked onchange="autoSaveInputs()" class="mt-1 w-4 h-4 accent-rose-500" />
-              <div>
-                <div class="text-sm font-bold text-rose-300">Banda Cardíaca (Pulso)</div>
-              </div>
+              <div><div class="text-sm font-bold text-rose-300">Banda Cardíaca (Pulso)</div></div>
             </label>
             <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-900/90 border border-amber-500/40 cursor-pointer">
               <input id="chkPM" type="checkbox" onchange="autoSaveInputs()" class="mt-1 w-4 h-4 accent-amber-500" />
-              <div>
-                <div class="text-sm font-bold text-amber-300">Potenciómetro (Vatios)</div>
-              </div>
+              <div><div class="text-sm font-bold text-amber-300">Potenciómetro (Vatios)</div></div>
             </label>
             <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-900/90 border border-cyan-500/40 cursor-pointer">
               <input id="chkCAD" type="checkbox" checked onchange="autoSaveInputs()" class="mt-1 w-4 h-4 accent-cyan-500" />
-              <div>
-                <div class="text-sm font-bold text-cyan-300">Sensor Cadencia (Pedaleo)</div>
-              </div>
+              <div><div class="text-sm font-bold text-cyan-300">Sensor Cadencia (Pedaleo)</div></div>
             </label>
           </div>
         </div>
@@ -266,7 +260,7 @@
             </div>
             <div>
               <label class="block text-xs font-bold text-white mb-1">Días de Bici por Semana</label>
-              <select id="inBikeDays" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2.5 text-sm text-white font-semibold">
+              <select id="inBikeDays" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-emerald-500/50 px-3 py-2.5 text-sm text-white font-semibold">
                 <option value="3">3 días Bici + 2 Fuerza + 2 Descanso</option>
                 <option value="4" selected>4 días Bici + 2 Fuerza + 1 Descanso</option>
                 <option value="5">5 días Bici + 1 Fuerza + 1 Descanso</option>
@@ -323,7 +317,7 @@
       </div>
     </section>
 
-    <!-- SECCIÓN 4: MI PLAN SEMANAL -->
+    <!-- SECCIÓN 4: MI PLAN SEMANAL (PROGRESIVO Y ADAPTATIVO) -->
     <section id="tab-plan" class="tab-panel hidden space-y-4">
 
       <div class="glass rounded-2xl p-4 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-l-4 border-l-emerald-400">
@@ -332,7 +326,7 @@
             <span id="planPhaseBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">FASE</span>
             <span id="fitnessLevelBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">Nivel: 100%</span>
           </div>
-          <h2 id="planHeaderTitle" class="text-lg sm:text-xl font-extrabold text-white">Plan Semanal</h2>
+          <h2 id="planHeaderTitle" class="text-lg sm:text-xl font-extrabold text-white">Plan Semanal Progresivo</h2>
           <p id="planFocusDescription" class="text-xs text-emerald-300 font-medium"></p>
           <p id="planSubSummary" class="text-[11px] text-slate-400"></p>
         </div>
@@ -342,8 +336,8 @@
             <label class="text-xs font-semibold text-slate-400">Semana:</label>
             <select id="selActiveWeek" onchange="changeActiveWeek(this.value)" class="bg-transparent text-xs font-bold text-emerald-400 focus:outline-none mono"></select>
           </div>
-          <button onclick="syncAllFromIntervalsQuietly(true)" class="px-3 py-2 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-slate-950 text-xs font-extrabold flex items-center gap-1.5 transition">
-            <i class="fa-solid fa-rotate"></i> Sintonizar Intervals
+          <button onclick="openWeeklyReviewModal()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-400 hover:to-cyan-400 text-slate-950 text-xs font-extrabold flex items-center gap-1.5 transition shadow-lg">
+            <i class="fa-solid fa-flag-checkered"></i> Terminar Semana y Ver Balance
           </button>
         </div>
       </div>
@@ -386,15 +380,15 @@
         <div class="p-4 rounded-xl bg-indigo-950/30 border border-indigo-500/40 space-y-2">
           <div class="flex items-center gap-2 text-sm font-bold text-indigo-200">
             <i class="fa-solid fa-bolt text-amber-400"></i>
-            Alertas en Pantalla y Cadencia Activa
+            Ciclo Pro en Ruta
           </div>
           <p class="text-xs text-slate-300 leading-relaxed">
-            Los entrenamientos generados ahora envían **avisos de pantalla automáticos** para hidratación y nutrición al Magene C706, y configuran explícitamente el rango de **Cadencia objetivo (RPM)** para que tu ciclocomputador te avise si vas muy atrancado o muy suelto.
+            Envía los bloques estructurados de la semana actual directamente a tu calendario de Intervals.icu con un toque. Al terminar tu rodada en el Magene C706, regresa a la app para recibir el análisis técnico detallado con traducción de FTP y VO2máx.
           </p>
         </div>
 
         <div>
-          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3">Sesiones de la Semana</h3>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3">Sesiones de la Semana Activa</h3>
           <div id="syncWorkoutsList" class="space-y-3"></div>
         </div>
       </div>
@@ -462,13 +456,13 @@
     </div>
   </div>
 
-  <!-- MODAL CONSEJO INTELIGENTE (CON TRADUCCIÓN TÉCNICA DE FTP, VO2MAX Y FATIGA) -->
+  <!-- MODAL CONSEJO TÉCNICO PROFUNDO -->
   <div id="feedbackModal" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="glass rounded-2xl max-w-lg w-full p-5 border border-emerald-500/40 space-y-4 max-h-[92vh] overflow-y-auto">
       <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
         <div>
-          <span id="fbModalBadge" class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400">Análisis con Traducción Técnica</span>
-          <h3 id="fbModalTitle" class="text-base font-extrabold text-white mt-0.5">Consejo del Entrenamiento</h3>
+          <span id="fbModalBadge" class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400">Análisis Profesional de Coach</span>
+          <h3 id="fbModalTitle" class="text-base font-extrabold text-white mt-0.5">Devolución del Entrenamiento</h3>
         </div>
         <button onclick="closeFeedbackModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
@@ -522,6 +516,59 @@
             <i class="fa-brands fa-whatsapp"></i> WhatsApp
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL NUEVO: BALANCE SEMANAL DE CIERRE Y ADAPTACIÓN DE LA SIGUIENTE SEMANA -->
+  <div id="weeklyReviewModal" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass rounded-2xl max-w-xl w-full p-6 border border-indigo-500/50 space-y-5 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div>
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-indigo-400">Cierre de Ciclo</span>
+          <h3 id="wrModalTitle" class="text-base font-extrabold text-white">Balance Total de la Semana</h3>
+        </div>
+        <button onclick="closeWeeklyReviewModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="space-y-3">
+        <p class="text-xs text-slate-300">
+          Para preparar y adaptar científicamente el entrenamiento de la <strong>siguiente semana</strong> basándonos en hechos reales, cuéntanos cómo cerraste estos últimos 7 días:
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <label class="block text-xs font-bold text-purple-300 mb-1">¿Hiciste los entrenamientos de Fuerza?</label>
+            <select id="wrStrengthStatus" class="w-full rounded-lg bg-slate-950 border border-slate-700 px-2.5 py-2 text-xs text-white">
+              <option value="all">Sí, completé ambas sesiones</option>
+              <option value="partial">Hice solo una sesión</option>
+              <option value="none">No pude hacer fuerza esta semana</option>
+            </select>
+          </div>
+
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <label class="block text-xs font-bold text-cyan-300 mb-1">¿Cómo sentiste el descanso global?</label>
+            <select id="wrRestStatus" class="w-full rounded-lg bg-slate-950 border border-slate-700 px-2.5 py-2 text-xs text-white">
+              <option value="good">Descansé bien y dormí completo</option>
+              <option value="tired">Acumulé algo de fatiga o insomnio</option>
+              <option value="exhausted">Llegué agotado al fin de semana</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-indigo-950/30 border border-indigo-500/40 space-y-2">
+          <div class="text-xs font-bold text-indigo-200"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Adaptación Automática del Coach</div>
+          <p class="text-xs text-slate-300" id="wrPreviewAdaptation">
+            Al procesar este balance, la app evaluará tus salidas reales en Intervals.icu, tu descanso y tu fuerza para desbloquear y ajustar el siguiente ciclo a tu condición exacta.
+          </p>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
+        <button onclick="closeWeeklyReviewModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold">Cancelar</button>
+        <button onclick="processWeeklyBalanceAndUnlockNext()" class="px-5 py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-slate-950 text-xs font-extrabold shadow-lg">
+          Generar Balance y Desbloquear Siguiente Semana
+        </button>
       </div>
     </div>
   </div>
@@ -591,13 +638,13 @@
   </nav>
 
   <script>
-    const STORAGE_KEY = 'veltempo_pro_v35_database';
+    const STORAGE_KEY = 'trenin_plan_v36_database';
 
     const state = {
       hasSavedProfile: false,
       lastActiveTab: 'step1',
       rider: {
-        name: 'Diego Montoya',
+        name: '',
         email: '',
         age: 42,
         weight: 72,
@@ -639,8 +686,11 @@
       intervalsActivities: [],
       totalWeeks: 8,
       currentWeek: 1,
+      maxUnlockedWeek: 1, // Solo desbloquea la siguiente semana tras hacer el balance
+      effectiveTrainingWeeksCount: 0, // Cuenta semanas efectivas para programar Test FTP cada 8 semanas
       weeklyProgressionFactor: 1.0,
       completedLogs: {},
+      weeklySummaries: {}, // Guarda los balances de cada semana
       zones: [],
       plan: [],
       selectedDayForFeedback: 0,
@@ -659,8 +709,11 @@
         intervalsActivities: state.intervalsActivities,
         totalWeeks: state.totalWeeks,
         currentWeek: state.currentWeek,
+        maxUnlockedWeek: state.maxUnlockedWeek,
+        effectiveTrainingWeeksCount: state.effectiveTrainingWeeksCount,
         weeklyProgressionFactor: state.weeklyProgressionFactor,
-        completedLogs: state.completedLogs
+        completedLogs: state.completedLogs,
+        weeklySummaries: state.weeklySummaries
       };
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
@@ -693,8 +746,11 @@
       if (Array.isArray(data.intervalsActivities)) state.intervalsActivities = data.intervalsActivities;
       if (data.totalWeeks) state.totalWeeks = data.totalWeeks;
       if (data.currentWeek) state.currentWeek = data.currentWeek;
+      if (data.maxUnlockedWeek) state.maxUnlockedWeek = data.maxUnlockedWeek;
+      if (data.effectiveTrainingWeeksCount) state.effectiveTrainingWeeksCount = data.effectiveTrainingWeeksCount;
       if (data.weeklyProgressionFactor) state.weeklyProgressionFactor = data.weeklyProgressionFactor;
       if (data.completedLogs) state.completedLogs = data.completedLogs;
+      if (data.weeklySummaries) state.weeklySummaries = data.weeklySummaries;
 
       document.getElementById('inName').value = state.rider.name || '';
       document.getElementById('inEmail').value = state.rider.email || '';
@@ -818,9 +874,9 @@
       if (state.goal.eventDate) {
         const diffMs = new Date(state.goal.eventDate) - new Date();
         const w = Math.ceil(diffMs / (1000 * 60 * 60 * 24 * 7));
-        state.totalWeeks = Math.max(4, Math.min(24, w));
+        state.totalWeeks = Math.max(4, Math.min(36, w));
       } else {
-        state.totalWeeks = 8;
+        state.totalWeeks = 12;
       }
 
       const maxHR = state.rider.maxHR;
@@ -828,10 +884,10 @@
 
       state.zones = [
         { z: 1, name: 'Ritmo 1: Suave', feel: 'Conversación fluida sin fatiga.', color: 'border-slate-500/50 bg-slate-900/70 text-slate-200', hrMin: Math.round(maxHR * 0.55), hrMax: Math.round(maxHR * 0.65), wMin: Math.round(ftp * 0.45), wMax: Math.round(ftp * 0.55), cadMin: 85, cadMax: 95 },
-        { z: 2, name: 'Ritmo 2: Fondo', feel: 'Frases completas. Quema grasa y da base.', color: 'border-sky-500/50 bg-sky-950/30 text-sky-200', hrMin: Math.round(maxHR * 0.66), hrMax: Math.round(maxHR * 0.76), wMin: Math.round(ftp * 0.56), wMax: Math.round(ftp * 0.75), cadMin: 85, cadMax: 95 },
-        { z: 3, name: 'Ritmo 3: Paso Firme', feel: 'Frases cortas. Sube a buen ritmo.', color: 'border-emerald-500/50 bg-emerald-950/30 text-emerald-200', hrMin: Math.round(maxHR * 0.77), hrMax: Math.round(maxHR * 0.84), wMin: Math.round(ftp * 0.76), wMax: Math.round(ftp * 0.90), cadMin: 80, cadMax: 90 },
-        { z: 4, name: 'Ritmo 4: Fuerte (FTP)', feel: 'Ardor controlado. Tu umbral de potencia.', color: 'border-amber-500/50 bg-amber-950/30 text-amber-200', hrMin: Math.round(maxHR * 0.85), hrMax: Math.round(maxHR * 0.91), wMin: Math.round(ftp * 0.91), wMax: Math.round(ftp * 1.05), cadMin: 82, cadMax: 95 },
-        { z: 5, name: 'Ritmo 5: VO2máx', feel: 'Esfuerzo máximo (tanque de oxígeno).', color: 'border-rose-500/50 bg-rose-950/30 text-rose-200', hrMin: Math.round(maxHR * 0.92), hrMax: Math.round(maxHR * 0.98), wMin: Math.round(ftp * 1.06), wMax: Math.round(ftp * 1.20), cadMin: 90, cadMax: 105 }
+        { z: 2, name: 'Ritmo 2: Fondo', feel: 'Frases completas. Quema grasa y da base aeróbica.', color: 'border-sky-500/50 bg-sky-950/30 text-sky-200', hrMin: Math.round(maxHR * 0.66), hrMax: Math.round(maxHR * 0.76), wMin: Math.round(ftp * 0.56), wMax: Math.round(ftp * 0.75), cadMin: 85, cadMax: 95 },
+        { z: 3, name: 'Ritmo 3: Paso Firme', feel: 'Frases cortas. Sube a buen ritmo sin reventarte.', color: 'border-emerald-500/50 bg-emerald-950/30 text-emerald-200', hrMin: Math.round(maxHR * 0.77), hrMax: Math.round(maxHR * 0.84), wMin: Math.round(ftp * 0.76), wMax: Math.round(ftp * 0.90), cadMin: 80, cadMax: 90 },
+        { z: 4, name: 'Ritmo 4: Fuerte (FTP)', feel: 'Ardor controlado. Tu umbral funcional de potencia.', color: 'border-amber-500/50 bg-amber-950/30 text-amber-200', hrMin: Math.round(maxHR * 0.85), hrMax: Math.round(maxHR * 0.91), wMin: Math.round(ftp * 0.91), wMax: Math.round(ftp * 1.05), cadMin: 82, cadMax: 95 },
+        { z: 5, name: 'Ritmo 5: VO2máx', feel: 'Esfuerzo máximo (tanque de oxígeno pulmonar).', color: 'border-rose-500/50 bg-rose-950/30 text-rose-200', hrMin: Math.round(maxHR * 0.92), hrMax: Math.round(maxHR * 0.98), wMin: Math.round(ftp * 1.06), wMax: Math.round(ftp * 1.20), cadMin: 90, cadMax: 105 }
       ];
     }
 
@@ -840,11 +896,11 @@
       const climateBonus = state.goal.climate === 'warm' ? 180 : (state.goal.climate === 'temperate' ? 80 : 0);
 
       if (workoutType === 'rest') {
-        return { mlPerHour: 0, mlEvery15: 0, totalMl: Math.round(weight * 35), before: 'Hidratación normal y proteína.', during: 'Agua moderada.', after: 'Descanso total.' };
+        return { mlPerHour: 0, mlEvery15: 0, totalMl: Math.round(weight * 35), before: 'Hidratación normal y proteína de calidad.', during: 'Agua moderada.', after: 'Descanso total y buena cena.' };
       }
       if (workoutType === 'strength') {
         const mlH = 500;
-        return { mlPerHour: mlH, mlEvery15: 125, totalMl: Math.round((durationMin/60)*mlH), before: 'Banano o tostada previa.', during: '125 ml de agua cada 15 min.', after: 'Proteína post-ejercicio.' };
+        return { mlPerHour: mlH, mlEvery15: 125, totalMl: Math.round((durationMin/60)*mlH), before: 'Banano o tostada con maní.', during: '125 ml de agua cada 15 min.', after: 'Proteína post-ejercicio para reparar tejido muscular.' };
       }
 
       const mlPerHour = Math.round(580 + climateBonus + (weight - 70) * 4);
@@ -857,27 +913,34 @@
         mlEvery15,
         totalMl,
         carbsPerHour: carbs,
-        before: `1.5 horas antes: Avena o pan con mermelada + 350 ml de agua.`,
-        during: `Agua: ${mlEvery15} ml cada 15 min (Total: ${totalMl} ml). Comer: ${carbs}g de carbohidratos/hora (bocadillo o gel c/40 min).`,
-        after: `Al llegar: 500 ml de agua con sales y carbohidrato con proteína.`
+        before: `1.5 horas antes: Avena o pan con mermelada y café + 350 ml de agua.`,
+        during: `Agua: Bebe ${mlEvery15} ml cada 15 minutos (Total: ${totalMl} ml). Energía: Consume ${carbs}g de carbohidratos por hora (bocadillo o gel cada 40 min).`,
+        after: `Al llegar: 500 ml de agua con sales + carbohidrato con proteína en los primeros 30 minutos.`
       };
     }
 
     function populateWeekSelector() {
       const sel = document.getElementById('selActiveWeek');
       sel.innerHTML = '';
-      const themes = ['Base Ágil', 'Fuerza (Torque)', 'Intervalos VO2máx', 'Descarga y Asimilación'];
       for (let w = 1; w <= state.totalWeeks; w++) {
         const opt = document.createElement('option');
         opt.value = w;
-        opt.textContent = `Semana ${w}: ${w === state.totalWeeks ? 'Pre-Competencia' : themes[(w - 1) % 4]}`;
+        const isLocked = w > state.maxUnlockedWeek;
+        opt.disabled = isLocked;
+        opt.textContent = `Semana ${w} de ${state.totalWeeks}${isLocked ? ' (🔒 Bloqueada)' : (w === state.currentWeek ? ' (Actual)' : '')}`;
         if (w === state.currentWeek) opt.selected = true;
         sel.appendChild(opt);
       }
     }
 
     function changeActiveWeek(weekNum) {
-      state.currentWeek = parseInt(weekNum) || 1;
+      weekNum = parseInt(weekNum);
+      if (weekNum > state.maxUnlockedWeek) {
+        alert('⚠️ Esta semana aún está bloqueada. Debes completar y cerrar el balance de la semana anterior para desbloquearla.');
+        document.getElementById('selActiveWeek').value = state.currentWeek;
+        return;
+      }
+      state.currentWeek = weekNum;
       buildWeekSchedule(state.currentWeek);
       renderPlanUI();
       renderSyncUI();
@@ -895,15 +958,22 @@
       return { reps, warmMin: warmMin + Math.floor(leftover / 2), coolMin: coolMin + (leftover - Math.floor(leftover / 2)), workMin, restMin };
     }
 
+    // =========================================================================
+    // GENERADOR DINÁMICO SEMANA A SEMANA (EVITA COPY-PASTE ESTÁTICO)
+    // =========================================================================
     function buildWeekSchedule(weekNum) {
       const z1 = state.zones[0];
       const z2 = state.zones[1];
+
+      // Cada 8 semanas efectivas, programamos un TEST DE FTP obligatorio
+      const isFtpTestWeek = (weekNum > 1 && (weekNum % 8 === 0 || state.effectiveTrainingWeeksCount >= 8));
+
       const cycleIndex = (weekNum - 1) % 4;
       const blockNumber = Math.floor((weekNum - 1) / 4);
       const isTaper = (weekNum === state.totalWeeks);
 
       let fitnessMult = state.weeklyProgressionFactor * (1 + (blockNumber * 0.08));
-      if (cycleIndex === 3) fitnessMult *= 0.80;
+      if (cycleIndex === 3) fitnessMult *= 0.80; // Descarga
       if (isTaper) fitnessMult *= 0.65;
 
       const weekdayCap = state.goal.weekdayMin;
@@ -911,23 +981,39 @@
       const isGym = state.goal.strengthMode === 'gym';
 
       state.currentWeekTheme = isTaper
-        ? { badge: `SEMANA ${weekNum}: AFINACIÓN`, desc: 'Descarga de piernas para llegar al 100%.' }
-        : [
-            { badge: `SEMANA ${weekNum}: BASE ÁGIL`, desc: 'Ritmo constante y velocidad de pedaleo.' },
-            { badge: `SEMANA ${weekNum}: FUERZA (TORQUE)`, desc: 'Bloques largos en subida con cadencia controlada.' },
-            { badge: `SEMANA ${weekNum}: VO2MÁX / PULMÓN`, desc: 'Intervalos intensos para ampliar capacidad aeróbica.' },
-            { badge: `SEMANA ${weekNum}: DESCARGA`, desc: 'Semana suave de asimilación y descanso.' }
-          ][cycleIndex];
+        ? { badge: `SEMANA ${weekNum}: AFINACIÓN`, desc: 'Descarga de piernas para llegar al 100% de frescura a tu competencia.' }
+        : (isFtpTestWeek
+          ? { badge: `SEMANA ${weekNum}: TEST DE FTP OBLIGATORIO`, desc: 'Evaluación formal de tu umbral funcional para recalcular tus zonas exactas de vatios y pulso.' }
+          : [
+              { badge: `SEMANA ${weekNum}: BASE ÁGIL`, desc: 'Ritmo constante y velocidad de pedaleo.' },
+              { badge: `SEMANA ${weekNum}: FUERZA (TORQUE)`, desc: 'Bloques largos en subida con cadencia controlada.' },
+              { badge: `SEMANA ${weekNum}: VO2MÁX / PULMÓN`, desc: 'Intervalos intensos para ampliar capacidad aeróbica.' },
+              { badge: `SEMANA ${weekNum}: DESCARGA`, desc: 'Semana suave de asimilación y descanso.' }
+            ][cycleIndex]);
 
       let tueConfig;
-      if (cycleIndex === 0) {
-        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, 6, 3, 4);
+      if (isFtpTestWeek) {
+        tueConfig = {
+          title: `Test de FTP de 20 Minutos (Evaluación)`,
+          subtitle: `Semana ${weekNum} • Protocolo oficial de testeo`,
+          zone: 4,
+          warmMin: 15,
+          reps: 1,
+          workMin: 20,
+          restMin: 0,
+          coolMin: 15,
+          cadWorkMin: 90,
+          cadWorkMax: 100,
+          details: `PROTOCOLO DE TEST DE FTP:\n1. Calentamiento suave 15 min.\n2. 3 minutos a ritmo fuerte + 3 min suave de recuperación.\n3. TEST A FONDO: Sostén el máximo esfuerzo posible y constante durante 20 minutos completos sin reventarte en los primeros 5 minutos.\n4. Enfriamiento de 15 min.\n(Al terminar, toma el 95% de los vatios o pulsaciones promedio de esos 20 min y ese será tu nuevo FTP/Umbral).`
+        };
+      } else if (cycleIndex === 0) {
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, 6, 3, 4 + blockNumber);
         tueConfig = { title: `Series Ritmo Fuerte (${fit.reps} × ${fit.workMin}m)`, zone: 4, ...fit, cadWorkMin: 86, cadWorkMax: 94, details: 'Ritmo parejo en Z4 con cadencia suelta.' };
       } else if (cycleIndex === 1) {
-        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, 9, 4, 3);
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, 9, 4, 3 + blockNumber);
         tueConfig = { title: `Escalones de Umbral (${fit.reps} × ${fit.workMin}m)`, zone: 4, ...fit, cadWorkMin: 80, cadWorkMax: 88, details: 'Bloques largos sostenidos en umbral.' };
       } else if (cycleIndex === 2) {
-        const fit = fitIntervalsToAvailableTime(weekdayCap, 12, 8, 4, 3, 5);
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 12, 8, 4, 3, 5 + blockNumber);
         tueConfig = { title: `Intervalos VO2máx (${fit.reps} × ${fit.workMin}m)`, zone: 5, ...fit, cadWorkMin: 92, cadWorkMax: 102, details: 'Esfuerzo máximo para expandir el tanque de oxígeno.' };
       } else {
         const fit = fitIntervalsToAvailableTime(weekdayCap, 12, 10, 4, 4, 3);
@@ -956,9 +1042,9 @@
 
       state.plan = [
         { day: 'Lunes', shortDay: 'LUN', jsDay: 1, type: 'rest', title: 'Descanso Total', subtitle: 'Asimilación y recuperación', durationMin: 0, zone: 1, details: 'Día libre de cargas.', nutrition: buildNutritionProtocol(0, 1, 'rest') },
-        { day: 'Martes', shortDay: 'MAR', jsDay: 2, type: 'bike', ...tueConfig, warmMin: 10, coolMin: 10, cadWarmMin: 85, cadWarmMax: 95, cadRestMin: 80, cadRestMax: 90, details: tueConfig.details },
+        { day: 'Martes', shortDay: 'MAR', jsDay: 2, type: 'bike', ...tueConfig, cadWarmMin: 85, cadWarmMax: 95, cadRestMin: 80, cadRestMax: 90, details: tueConfig.details },
         { day: 'Miércoles', shortDay: 'MIÉ', jsDay: 3, type: 'strength', title: 'Fortalecimiento: Piernas y Core', subtitle: isGym ? 'Gimnasio / Pesas' : 'En Casa', durationMin: 45, zone: 2, exercises: ['Sentadilla búlgara: 4x10', 'Peso muerto: 3x12', 'Plancha: 3x45s'], nutrition: buildNutritionProtocol(45, 2, 'strength') },
-        { day: 'Jueves', shortDay: 'JUE', jsDay: 4, type: 'bike', ...thuConfig, warmMin: 10, coolMin: 10, cadWarmMin: 85, cadWarmMax: 95, cadRestMin: 85, cadRestMax: 95, details: thuConfig.details },
+        { day: 'Jueves', shortDay: 'JUE', jsDay: 4, type: 'bike', ...thuConfig, cadWarmMin: 85, cadWarmMax: 95, cadRestMin: 85, cadRestMax: 95, details: thuConfig.details },
         { day: 'Viernes', shortDay: 'VIE', jsDay: 5, type: 'strength', title: 'Fortalecimiento: Espalda y Brazos', subtitle: 'Postura y estabilidad', durationMin: 45, zone: 1, exercises: ['Remo con banda/mancuerna: 3x12', 'Flexiones: 3x12', 'Bird-dog: 3x12'], nutrition: buildNutritionProtocol(45, 1, 'strength') },
         { day: 'Sábado', shortDay: 'SÁB', jsDay: 6, type: 'bike', title: 'Rodaje Aeróbico Ágil', subtitle: 'Cadencia fluida', zone: 2, warmMin: 10, workMin: satTarget - 20, restMin: 0, coolMin: 10, reps: 1, cadWorkMin: 88, cadWorkMax: 96, cadWarmMin: 85, cadWarmMax: 92, cadRestMin: 85, cadRestMax: 90, details: 'Pedaleo rápido y constante en Z2.', nutrition: buildNutritionProtocol(satTarget, 2, 'bike') },
         { day: 'Domingo', shortDay: 'DOM', jsDay: 0, type: 'bike', title: 'Salida Larga de Fondo', subtitle: 'Resistencia aeróbica', zone: cycleIndex === 2 ? 3 : 2, warmMin: 15, workMin: sunWorkEach, restMin: 10, coolMin: 15, reps: 2, cadWorkMin: 82, cadWorkMax: 92, cadWarmMin: 85, cadWarmMax: 95, cadRestMin: 80, cadRestMax: 90, details: 'Fondo de fin de semana con hidratación constante.', nutrition: buildNutritionProtocol(sunTarget, cycleIndex === 2 ? 3 : 2, 'bike') }
@@ -1046,7 +1132,7 @@
             document.getElementById('inMaxHR').value = maxH;
           }
           state.intervalsAuth.lastSyncDate = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
-          state.intervalsAuth.lastSyncSummary = `Sincronización exitosa: ${state.intervalsActivities.length} actividades leídas de Intervals.icu.`;
+          state.intervalsAuth.lastSyncSummary = `Sintonía perfecta: ${state.intervalsActivities.length} actividades leídas de Intervals.icu.`;
         }
         readInputsAndComputeMetrics();
         buildWeekSchedule(state.currentWeek);
@@ -1076,18 +1162,21 @@
             <span class="text-emerald-400 mono">${Math.round(a.moving_time/60)}m | ${Math.round(a.average_heartrate||0)}ppm</span>
           </div>
         `).join('');
-        document.getElementById('intervalsAiVerdict').textContent = '¡Listo! Los entrenamientos ya emparejaron con tu plan.';
+        document.getElementById('intervalsAiVerdict').textContent = '¡Listo! Las salidas reales ya están enlazadas a tu semana.';
       } catch (err) { alert(err.message); }
       finally { btn.innerHTML = 'Sincronizar Mis Entrenamientos Ahora'; btn.disabled = false; }
     }
 
+    // =========================================================================
+    // RENDERIZADO DEL PLAN PROGRESIVO Y BLOQUEADO PARA SEMANAS FUTURAS
+    // =========================================================================
     function renderPlanUI() {
       const theme = state.currentWeekTheme || { badge: `SEMANA ${state.currentWeek}`, desc: '' };
       document.getElementById('planPhaseBadge').textContent = theme.badge;
       document.getElementById('planFocusDescription').textContent = theme.desc;
       document.getElementById('fitnessLevelBadge').innerHTML = `<i class="fa-solid fa-arrow-trend-up mr-1"></i>Nivel: ${Math.round(state.weeklyProgressionFactor * 100)}%`;
 
-      document.getElementById('planHeaderTitle').textContent = `Plan de ${state.rider.name} — Semana ${state.currentWeek} de ${state.totalWeeks}`;
+      document.getElementById('planHeaderTitle').textContent = `Plan de ${state.rider.name || 'Ciclista'} — Semana ${state.currentWeek} de ${state.totalWeeks}`;
       document.getElementById('planSubSummary').textContent = `Límites: FC Máx ${state.rider.maxHR} ppm • FTP ref: ${state.rider.ftpCalculated} W`;
       document.getElementById('zonesRefMeta').textContent = `FC Máx ${state.rider.maxHR} ppm`;
 
@@ -1151,7 +1240,7 @@
             </div>
             <p class="text-xs text-slate-300">${d.details}</p>
             <button onclick="openSmartAdviceModal(${idx})" class="w-full py-2.5 rounded-xl bg-indigo-500/25 border border-indigo-400/50 text-indigo-200 font-extrabold text-xs">
-              ${savedLog && savedLog.source === 'intervals' ? '✨ Ver Consejo con Datos Reales de Intervals' : '🔄 Sincronizar y Ver Consejo'}
+              ${savedLog && savedLog.source === 'intervals' ? '✨ Ver Consejo con Datos Reales' : '🔄 Sincronizar y Ver Consejo'}
             </button>
           </div>
         `;
@@ -1170,7 +1259,56 @@
     }
 
     // =========================================================================
-    // TRADUCCIÓN TÉCNICA CLARA EN EL MODAL DE CONSEJOS (FTP, VO2MÁX, FATIGA)
+    // MODAL DE BALANCE SEMANAL Y CIERRE (ADAPTACIÓN DE LA SIGUIENTE SEMANA)
+    // =========================================================================
+    function openWeeklyReviewModal() {
+      document.getElementById('wrPreviewAdaptation').textContent =
+        `Al procesar el balance de la Semana ${state.currentWeek}, evaluaremos tus salidas reales y tu descanso para adaptar matemáticamente la Semana ${state.currentWeek + 1}.`;
+      document.getElementById('weeklyReviewModal').classList.remove('hidden');
+    }
+
+    function closeWeeklyReviewModal() {
+      document.getElementById('weeklyReviewModal').classList.add('hidden');
+    }
+
+    function processWeeklyBalanceAndUnlockNext() {
+      const strengthStatus = document.getElementById('wrStrengthStatus').value;
+      const restStatus = document.getElementById('wrRestStatus').value;
+
+      // Guardar resumen de la semana
+      state.weeklySummaries[`W${state.currentWeek}`] = {
+        strengthStatus,
+        restStatus,
+        date: new Date().toISOString()
+      };
+
+      // Adaptar el factor de progresión científico según fatiga y cumplimiento
+      if (restStatus === 'good' && strengthStatus === 'all') {
+        state.weeklyProgressionFactor = Math.min(1.30, +(state.weeklyProgressionFactor + 0.04).toFixed(2));
+      } else if (restStatus === 'exhausted' || strengthStatus === 'none') {
+        state.weeklyProgressionFactor = Math.max(0.85, +(state.weeklyProgressionFactor - 0.05).toFixed(2));
+      }
+
+      state.effectiveTrainingWeeksCount++;
+
+      // Desbloquear la siguiente semana
+      if (state.currentWeek < state.totalWeeks) {
+        state.currentWeek += 1;
+        state.maxUnlockedWeek = Math.max(state.maxUnlockedWeek, state.currentWeek);
+      }
+
+      closeWeeklyReviewModal();
+      populateWeekSelector();
+      buildWeekSchedule(state.currentWeek);
+      renderPlanUI();
+      renderSyncUI();
+      saveStateToLocal();
+
+      alert(`✅ ¡Balance de la Semana ${state.currentWeek - 1} guardado con éxito!\n\nEl Coach ha adaptado los estímulos y ya quedó desbloqueada la Semana ${state.currentWeek}.`);
+    }
+
+    // =========================================================================
+    // CONSEJO TÉCNICO PROFUNDO (FTP, VO2MÁX, FATIGA)
     // =========================================================================
     async function openSmartAdviceModal(dayIdx) {
       state.selectedDayForFeedback = dayIdx;
@@ -1178,7 +1316,7 @@
       const nextDay = state.plan[(dayIdx + 1) % 7];
       const logKey = `W${state.currentWeek}_D${dayIdx}`;
 
-      document.getElementById('fbModalTitle').textContent = `Análisis Técnico y Consejo — ${w.day}`;
+      document.getElementById('fbModalTitle').textContent = `Análisis Profesional de Coach — ${w.day}`;
 
       if (w.type === 'strength') {
         document.getElementById('fbModalBadge').textContent = 'FORTALECIMIENTO FUERA DE LA BICI';
@@ -1189,7 +1327,7 @@
         return;
       }
 
-      document.getElementById('fbModalBadge').textContent = 'TRADUCCIÓN TÉCNICA AUTOMÁTICA (FTP, VO2MÁX, FATIGA)';
+      document.getElementById('fbModalBadge').textContent = 'ANÁLISIS PROFESIONAL (FTP, VO2MÁX, FATIGA)';
       document.getElementById('fbStrengthConfirmBox').classList.add('hidden');
 
       if (!state.completedLogs[logKey] || state.completedLogs[logKey].source !== 'intervals') {
@@ -1224,30 +1362,25 @@
       document.getElementById('fbStatHR').textContent = `${realData.realHR || '--'} ppm`;
       document.getElementById('fbStatCAD').textContent = `${realData.realCAD || '--'} rpm`;
 
-      // TRADUCCIÓN CLARA DE TÉRMINOS TÉCNICOS
       const t = w.targets;
       let analysisLines = [];
 
-      // Explicación de Volumen y Fatiga (Training Load)
-      const loadVal = realData.load || (realData.durationMin * 0.7);
-      analysisLines.push(`• **Fatiga y Carga Acumulada (Training Load):** Hoy sumaste una carga de esfuerzo de **${loadVal} puntos**. Traducido en sencillo: es el desgaste total que le pediste a tus músculos y a tu corazón hoy. Al mantenerlo en este rango, tu cuerpo asimila el trabajo sin romper el tejido muscular.`);
+      const loadVal = realData.load || Math.round(realData.durationMin * 0.7);
+      analysisLines.push(`• **Fatiga y Carga Acumulada (Training Load):** Hoy sumaste una carga de esfuerzo de **${loadVal} puntos**. En castellano claro: es el peaje que le pagaste a tus piernas hoy. Al mantenerlo en este rango, estimulas el crecimiento sin romper el tejido.`);
 
-      // Explicación de FTP / Umbral
       if (w.zone >= 4) {
-        analysisLines.push(`• **Traducción del FTP (Umbral de Potencia):** Como el entreno de hoy fue en Ritmo 4, pusiste a prueba tu FTP (la potencia máxima que sostienes 1 hora). Tu pulso real fue de ${realData.realHR} ppm frente a la meta de ${t.hrWorkMin}-${t.hrWorkMax} ppm. ${realData.realHR <= t.hrWorkMax ? '¡Excelente! Demuestra que tu umbral está sólido y respondiendo bien.' : 'Tu pulso subió más del límite, señal de que el umbral iba exigido hoy; recuerda descansar bien mañana.'}`);
+        analysisLines.push(`• **Traducción del FTP (Umbral Funcional):** Al rodar en Ritmo 4, pusiste a prueba tu FTP (la potencia máxima que sostienes 1 hora). Tu pulso promedio fue de ${realData.realHR} ppm (meta: ${t.hrWorkMin}-${t.hrWorkMax} ppm). ${realData.realHR <= t.hrWorkMax ? '¡Excelente trabajo! Tu umbral está sólido.' : 'Tu pulso superó ligeramente el umbral; cuida el descanso mañana.'}`);
       } else {
-        analysisLines.push(`• **Estado del FTP y Base:** Hoy trabajamos en zona aeróbica (${w.zone}). Esto construye la tubería invisible que sostiene tu FTP a largo plazo sin desgastarte.`);
+        analysisLines.push(`• **Base Aeróbica:** Hoy trabajamos en zona ${w.zone}. Esto construye la resistencia mitocondrial que sostiene tu FTP a largo plazo.`);
       }
 
-      // Explicación de VO2máx si aplica
       if (w.zone === 5) {
-        analysisLines.push(`• **Traducción del VO2máx (Tanque de Oxígeno):** Al hacer intervalos en Ritmo 5, obligaste a tus pulmones y a tu corazón a bombear el máximo oxígeno posible. Con un pulso máximo real de ${realData.maxHR} ppm, expandiste tu cilindrada máxima.`);
+        analysisLines.push(`• **Traducción del VO2máx (Tanque de Oxígeno):** Al hacer intervalos en Ritmo 5, tus pulmones y corazón bombearon al máximo. Con un pulso pico de ${realData.maxHR} ppm, ampliaste tu cilindrada.`);
       }
 
-      // Siguiente día
-      let nextAdvice = `• **Para mañana (${nextDay.day}):** Tienes "${nextDay.title}". Sigue las pautas de hidratación (${nextDay.nutrition.totalMl} ml) y pedalea con calma.`;
+      let nextAdvice = `• **Para mañana (${nextDay.day}):** Tienes "${nextDay.title}". Mantén la hidratación (${nextDay.nutrition.totalMl} ml) y pedalea con control.`;
 
-      const report = `Hola ${state.rider.name}, análisis técnico traducido de tu salida:\n\n` + analysisLines.join('\n\n') + `\n\n` + nextAdvice;
+      const report = `Hola ${state.rider.name || 'Ciclista'}, aquí tienes el análisis técnico detallado de tu salida:\n\n` + analysisLines.join('\n\n') + `\n\n` + nextAdvice;
       state.lastFeedbackReport = report;
       document.getElementById('fbDiagnosisText').textContent = report;
       document.getElementById('feedbackModal').classList.remove('hidden');
@@ -1261,13 +1394,13 @@
       state.completedLogs[`W${state.currentWeek}_D${idx}`] = { status: 'full', rpe, source: 'strength' };
       saveStateToLocal();
 
-      const report = `Hola ${state.rider.name}, resumen de tu sesión de fuerza (${w.day}):\n\n• Terminaste con un cansancio muscular de ${rpe}/10.\n• Estos ejercicios protegen tus rodillas y tu zona lumbar.\n• Mañana en "${nextDay.title}" arranca suave si sientes las piernas pesadas.`;
+      const report = `Hola ${state.rider.name || 'Ciclista'}, resumen de tu sesión de fuerza (${w.day}):\n\n• Cansancio muscular reportado: ${rpe}/10.\n• Estos ejercicios protegen tus rodillas y tu zona lumbar en los fondos largos.\n• Mañana en "${nextDay.title}" arranca suave para soltar los músculos.`;
       state.lastFeedbackReport = report;
       document.getElementById('fbDiagnosisText').textContent = report;
     }
 
     function closeFeedbackModal() { document.getElementById('feedbackModal').classList.add('hidden'); }
-    function sendFeedbackByEmail() { window.location.href = `mailto:${state.rider.email}?subject=Consejo Veltempo&body=${encodeURIComponent(state.lastFeedbackReport)}`; }
+    function sendFeedbackByEmail() { window.location.href = `mailto:${state.rider.email || 'correo@ejemplo.com'}?subject=Devolución trenin_plan&body=${encodeURIComponent(state.lastFeedbackReport)}`; }
     function sendFeedbackByWhatsApp() { window.open(`https://wa.me/?text=${encodeURIComponent(state.lastFeedbackReport)}`, '_blank'); }
 
     function buildIntervalsWorkoutSyntax(dayIdx) {
@@ -1316,7 +1449,7 @@
         const res = await fetch(`https://intervals.icu/api/v1/athlete/${encodeURIComponent(athleteId)}/events`, {
           method: 'POST',
           headers: { 'Authorization': 'Basic ' + btoa('API_KEY:' + apiKey), 'Content-Type': 'application/json' },
-          body: JSON.stringify({ category: 'WORKOUT', start_date_local: `${targetDate}T06:00:00`, type: 'Ride', name: `Veltempo S${state.currentWeek} - ${w.title}`, description: buildIntervalsWorkoutSyntax(dayIdx) })
+          body: JSON.stringify({ category: 'WORKOUT', start_date_local: `${targetDate}T06:00:00`, type: 'Ride', name: `trenin_plan S${state.currentWeek} - ${w.title}`, description: buildIntervalsWorkoutSyntax(dayIdx) })
         });
         if (!res.ok) throw new Error('Error al subir.');
         alert('✅ ¡Entrenamiento con alertas de pantalla y cadencia subido a Intervals.icu!');
@@ -1328,7 +1461,7 @@
     function closeBackupModal() { document.getElementById('backupModal').classList.add('hidden'); }
     function exportProfileBackup() {
       const blob = new Blob([localStorage.getItem(STORAGE_KEY)], { type: 'application/json' });
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `Veltempo_Backup.json`; a.click();
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `trenin_plan_Backup.json`; a.click();
     }
     function importProfileBackup(ev) {
       const file = ev.target.files[0];
