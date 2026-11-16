@@ -163,7 +163,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
             <label class="block text-xs font-semibold text-stone-300 mb-1">Marca / Modelo</label>
-            <input id="inBikeBrand" type="text" value="BMC Teammachine" oninput="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white" />
+            <input id="inBikeBrand" type="text" value="Giant TCR" oninput="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white" />
           </div>
           <div>
             <label class="block text-xs font-semibold text-stone-300 mb-1">Talla</label>
@@ -589,7 +589,7 @@
       </div>
       <div class="pt-3 border-t border-stone-800 flex justify-between items-center">
         <button onclick="resetAllData()" class="text-xs text-rose-400">Reiniciar Todo</button>
-        <button onclick="closeBackupModal()" class="px-4 py-2 rounded-xl bg-stone-800 text-stone-200 text-xs">Cerrar</button>
+        <button onclick="closeBackupModal()" class="px-4 py-2 rounded-xl bg-stone-800 text-stone-300 text-xs">Cerrar</button>
       </div>
     </div>
   </div>
@@ -638,7 +638,7 @@
   </nav>
 
   <script>
-    const STORAGE_KEY = 'trenin_plan_v38_database';
+    const STORAGE_KEY = 'trenin_plan_v39_database';
 
     const state = {
       hasSavedProfile: false,
@@ -686,9 +686,9 @@
       intervalsActivities: [],
       planStartDate: '',
       totalWeeks: 12,
-      currentWeek: 1,
-      maxUnlockedWeek: 1,
-      effectiveTrainingWeeksCount: 0,
+      currentWeek: 2, // Por defecto hoy 16 de nov arranca la Semana 2
+      maxUnlockedWeek: 2,
+      effectiveTrainingWeeksCount: 1,
       weeklyProgressionFactor: 1.0,
       completedLogs: {},
       weeklySummaries: {},
@@ -805,12 +805,12 @@
     function saveAndGeneratePlan() {
       state.lastActiveTab = 'plan';
       if (!state.planStartDate) {
-        // Fijar el inicio en el lunes de la semana pasada (ej. 9 de noviembre de 2026 para que la semana pasada sea la 1 y hoy 16 sea la 2)
-        const d = new Date();
-        const day = d.getDay();
-        const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Lunes
-        const monday = new Date(d.setDate(diff));
-        monday.setDate(monday.getDate() - 7); // Retroceder 7 días para que Semana 1 sea la pasada
+        // Fijar el inicio exactamente hace 7 días para que la semana pasada sea la 1 y hoy lunes 16 de nov sea la Semana 2
+        const mondayPast = new Date();
+        mondayPast.setDate(mondayPast.getDate() - 7);
+        const day = mondayPast.getDay();
+        const diff = mondayPast.getDate() - day + (day === 0 ? -6 : 1);
+        const monday = new Date(mondayPast.setDate(diff));
         state.planStartDate = monday.toISOString();
       }
       readInputsAndComputeMetrics();
@@ -950,7 +950,7 @@
     }
 
     function calculateAllowedWeekByCalendar() {
-      if (!state.planStartDate) return 1;
+      if (!state.planStartDate) return 2;
       const start = new Date(state.planStartDate);
       start.setHours(0,0,0,0);
       const now = new Date();
@@ -958,7 +958,8 @@
       const diffTime = now - start;
       const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
       const calendarWeek = Math.floor(diffDays / 7) + 1;
-      // Permitir desbloquear hasta la semana actual por calendario, más la que el usuario haya cerrado formalmente
+      
+      // Permitir desbloquear estrictamente hasta la semana actual por calendario real, limitada por el cierre formal
       const allowed = Math.max(state.maxUnlockedWeek, Math.min(state.totalWeeks, calendarWeek));
       state.maxUnlockedWeek = allowed;
       return allowed;
@@ -984,7 +985,7 @@
       weekNum = parseInt(weekNum);
       calculateAllowedWeekByCalendar();
       if (weekNum > state.maxUnlockedWeek) {
-        alert('⚠️ Esta semana aún está bloqueada por calendario. No puedes avanzar a semanas futuras antes de tiempo.');
+        alert('⚠️ Esta semana aún está bloqueada por calendario. No puedes avanzar a semanas futuras antes de que llegue su fecha.');
         document.getElementById('selActiveWeek').value = state.currentWeek;
         return;
       }
@@ -1126,7 +1127,7 @@
       weekEnd.setDate(weekEnd.getDate() + 7);
       weekEnd.setHours(23,59,59,999);
 
-      // Limpiar logs previos de esta semana para evitar datos residuales de semanas pasadas
+      // Limpiar logs previos de esta semana para evitar datos residuales
       state.plan.forEach((dayItem, idx) => {
         if (dayItem.type !== 'bike') return;
         const logKey = `W${state.currentWeek}_D${idx}`;
@@ -1194,11 +1195,11 @@
           state.intervalsAuth.lastSyncSummary = `Sintonía perfecta: ${state.intervalsActivities.length} actividades leídas de Intervals.icu.`;
         }
         if (!state.planStartDate) {
-          const d = new Date();
-          const day = d.getDay();
-          const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-          const monday = new Date(d.setDate(diff));
-          monday.setDate(monday.getDate() - 7);
+          const mondayPast = new Date();
+          mondayPast.setDate(mondayPast.getDate() - 7);
+          const day = mondayPast.getDay();
+          const diff = mondayPast.getDate() - day + (day === 0 ? -6 : 1);
+          const monday = new Date(mondayPast.setDate(diff));
           state.planStartDate = monday.toISOString();
         }
         readInputsAndComputeMetrics();
@@ -1303,9 +1304,24 @@
               <div class="p-2 bg-cyan-950/30 rounded border border-cyan-500/30 text-cyan-300">Cadencia: <strong>${t.cadWorkMin}-${t.cadWorkMax} rpm</strong></div>
             </div>
             <p class="text-xs text-stone-300">${d.details}</p>
-            <button onclick="openSmartAdviceModal(${idx})" class="w-full py-2.5 rounded-xl bg-amber-500/25 border border-amber-400/50 text-amber-200 font-extrabold text-xs">
-              ${savedLog && savedLog.source === 'intervals' ? '✨ Ver Consejo con Datos Reales' : '🔄 Sincronizar y Ver Consejo'}
-            </button>
+            
+            <!-- BARRA RESTAURADA DE BOTONES DE EXPORTACIÓN Y CONSEJO -->
+            <div class="pt-2 border-t border-stone-800 space-y-2">
+              <div class="grid grid-cols-3 gap-1.5">
+                <button onclick="openIntervalsExport(${idx})" class="py-2 px-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-stone-950 font-extrabold text-[11px] flex items-center justify-center gap-1">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> Intervals
+                </button>
+                <button onclick="downloadBinaryFIT(${idx})" class="py-2 px-1 rounded-lg bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/40 text-orange-300 font-bold text-[11px] flex items-center justify-center gap-1">
+                  <i class="fa-solid fa-microchip"></i> .FIT
+                </button>
+                <button onclick="downloadWorkoutZWO(${idx})" class="py-2 px-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 font-bold text-[11px] flex items-center justify-center gap-1">
+                  <i class="fa-solid fa-file-code"></i> .ZWO
+                </button>
+              </div>
+              <button onclick="openSmartAdviceModal(${idx})" class="w-full py-2.5 rounded-xl bg-amber-500/25 border border-amber-400/50 text-amber-200 font-extrabold text-xs flex items-center justify-center gap-1.5">
+                ${savedLog && savedLog.source === 'intervals' ? '✨ Ver Consejo con Datos Reales' : '🔄 Sincronizar y Ver Consejo'}
+              </button>
+            </div>
           </div>
         `;
       }).join('');
@@ -1317,7 +1333,10 @@
       list.innerHTML = bikeDays.map(d => `
         <div class="p-3.5 rounded-xl bg-stone-900 border border-stone-800 flex justify-between items-center text-xs">
           <div><strong class="text-amber-400">${d.day}</strong> — ${d.title} (${d.durationMin} min)</div>
-          <button onclick="openIntervalsExport(${d.idx})" class="px-3 py-1.5 bg-amber-500 text-stone-950 font-bold rounded">Enviar a Intervals</button>
+          <div class="flex gap-1.5">
+            <button onclick="openIntervalsExport(${d.idx})" class="px-2.5 py-1.5 bg-amber-500 text-stone-950 font-bold rounded">Intervals</button>
+            <button onclick="downloadBinaryFIT(${d.idx})" class="px-2.5 py-1.5 bg-orange-500/20 border border-orange-500/40 text-orange-300 font-bold rounded">.FIT</button>
+          </div>
         </div>
       `).join('');
     }
@@ -1465,7 +1484,7 @@
       let analysisLines = [];
 
       const loadVal = realData.load || Math.round(realData.durationMin * 0.7);
-      analysisLines.push(`• **Fatiga y Carga de Entrenamiento (Training Load):** Hoy acumulaste **${loadVal} puntos de estrés**. Es el volumen de fatiga que le inyectaste a tu organismo. Controlار esto evita que llegues fundido al fin de semana.`);
+      analysisLines.push(`• **Fatiga y Carga de Entrenamiento (Training Load):** Hoy acumulaste **${loadVal} puntos de estrés**. Es el volumen de fatiga que le inyectaste a tu organismo. Controlar esto evita que llegues fundido al fin de semana.`);
 
       if (w.zone >= 4) {
         analysisLines.push(`• **Evaluación de Pulso y FTP (Umbral):** Tu objetivo era mantener el pulso entre **${t.hrWorkMin} y ${t.hrWorkMax} ppm** en los bloques fuertes. Tu promedio real fue de **${realData.realHR} ppm**.\n  ${realData.realHR <= t.hrWorkMax ? '¡Excelente ejecución! Te mantuviste dentro de la ventana de umbral sin disparar el ácido láctico prematuramente.' : 'Te pasaste del techo de pulso objetivo. Esto indica que la intensidad fue más alta de lo planeado (por calor o terreno); mañana regula más el esfuerzo.'}`);
@@ -1507,6 +1526,120 @@
     function closeFeedbackModal() { document.getElementById('feedbackModal').classList.add('hidden'); }
     function sendFeedbackByEmail() { window.location.href = `mailto:${state.rider.email || 'correo@ejemplo.com'}?subject=Devolución trenin_plan&body=${encodeURIComponent(state.lastFeedbackReport)}`; }
     function sendFeedbackByWhatsApp() { window.open(`https://wa.me/?text=${encodeURIComponent(state.lastFeedbackReport)}`, '_blank'); }
+
+    // =========================================================================
+    // EXPORTADOR CONCOMITANTE (.FIT, .ZWO Y TEXTO CON TEXTEVENT PARA MAGENE)
+    // =========================================================================
+    function computeFitCRC(bytes, length) {
+      const crcTable = [
+        0x0000, 0xCC01, 0xD801, 0x1400, 0xF001, 0x3C00, 0x2800, 0xE401,
+        0xA001, 0x6C00, 0x7800, 0xB401, 0x5000, 0x9C01, 0x8801, 0x4400
+      ];
+      let crc = 0;
+      for (let i = 0; i < length; i++) {
+        const byte = bytes[i];
+        let tmp = crcTable[crc & 0xF];
+        crc = (crc >> 4) & 0x0FFF;
+        crc = crc ^ tmp ^ crcTable[byte & 0xF];
+        tmp = crcTable[crc & 0xF];
+        crc = (crc >> 4) & 0x0FFF;
+        crc = crc ^ tmp ^ crcTable[(byte >> 4) & 0xF];
+      }
+      return crc;
+    }
+
+    function downloadBinaryFIT(dayIdx) {
+      const w = state.plan[dayIdx];
+      const t = w.targets;
+      const hasPM = state.bike.hasPM;
+
+      const steps = [];
+      steps.push({
+        name: `Suave FC:${t.hrWarmMin}-${t.hrWarmMax}`,
+        durSec: w.warmMin * 60,
+        hrLow: t.hrWarmMin + 100, hrHigh: t.hrWarmMax + 100,
+        wLow: t.wWarmMin + 1000, wHigh: t.wWarmMax + 1000
+      });
+
+      const loops = Math.max(1, w.reps);
+      for (let r = 0; r < loops; r++) {
+        steps.push({
+          name: `R${w.zone} FC:${t.hrWorkMin}-${t.hrWorkMax}`,
+          durSec: w.workMin * 60,
+          hrLow: t.hrWorkMin + 100, hrHigh: t.hrWorkMax + 100,
+          wLow: t.wWorkMin + 1000, wHigh: t.wWorkMax + 1000
+        });
+        if (w.reps > 1 && r < loops - 1) {
+          steps.push({
+            name: `Rec FC:${t.hrRestMin}-${t.hrRestMax}`,
+            durSec: w.restMin * 60,
+            hrLow: t.hrRestMin + 100, hrHigh: t.hrRestMax + 100,
+            wLow: t.wRestMin + 1000, wHigh: t.wRestMax + 1000
+          });
+        }
+      }
+
+      steps.push({
+        name: `Soltar`,
+        durSec: w.coolMin * 60,
+        hrLow: t.hrRestMin + 100, hrHigh: t.hrRestMax + 100,
+        wLow: t.wRestMin + 1000, wHigh: t.wRestMax + 1000
+      });
+
+      const dataBytes = [];
+      const pushU8 = v => dataBytes.push(v & 0xFF);
+      const pushU16 = v => { dataBytes.push(v & 0xFF, (v >> 8) & 0xFF); };
+      const pushU32 = v => { dataBytes.push(v & 0xFF, (v >> 8) & 0xFF, (v >> 16) & 0xFF, (v >> 24) & 0xFF); };
+      const pushFixedStr = (str, len) => { for (let i = 0; i < len; i++) { pushU8(i < str.length ? str.charCodeAt(i) : 0); } };
+
+      dataBytes.push(0x40, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x01, 0x00, 0x01, 0x02, 0x84, 0x02, 0x02, 0x84, 0x04, 0x04, 0x86);
+      pushU8(0x00); pushU8(5); pushU16(1); pushU16(1); pushU32(Math.floor(Date.now() / 1000) - 631065600);
+
+      dataBytes.push(0x41, 0x00, 0x00, 26, 0x00, 0x03, 0x04, 0x01, 0x00, 0x06, 0x02, 0x84, 0x08, 16, 0x07);
+      pushU8(0x01); pushU8(2); pushU16(steps.length); pushFixedStr(`S${state.currentWeek}_${w.shortDay}`, 16);
+
+      dataBytes.push(0x42, 0x00, 0x00, 27, 0x00, 0x08, 254, 0x02, 0x84, 0x00, 24, 0x07, 0x01, 0x01, 0x00, 0x02, 0x04, 0x86, 0x03, 0x01, 0x00, 0x04, 0x04, 0x86, 0x05, 0x04, 0x86, 0x06, 0x04, 0x86);
+
+      steps.forEach((st, idx) => {
+        pushU8(0x02); pushU16(idx); pushFixedStr(st.name, 24); pushU8(0); pushU32(st.durSec * 1000);
+        pushU8(hasPM ? 4 : 1); pushU32(0); pushU32(hasPM ? st.wLow : st.hrLow); pushU32(hasPM ? st.wHigh : st.hrHigh);
+      });
+
+      const dataLen = dataBytes.length;
+      const header = [14, 0x10, 0x6C, 0x08, dataLen & 0xFF, (dataLen >> 8) & 0xFF, (dataLen >> 16) & 0xFF, (dataLen >> 24) & 0xFF, 0x2E, 0x46, 0x49, 0x54];
+      const hdrCRC = computeFitCRC(header, 12);
+      header.push(hdrCRC & 0xFF, (hdrCRC >> 8) & 0xFF);
+
+      const fullFile = new Uint8Array(header.length + dataBytes.length + 2);
+      fullFile.set(header, 0); fullFile.set(dataBytes, header.length);
+      const fileCRC = computeFitCRC(fullFile, header.length + dataBytes.length);
+      fullFile[fullFile.length - 2] = fileCRC & 0xFF; fullFile[fullFile.length - 1] = (fileCRC >> 8) & 0xFF;
+
+      const blob = new Blob([fullFile], { type: 'application/octet-stream' });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      a.download = `trenin_S${state.currentWeek}_${w.shortDay}.fit`; a.click();
+    }
+
+    function downloadWorkoutZWO(dayIdx) {
+      const w = state.plan[dayIdx];
+      const t = w.targets;
+      let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<workout_file>\n  <author>trenin_plan</author>\n  <name>S${state.currentWeek}_${w.day}</name>\n  <sportType>bike</sportType>\n  <workout>\n`;
+      xml += `    <Warmup Duration="${w.warmMin * 60}" PowerLow="0.48" PowerHigh="0.65"/>\n`;
+      if (w.reps > 1) {
+        xml += `    <IntervalsT Repeat="${w.reps}" OnDuration="${w.workMin * 60}" OffDuration="${w.restMin * 60}" OnPower="${t.wWorkPct}" OffPower="0.52">\n`;
+        xml += `      <textevent timeoffset="900" message="💧 ¡Toma ${w.nutrition.mlEvery15} ml de agua!"/>\n`;
+        xml += `      <textevent timeoffset="2400" message="🍌 ¡Come carbohidratos ahora!"/>\n`;
+        xml += `    </IntervalsT>\n`;
+      } else {
+        xml += `    <SteadyState Duration="${w.workMin * 60}" Power="${t.wWorkPct}">\n`;
+        xml += `      <textevent timeoffset="900" message="💧 ¡Toma ${w.nutrition.mlEvery15} ml de agua!"/>\n`;
+        xml += `    </SteadyState>\n`;
+      }
+      xml += `    <Cooldown Duration="${w.coolMin * 60}" PowerLow="0.58" PowerHigh="0.45"/>\n  </workout>\n</workout_file>`;
+      const blob = new Blob([xml], { type: 'application/octet-stream' });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      a.download = `trenin_S${state.currentWeek}_${w.shortDay}.zwo`; a.click();
+    }
 
     function buildIntervalsWorkoutSyntax(dayIdx) {
       const w = state.plan[dayIdx];
@@ -1572,10 +1705,7 @@
       const file = ev.target.files[0];
       if (!file) return;
       const r = new FileReader();
-      r.onload = function(e) {
-        localStorage.setItem(STORAGE_KEY, e.target.result);
-        location.reload();
-      };
+      r.onload = function(e) { localStorage.setItem(STORAGE_KEY, e.target.result); location.reload(); };
       r.readAsText(file);
     }
     function resetAllData() { if (confirm('¿Reiniciar todo?')) { localStorage.removeItem(STORAGE_KEY); location.reload(); } }
@@ -1604,6 +1734,11 @@
       document.getElementById('inEventDate').value = new Date(Date.now() + 56*86400000).toISOString().split('T')[0];
       loadStateFromLocal((hadData) => {
         readInputsAndComputeMetrics();
+        // Forzar inicio exacto de la Semana 2 en este momento actual de noviembre de 2026
+        if (!state.planStartDate) {
+          const pastMonday = new Date(2026, 10, 9); // Lunes 9 de noviembre de 2026
+          state.planStartDate = pastMonday.toISOString();
+        }
         calculateAllowedWeekByCalendar();
         populateWeekSelector();
         buildWeekSchedule(state.currentWeek);
