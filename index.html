@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="trenin_plan" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#0f172a" />
+  <meta name="theme-color" content="#120e0a" />
   <title>trenin_plan — Tu Plan de Ciclismo Inteligente</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -15,55 +15,55 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: #160916;
-      color: #f8fafc;
+      background-color: #120e0a; /* Fondo cálido carbón/marrón oscuro */
+      color: #f5f5f4;
       -webkit-tap-highlight-color: transparent;
       padding-bottom: 92px;
     }
     .mono { font-family: 'JetBrains Mono', monospace; }
     .glass {
-      background: rgba(15, 23, 42, 0.88);
+      background: rgba(24, 20, 16, 0.9);
       backdrop-filter: blur(14px);
-      border: 1px solid rgba(51, 65, 85, 0.6);
+      border: 1px solid rgba(120, 113, 108, 0.35);
     }
     .bottom-nav {
       padding-bottom: env(safe-area-inset-bottom, 12px);
     }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    ::-webkit-scrollbar-track { background: #120e0a; }
+    ::-webkit-scrollbar-thumb { background: #44403c; border-radius: 3px; }
   </style>
 </head>
-<body class="min-h-screen selection:bg-emerald-500 selection:text-slate-950">
+<body class="min-h-screen selection:bg-amber-500 selection:text-slate-950">
 
-  <!-- ENCABEZADO SUPERIOR -->
-  <header class="sticky top-0 z-40 glass border-b border-slate-800/90 px-3 py-2.5">
+  <!-- ENCABEZADO SUPERIOR CÁLIDO -->
+  <header class="sticky top-0 z-40 glass border-b border-amber-900/30 px-3 py-2.5">
     <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
       <div class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/20">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-amber-500/20">
           <i class="fa-solid fa-person-biking text-lg"></i>
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white">trenin<span class="text-emerald-400">_plan</span></h1>
-            <span id="saveStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>Sincronizado
+            <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white">trenin<span class="text-amber-500">_plan</span></h1>
+            <span id="saveStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">
+              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>Sintonizado
             </span>
           </div>
-          <p class="text-[11px] text-slate-400">Coach Pro • <span class="text-rose-400 font-semibold">Pulso</span> • <span class="text-amber-400 font-semibold">FTP</span> • <span class="text-cyan-400 font-semibold">Cadencia</span></p>
+          <p class="text-[11px] text-stone-400">Coach Pro • <span class="text-amber-400 font-semibold">Pulso</span> • <span class="text-orange-400 font-semibold">FTP</span> • <span class="text-amber-200 font-semibold">Cadencia</span></p>
         </div>
       </div>
 
       <div class="flex items-center gap-1.5">
-        <button onclick="openIntervalsSyncModal()" class="px-2.5 py-1.5 rounded-lg bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-400/50 text-indigo-200 text-xs font-bold flex items-center gap-1.5 transition">
+        <button onclick="openIntervalsSyncModal()" class="px-2.5 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-200 text-xs font-bold flex items-center gap-1.5 transition">
           <i class="fa-solid fa-rotate"></i>
           <span>Intervals.icu</span>
         </button>
-        <button onclick="openLiveTimerModal()" class="px-2.5 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/40 text-cyan-300 text-xs font-semibold flex items-center gap-1.5 transition">
+        <button onclick="openLiveTimerModal()" class="px-2.5 py-1.5 rounded-lg bg-orange-500/15 hover:bg-orange-500/25 border border-orange-500/40 text-orange-300 text-xs font-semibold flex items-center gap-1.5 transition">
           <i class="fa-solid fa-stopwatch"></i>
           <span class="hidden sm:inline">Reloj Agua</span>
         </button>
-        <button onclick="openBackupModal()" class="px-2.5 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-300 text-xs font-semibold flex items-center gap-1.5 transition">
+        <button onclick="openBackupModal()" class="px-2.5 py-1.5 rounded-lg bg-stone-800 hover:bg-stone-700 border border-stone-700 text-stone-300 text-xs font-semibold flex items-center gap-1.5 transition">
           <i class="fa-solid fa-database"></i>
         </button>
       </div>
@@ -76,38 +76,38 @@
     <!-- PASO 1: DATOS DEL CICLISTA -->
     <section id="tab-step1" class="tab-panel space-y-4">
       <div class="glass rounded-2xl p-4 sm:p-6">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+        <div class="flex items-center justify-between border-b border-stone-800 pb-3 mb-4">
           <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Paso 1 de 3</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-500">Paso 1 de 3</span>
             <h2 class="text-lg sm:text-xl font-bold text-white">Tus Datos Fisiológicos</h2>
           </div>
-          <i class="fa-solid fa-id-card-clip text-2xl text-slate-600"></i>
+          <i class="fa-solid fa-id-card-clip text-2xl text-stone-600"></i>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Nombre y Apellido</label>
-            <input id="inName" type="text" value="" placeholder="Nombre Apellido" oninput="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none" />
+            <label class="block text-xs font-semibold text-stone-300 mb-1">Nombre Apellido</label>
+            <input id="inName" type="text" value="" placeholder="Nombre Apellido" oninput="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white focus:border-amber-500 focus:outline-none" />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Correo (Para consejos post-entreno)</label>
-            <input id="inEmail" type="email" value="" placeholder="tucorreo@dominio.com" oninput="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none" />
+            <label class="block text-xs font-semibold text-stone-300 mb-1">Correo (Para consejos post-entreno)</label>
+            <input id="inEmail" type="email" value="" placeholder="tucorreo@dominio.com" oninput="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white focus:border-amber-500 focus:outline-none" />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Edad (años)</label>
-            <input id="inAge" type="number" value="42" min="14" max="85" oninput="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white mono focus:border-emerald-400 focus:outline-none" />
+            <label class="block text-xs font-semibold text-stone-300 mb-1">Edad (años)</label>
+            <input id="inAge" type="number" value="42" min="14" max="85" oninput="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white mono focus:border-amber-500 focus:outline-none" />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Peso (kg)</label>
-            <input id="inWeight" type="number" value="72" step="0.5" min="38" max="150" oninput="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white mono focus:border-emerald-400 focus:outline-none" />
+            <label class="block text-xs font-semibold text-stone-300 mb-1">Peso (kg)</label>
+            <input id="inWeight" type="number" value="72" step="0.5" min="38" max="150" oninput="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white mono focus:border-amber-500 focus:outline-none" />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Estatura (cm)</label>
-            <input id="inHeight" type="number" value="175" min="135" max="215" oninput="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white mono focus:border-emerald-400 focus:outline-none" />
+            <label class="block text-xs font-semibold text-stone-300 mb-1">Estatura (cm)</label>
+            <input id="inHeight" type="number" value="175" min="135" max="215" oninput="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white mono focus:border-amber-500 focus:outline-none" />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Experiencia</label>
-            <select id="inLevel" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none">
+            <label class="block text-xs font-semibold text-stone-300 mb-1">Experiencia</label>
+            <select id="inLevel" onchange="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white focus:border-amber-500 focus:outline-none">
               <option value="beginner">Principiante (< 1 año)</option>
               <option value="intermediate" selected>Intermedio (1 a 3 años)</option>
               <option value="advanced">Avanzado (> 3 años)</option>
@@ -115,34 +115,34 @@
           </div>
         </div>
 
-        <div class="mt-5 pt-4 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div class="p-3.5 rounded-xl bg-rose-950/25 border border-rose-500/30">
-            <label class="block text-xs font-bold text-rose-300 mb-1">
+        <div class="mt-5 pt-4 border-t border-stone-800 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="p-3.5 rounded-xl bg-amber-950/20 border border-amber-500/30">
+            <label class="block text-xs font-bold text-amber-300 mb-1">
               <i class="fa-solid fa-heart-pulse mr-1"></i>Pulsaciones Máximas (FC Máx)
             </label>
-            <input id="inMaxHR" type="number" value="182" min="0" max="220" oninput="autoSaveInputs()" class="w-full rounded-lg bg-slate-900 border border-rose-500/40 px-3 py-1.5 text-sm text-white mono" />
-            <p class="text-[11px] text-slate-400 mt-1">Pon 0 para calcular automático por edad.</p>
+            <input id="inMaxHR" type="number" value="182" min="0" max="220" oninput="autoSaveInputs()" class="w-full rounded-lg bg-stone-950 border border-amber-500/40 px-3 py-1.5 text-sm text-white mono" />
+            <p class="text-[11px] text-stone-400 mt-1">Pon 0 para calcular automático por edad.</p>
           </div>
 
-          <div class="p-3.5 rounded-xl bg-rose-950/25 border border-rose-500/30">
-            <label class="block text-xs font-bold text-rose-300 mb-1">
+          <div class="p-3.5 rounded-xl bg-amber-950/20 border border-amber-500/30">
+            <label class="block text-xs font-bold text-amber-300 mb-1">
               <i class="fa-solid fa-bed mr-1"></i>Pulsaciones en Reposo
             </label>
-            <input id="inRestHR" type="number" value="56" min="35" max="100" oninput="autoSaveInputs()" class="w-full rounded-lg bg-slate-900 border border-rose-500/40 px-3 py-1.5 text-sm text-white mono" />
-            <p class="text-[11px] text-slate-400 mt-1">Latidos al despertar tranquilamente.</p>
+            <input id="inRestHR" type="number" value="56" min="35" max="100" oninput="autoSaveInputs()" class="w-full rounded-lg bg-stone-950 border border-amber-500/40 px-3 py-1.5 text-sm text-white mono" />
+            <p class="text-[11px] text-stone-400 mt-1">Latidos al despertar tranquilamente.</p>
           </div>
 
-          <div class="p-3.5 rounded-xl bg-amber-950/25 border border-amber-500/30">
-            <label class="block text-xs font-bold text-amber-300 mb-1">
+          <div class="p-3.5 rounded-xl bg-orange-950/20 border border-orange-500/30">
+            <label class="block text-xs font-bold text-orange-300 mb-1">
               <i class="fa-solid fa-bolt mr-1"></i>FTP (Potencia Sostenible / Vatios)
             </label>
-            <input id="inFTP" type="number" value="0" min="0" max="500" placeholder="0 = Automático" oninput="autoSaveInputs()" class="w-full rounded-lg bg-slate-900 border border-amber-500/40 px-3 py-1.5 text-sm text-white mono" />
-            <p class="text-[11px] text-slate-400 mt-1">Vatios que aguantas 1 hora. Pon 0 si no tienes potenciómetro.</p>
+            <input id="inFTP" type="number" value="0" min="0" max="500" placeholder="0 = Automático" oninput="autoSaveInputs()" class="w-full rounded-lg bg-stone-950 border border-orange-500/40 px-3 py-1.5 text-sm text-white mono" />
+            <p class="text-[11px] text-stone-400 mt-1">Vatios que aguantas 1 hora. Pon 0 si no tienes potenciómetro.</p>
           </div>
         </div>
 
         <div class="mt-5 flex justify-end">
-          <button onclick="switchTab('step2')" class="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm flex items-center gap-2 transition">
+          <button onclick="switchTab('step2')" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-sm flex items-center gap-2 transition">
             Siguiente: Tu Bici y Sensores <i class="fa-solid fa-arrow-right"></i>
           </button>
         </div>
@@ -152,22 +152,22 @@
     <!-- PASO 2: BICICLETA Y DISPOSITIVOS -->
     <section id="tab-step2" class="tab-panel hidden space-y-4">
       <div class="glass rounded-2xl p-4 sm:p-6">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+        <div class="flex items-center justify-between border-b border-stone-800 pb-3 mb-4">
           <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Paso 2 de 3</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-500">Paso 2 de 3</span>
             <h2 class="text-lg sm:text-xl font-bold text-white">Bicicleta y Sensores</h2>
           </div>
-          <i class="fa-solid fa-gears text-2xl text-slate-600"></i>
+          <i class="fa-solid fa-gears text-2xl text-stone-600"></i>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Marca / Modelo</label>
-            <input id="inBikeBrand" type="text" value="BMC Teammachine" oninput="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white" />
+            <label class="block text-xs font-semibold text-stone-300 mb-1">Marca / Modelo</label>
+            <input id="inBikeBrand" type="text" value="Giant TCR" oninput="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white" />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Talla</label>
-            <select id="inBikeSize" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
+            <label class="block text-xs font-semibold text-stone-300 mb-1">Talla</label>
+            <select id="inBikeSize" onchange="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white">
               <option value="XS">XS</option>
               <option value="S">S</option>
               <option value="M" selected>M</option>
@@ -176,23 +176,23 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Grupo de Cambios</label>
-            <select id="inGroupset" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
+            <label class="block text-xs font-semibold text-stone-300 mb-1">Grupo de Cambios</label>
+            <select id="inGroupset" onchange="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white">
               <option value="Shimano 105 (11v)" selected>Shimano 105 (11v / 12v)</option>
               <option value="Shimano Ultegra">Shimano Ultegra / Dura-Ace</option>
               <option value="SRAM Rival/Force">SRAM Rival / Force AXS</option>
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Relación (Platos y Pacha)</label>
-            <select id="inGearing" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
+            <label class="block text-xs font-semibold text-stone-300 mb-1">Relación (Platos y Pacha)</label>
+            <select id="inGearing" onchange="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white">
               <option value="compact-34" selected>Compact 50/34 con 11-32/34 (Ideal Montaña)</option>
               <option value="semi-28">Semi-Compact 52/36 con 11-28 (Dura en loma)</option>
             </select>
           </div>
           <div class="sm:col-span-2">
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Ciclocomputador</label>
-            <select id="inHeadUnit" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-emerald-500/50 px-3 py-2 text-sm text-white font-semibold">
+            <label class="block text-xs font-semibold text-stone-300 mb-1">Ciclocomputador</label>
+            <select id="inHeadUnit" onchange="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-amber-500/50 px-3 py-2 text-sm text-white font-semibold">
               <option value="magene" selected>Magene C706 / C606 (Vía Intervals.icu)</option>
               <option value="garmin">Garmin Edge</option>
               <option value="wahoo">Wahoo ELEMNT</option>
@@ -200,27 +200,27 @@
           </div>
         </div>
 
-        <div class="mt-5 pt-4 border-t border-slate-800">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Sensores Activos</h3>
+        <div class="mt-5 pt-4 border-t border-stone-800">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-stone-300 mb-2">Sensores Activos</h3>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-900/90 border border-rose-500/40 cursor-pointer">
-              <input id="chkHR" type="checkbox" checked onchange="autoSaveInputs()" class="mt-1 w-4 h-4 accent-rose-500" />
-              <div><div class="text-sm font-bold text-rose-300">Banda Cardíaca (Pulso)</div></div>
+            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-stone-950 border border-amber-500/30 cursor-pointer">
+              <input id="chkHR" type="checkbox" checked onchange="autoSaveInputs()" class="mt-1 w-4 h-4 accent-amber-500" />
+              <div><div class="text-sm font-bold text-amber-200">Banda Cardíaca (Pulso)</div></div>
             </label>
-            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-900/90 border border-amber-500/40 cursor-pointer">
-              <input id="chkPM" type="checkbox" onchange="autoSaveInputs()" class="mt-1 w-4 h-4 accent-amber-500" />
-              <div><div class="text-sm font-bold text-amber-300">Potenciómetro (Vatios)</div></div>
+            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-stone-950 border border-orange-500/30 cursor-pointer">
+              <input id="chkPM" type="checkbox" onchange="autoSaveInputs()" class="mt-1 w-4 h-4 accent-orange-500" />
+              <div><div class="text-sm font-bold text-orange-200">Potenciómetro (Vatios)</div></div>
             </label>
-            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-900/90 border border-cyan-500/40 cursor-pointer">
-              <input id="chkCAD" type="checkbox" checked onchange="autoSaveInputs()" class="mt-1 w-4 h-4 accent-cyan-500" />
-              <div><div class="text-sm font-bold text-cyan-300">Sensor Cadencia (Pedaleo)</div></div>
+            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-stone-950 border border-amber-400/30 cursor-pointer">
+              <input id="chkCAD" type="checkbox" checked onchange="autoSaveInputs()" class="mt-1 w-4 h-4 accent-amber-400" />
+              <div><div class="text-sm font-bold text-amber-100">Sensor Cadencia (Pedaleo)</div></div>
             </label>
           </div>
         </div>
 
         <div class="mt-5 flex justify-between">
-          <button onclick="switchTab('step1')" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-semibold text-sm">Anterior</button>
-          <button onclick="switchTab('step3')" class="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-sm">Siguiente: Tiempo y Meta</button>
+          <button onclick="switchTab('step1')" class="px-4 py-2 rounded-xl bg-stone-800 text-stone-300 font-semibold text-sm">Anterior</button>
+          <button onclick="switchTab('step3')" class="px-5 py-2.5 rounded-xl bg-amber-500 text-stone-950 font-bold text-sm">Siguiente: Tiempo y Meta</button>
         </div>
       </div>
     </section>
@@ -228,20 +228,20 @@
     <!-- PASO 3: OBJETIVO Y TIEMPO -->
     <section id="tab-step3" class="tab-panel hidden space-y-4">
       <div class="glass rounded-2xl p-4 sm:p-6">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+        <div class="flex items-center justify-between border-b border-stone-800 pb-3 mb-4">
           <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Paso 3 de 3</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-500">Paso 3 de 3</span>
             <h2 class="text-lg sm:text-xl font-bold text-white">Disponibilidad y Objetivo</h2>
           </div>
-          <i class="fa-solid fa-clock text-2xl text-emerald-400"></i>
+          <i class="fa-solid fa-clock text-2xl text-amber-500"></i>
         </div>
 
-        <div class="p-4 rounded-2xl bg-emerald-950/25 border border-emerald-500/40 mb-5">
-          <h3 class="text-xs font-extrabold uppercase tracking-wider text-emerald-300 mb-3">Tiempo Libre para Entrenar</h3>
+        <div class="p-4 rounded-2xl bg-amber-950/20 border border-amber-500/40 mb-5">
+          <h3 class="text-xs font-extrabold uppercase tracking-wider text-amber-300 mb-3">Tiempo Libre para Entrenar</h3>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <label class="block text-xs font-bold text-white mb-1">Entre Semana (Mar a Vie)</label>
-              <select id="inWeekdayMin" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-emerald-500/50 px-3 py-2.5 text-sm text-emerald-300 font-bold">
+              <select id="inWeekdayMin" onchange="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-amber-500/50 px-3 py-2.5 text-sm text-amber-300 font-bold">
                 <option value="45">45 minutos</option>
                 <option value="60" selected>1 hora (60 min)</option>
                 <option value="75">1 hora y 15 min</option>
@@ -251,7 +251,7 @@
             </div>
             <div>
               <label class="block text-xs font-bold text-white mb-1">Fondo de Fin de Semana</label>
-              <select id="inWeekendMin" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-emerald-500/50 px-3 py-2.5 text-sm text-emerald-300 font-bold">
+              <select id="inWeekendMin" onchange="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-amber-500/50 px-3 py-2.5 text-sm text-amber-300 font-bold">
                 <option value="120">2 horas (120 min)</option>
                 <option value="150" selected>2 horas y media (150 min)</option>
                 <option value="180">3 horas (180 min)</option>
@@ -260,7 +260,7 @@
             </div>
             <div>
               <label class="block text-xs font-bold text-white mb-1">Días de Bici por Semana</label>
-              <select id="inBikeDays" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-emerald-500/50 px-3 py-2.5 text-sm text-white font-semibold">
+              <select id="inBikeDays" onchange="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2.5 text-sm text-white font-semibold">
                 <option value="3">3 días Bici + 2 Fuerza + 2 Descanso</option>
                 <option value="4" selected>4 días Bici + 2 Fuerza + 1 Descanso</option>
                 <option value="5">5 días Bici + 1 Fuerza + 1 Descanso</option>
@@ -271,28 +271,28 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Meta Principal</label>
-            <select id="inGoalType" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
+            <label class="block text-xs font-semibold text-stone-300 mb-1">Meta Principal</label>
+            <select id="inGoalType" onchange="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white">
               <option value="granfondo" selected>Gran Fondo / Competencia</option>
               <option value="climbing">Subir Mejor en Montaña</option>
               <option value="structured">Salud y Orden</option>
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Fecha del Evento</label>
-            <input id="inEventDate" type="date" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white mono" />
+            <label class="block text-xs font-semibold text-stone-300 mb-1">Fecha del Evento</label>
+            <input id="inEventDate" type="date" onchange="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white mono" />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Terreno Habitual</label>
-            <select id="inTerrain" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
+            <label class="block text-xs font-semibold text-stone-300 mb-1">Terreno Habitual</label>
+            <select id="inTerrain" onchange="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white">
               <option value="mountain" selected>Montaña / Puertos</option>
               <option value="rolling">Ondulado / Repechos</option>
               <option value="flat">Plano</option>
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Fortalecimiento</label>
-            <select id="inStrengthMode" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
+            <label class="block text-xs font-semibold text-stone-300 mb-1">Fortalecimiento</label>
+            <select id="inStrengthMode" onchange="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white">
               <option value="gym" selected>Gimnasio / Pesas</option>
               <option value="home">En Casa (Peso corporal)</option>
             </select>
@@ -300,8 +300,8 @@
         </div>
 
         <div class="mt-4">
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Clima</label>
-          <select id="inClimate" onchange="autoSaveInputs()" class="w-full sm:w-1/2 rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
+          <label class="block text-xs font-semibold text-stone-300 mb-1">Clima</label>
+          <select id="inClimate" onchange="autoSaveInputs()" class="w-full sm:w-1/2 rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white">
             <option value="warm" selected>Caluroso / Húmedo</option>
             <option value="temperate">Templado</option>
             <option value="cold">Frío / Altura</option>
@@ -309,55 +309,55 @@
         </div>
 
         <div class="mt-6 flex flex-wrap justify-between items-center gap-3">
-          <button onclick="switchTab('step2')" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-semibold text-sm">Anterior</button>
-          <button onclick="saveAndGeneratePlan()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-400 to-cyan-400 text-slate-950 font-extrabold text-sm shadow-lg">
+          <button onclick="switchTab('step2')" class="px-4 py-2 rounded-xl bg-stone-800 text-stone-300 font-semibold text-sm">Anterior</button>
+          <button onclick="saveAndGeneratePlan()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-stone-950 font-extrabold text-sm shadow-lg">
             Guardar Mis Datos y Ver Mi Plan
           </button>
         </div>
       </div>
     </section>
 
-    <!-- SECCIÓN 4: MI PLAN SEMANAL (PROGRESIVO Y ADAPTATIVO) -->
+    <!-- SECCIÓN 4: MI PLAN SEMANAL (BLOQUEADO FUTURO, PROGRESIVO) -->
     <section id="tab-plan" class="tab-panel hidden space-y-4">
 
-      <div class="glass rounded-2xl p-4 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-l-4 border-l-emerald-400">
+      <div class="glass rounded-2xl p-4 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-l-4 border-l-amber-500">
         <div class="space-y-1">
           <div class="flex flex-wrap items-center gap-2">
-            <span id="planPhaseBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">FASE</span>
-            <span id="fitnessLevelBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">Nivel: 100%</span>
+            <span id="planPhaseBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">FASE</span>
+            <span id="fitnessLevelBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-orange-500/20 text-orange-300 border border-orange-500/40">Nivel: 100%</span>
           </div>
           <h2 id="planHeaderTitle" class="text-lg sm:text-xl font-extrabold text-white">Plan Semanal Progresivo</h2>
-          <p id="planFocusDescription" class="text-xs text-emerald-300 font-medium"></p>
-          <p id="planSubSummary" class="text-[11px] text-slate-400"></p>
+          <p id="planFocusDescription" class="text-xs text-amber-300 font-medium"></p>
+          <p id="planSubSummary" class="text-[11px] text-stone-400"></p>
         </div>
 
         <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto justify-end">
-          <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5">
-            <label class="text-xs font-semibold text-slate-400">Semana:</label>
-            <select id="selActiveWeek" onchange="changeActiveWeek(this.value)" class="bg-transparent text-xs font-bold text-emerald-400 focus:outline-none mono"></select>
+          <div class="flex items-center gap-1.5 bg-stone-950 border border-stone-800 rounded-xl px-2.5 py-1.5">
+            <label class="text-xs font-semibold text-stone-400">Semana:</label>
+            <select id="selActiveWeek" onchange="changeActiveWeek(this.value)" class="bg-transparent text-xs font-bold text-amber-400 focus:outline-none mono"></select>
           </div>
-          <button onclick="openWeeklyReviewModal()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-400 hover:to-cyan-400 text-slate-950 text-xs font-extrabold flex items-center gap-1.5 transition shadow-lg">
+          <button onclick="openWeeklyReviewModal()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-stone-950 text-xs font-extrabold flex items-center gap-1.5 transition shadow-lg">
             <i class="fa-solid fa-flag-checkered"></i> Terminar Semana y Ver Balance
           </button>
         </div>
       </div>
 
-      <div id="intervalsAdaptationBanner" class="hidden glass rounded-2xl p-4 border border-indigo-500/40 bg-indigo-950/20 space-y-1.5">
+      <div id="intervalsAdaptationBanner" class="hidden glass rounded-2xl p-4 border border-amber-500/40 bg-amber-950/20 space-y-1.5">
         <div class="flex items-center justify-between">
-          <span class="text-xs font-extrabold uppercase tracking-wider text-indigo-300">
+          <span class="text-xs font-extrabold uppercase tracking-wider text-amber-300">
             <i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Sintonizado con Intervals.icu
           </span>
-          <span id="intervalsLastSyncDate" class="text-[10px] text-slate-400 mono"></span>
+          <span id="intervalsLastSyncDate" class="text-[10px] text-stone-400 mono"></span>
         </div>
-        <p id="intervalsAdaptationSummary" class="text-xs text-slate-200 leading-relaxed"></p>
+        <p id="intervalsAdaptationSummary" class="text-xs text-stone-200 leading-relaxed"></p>
       </div>
 
       <div class="glass rounded-2xl p-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-3">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-200">
-            <i class="fa-solid fa-gauge-high mr-1.5 text-emerald-400"></i>Guía Rápida de tus 5 Ritmos
+          <h3 class="text-xs font-bold uppercase tracking-wider text-stone-200">
+            <i class="fa-solid fa-gauge-high mr-1.5 text-amber-500"></i>Guía Rápida de tus 5 Ritmos
           </h3>
-          <span id="zonesRefMeta" class="text-[11px] text-slate-400 mono"></span>
+          <span id="zonesRefMeta" class="text-[11px] text-stone-400 mono"></span>
         </div>
         <div id="zonesGrid" class="grid grid-cols-1 sm:grid-cols-5 gap-2.5"></div>
       </div>
@@ -369,26 +369,26 @@
     <!-- SECCIÓN 5: PASAR AL CICLOCOMPUTADOR -->
     <section id="tab-sync" class="tab-panel hidden space-y-4">
       <div class="glass rounded-2xl p-4 sm:p-6 space-y-5">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center justify-between border-b border-stone-800 pb-3">
           <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Magene C706 / Garmin</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-500">Magene C706 / Garmin</span>
             <h2 class="text-lg sm:text-xl font-extrabold text-white">Enviar Entrenamientos a Intervals.icu</h2>
           </div>
-          <i class="fa-solid fa-satellite-dish text-2xl text-emerald-400"></i>
+          <i class="fa-solid fa-satellite-dish text-2xl text-amber-500"></i>
         </div>
 
-        <div class="p-4 rounded-xl bg-indigo-950/30 border border-indigo-500/40 space-y-2">
-          <div class="flex items-center gap-2 text-sm font-bold text-indigo-200">
-            <i class="fa-solid fa-bolt text-amber-400"></i>
+        <div class="p-4 rounded-xl bg-amber-950/35 border border-amber-500/40 space-y-2">
+          <div class="flex items-center gap-2 text-sm font-bold text-amber-200">
+            <i class="fa-solid fa-bolt text-orange-400"></i>
             Ciclo Pro en Ruta
           </div>
-          <p class="text-xs text-slate-300 leading-relaxed">
+          <p class="text-xs text-stone-300 leading-relaxed">
             Envía los bloques estructurados de la semana actual directamente a tu calendario de Intervals.icu con un toque. Al terminar tu rodada en el Magene C706, regresa a la app para recibir el análisis técnico detallado con traducción de FTP y VO2máx.
           </p>
         </div>
 
         <div>
-          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3">Sesiones de la Semana Activa</h3>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-stone-300 mb-3">Sesiones de la Semana Activa</h3>
           <div id="syncWorkoutsList" class="space-y-3"></div>
         </div>
       </div>
@@ -397,91 +397,91 @@
   </main>
 
   <!-- MODAL INTERVALS -->
-  <div id="intervalsSyncModal" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="glass rounded-2xl max-w-xl w-full p-5 border border-indigo-500/50 space-y-4 max-h-[92vh] overflow-y-auto">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+  <div id="intervalsSyncModal" class="fixed inset-0 z-50 hidden bg-stone-950/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass rounded-2xl max-w-xl w-full p-5 border border-amber-500/50 space-y-4 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-stone-800 pb-3">
         <div>
-          <span class="text-[10px] font-extrabold uppercase tracking-wider text-indigo-400">Sintonía</span>
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-400">Sintonía</span>
           <h3 class="text-base font-extrabold text-white">Vincular con Intervals.icu</h3>
         </div>
-        <button onclick="closeIntervalsSyncModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+        <button onclick="closeIntervalsSyncModal()" class="text-stone-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">Athlete ID</label>
-          <input id="inIntervalsId" type="text" placeholder="Ej: i184920" oninput="saveIntervalsCredentials()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white mono" />
+          <label class="block text-xs font-bold text-stone-300 mb-1">Athlete ID</label>
+          <input id="inIntervalsId" type="text" placeholder="Ej: i184920" oninput="saveIntervalsCredentials()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white mono" />
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">API Key</label>
-          <input id="inIntervalsKey" type="password" placeholder="API Key" oninput="saveIntervalsCredentials()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white mono" />
+          <label class="block text-xs font-bold text-stone-300 mb-1">API Key</label>
+          <input id="inIntervalsKey" type="password" placeholder="API Key" oninput="saveIntervalsCredentials()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white mono" />
         </div>
       </div>
 
-      <button onclick="fetchAndAnalyzeIntervalsActivities()" id="btnFetchIntervals" class="w-full py-2.5 px-4 rounded-xl bg-indigo-500 text-slate-950 font-extrabold text-xs">
+      <button onclick="fetchAndAnalyzeIntervalsActivities()" id="btnFetchIntervals" class="w-full py-2.5 px-4 rounded-xl bg-amber-500 text-stone-950 font-extrabold text-xs">
         Sincronizar Mis Entrenamientos Ahora
       </button>
 
-      <div id="intervalsFetchedContainer" class="hidden space-y-3 pt-2 border-t border-slate-800">
-        <div class="text-xs font-bold text-emerald-300 flex items-center justify-between">
+      <div id="intervalsFetchedContainer" class="hidden space-y-3 pt-2 border-t border-stone-800">
+        <div class="text-xs font-bold text-amber-300 flex items-center justify-between">
           <span>Sesiones leídas:</span>
-          <span id="intervalsCountBadge" class="mono text-[11px] text-slate-400"></span>
+          <span id="intervalsCountBadge" class="mono text-[11px] text-stone-400"></span>
         </div>
         <div id="intervalsActivitiesList" class="space-y-2 max-h-52 overflow-y-auto pr-1"></div>
-        <div id="intervalsAiVerdict" class="p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-500/40 text-xs text-slate-200 leading-relaxed whitespace-pre-line"></div>
+        <div id="intervalsAiVerdict" class="p-3.5 rounded-xl bg-amber-950/30 border border-amber-500/40 text-xs text-stone-200 leading-relaxed whitespace-pre-line"></div>
       </div>
     </div>
   </div>
 
   <!-- MODAL ENVIAR A INTERVALS -->
-  <div id="intervalsModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="glass rounded-2xl max-w-lg w-full p-5 border border-emerald-500/40 space-y-4">
+  <div id="intervalsModal" class="fixed inset-0 z-50 hidden bg-stone-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass rounded-2xl max-w-lg w-full p-5 border border-amber-500/40 space-y-4">
       <div class="flex items-center justify-between">
         <h3 class="text-base font-extrabold text-white">Enviar a Intervals.icu</h3>
-        <button onclick="closeIntervalsModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+        <button onclick="closeIntervalsModal()" class="text-stone-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
-      <p id="intervalsModalSubtitle" class="text-xs text-slate-300"></p>
-      <textarea id="intervalsModalTextarea" readonly rows="10" class="w-full rounded-xl bg-slate-950 border border-slate-700 p-3 text-xs mono text-emerald-300 focus:outline-none"></textarea>
+      <p id="intervalsModalSubtitle" class="text-xs text-stone-300"></p>
+      <textarea id="intervalsModalTextarea" readonly rows="10" class="w-full rounded-xl bg-stone-950 border border-stone-800 p-3 text-xs mono text-amber-300 focus:outline-none"></textarea>
       <div class="flex flex-wrap justify-between items-center gap-2">
         <div class="flex flex-wrap gap-2">
-          <button onclick="pushWorkoutDirectlyToIntervals()" id="btnDirectPushIntervals" class="px-3.5 py-2 rounded-xl bg-indigo-500 text-slate-950 font-extrabold text-xs">
+          <button onclick="pushWorkoutDirectlyToIntervals()" id="btnDirectPushIntervals" class="px-3.5 py-2 rounded-xl bg-amber-500 text-stone-950 font-extrabold text-xs">
             Subir al Calendario
           </button>
-          <button onclick="copyIntervalsTextarea()" class="px-3.5 py-2 rounded-xl bg-emerald-500/20 text-emerald-300 font-bold text-xs">
+          <button onclick="copyIntervalsTextarea()" class="px-3.5 py-2 rounded-xl bg-amber-500/20 text-amber-300 font-bold text-xs">
             Copiar Texto
           </button>
         </div>
-        <button onclick="closeIntervalsModal()" class="px-3.5 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs">Cerrar</button>
+        <button onclick="closeIntervalsModal()" class="px-3.5 py-2 rounded-xl bg-stone-800 text-stone-300 text-xs">Cerrar</button>
       </div>
     </div>
   </div>
 
   <!-- MODAL CONSEJO TÉCNICO PROFUNDO -->
-  <div id="feedbackModal" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="glass rounded-2xl max-w-lg w-full p-5 border border-emerald-500/40 space-y-4 max-h-[92vh] overflow-y-auto">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+  <div id="feedbackModal" class="fixed inset-0 z-50 hidden bg-stone-950/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass rounded-2xl max-w-lg w-full p-5 border border-amber-500/40 space-y-4 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-stone-800 pb-2.5">
         <div>
-          <span id="fbModalBadge" class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400">Análisis Profesional de Coach</span>
+          <span id="fbModalBadge" class="text-[10px] font-extrabold uppercase tracking-wider text-amber-400">Análisis Profesional de Coach</span>
           <h3 id="fbModalTitle" class="text-base font-extrabold text-white mt-0.5">Devolución del Entrenamiento</h3>
         </div>
-        <button onclick="closeFeedbackModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+        <button onclick="closeFeedbackModal()" class="text-stone-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
 
-      <div id="fbAutoStatsCard" class="hidden p-3.5 rounded-xl bg-slate-900 border border-emerald-500/30 space-y-2">
+      <div id="fbAutoStatsCard" class="hidden p-3.5 rounded-xl bg-stone-900 border border-amber-500/30 space-y-2">
         <div class="flex items-center justify-between">
-          <span id="fbActivityName" class="text-xs font-extrabold text-emerald-300"></span>
-          <span id="fbActivityDate" class="text-[10px] text-slate-400 mono"></span>
+          <span id="fbActivityName" class="text-xs font-extrabold text-amber-300"></span>
+          <span id="fbActivityDate" class="text-[10px] text-stone-400 mono"></span>
         </div>
         <div class="grid grid-cols-3 gap-2 pt-1 text-center">
-          <div class="p-2 rounded-lg bg-slate-950 border border-slate-800">
-            <div class="text-[10px] text-slate-400">Tiempo Real</div>
+          <div class="p-2 rounded-lg bg-stone-950 border border-stone-800">
+            <div class="text-[10px] text-stone-400">Tiempo Real</div>
             <div id="fbStatDuration" class="text-sm font-extrabold text-white mono mt-0.5">-- min</div>
           </div>
-          <div class="p-2 rounded-lg bg-slate-950 border border-rose-500/30">
+          <div class="p-2 rounded-lg bg-stone-950 border border-rose-500/30">
             <div class="text-[10px] text-rose-300">Pulso Real</div>
             <div id="fbStatHR" class="text-sm font-extrabold text-white mono mt-0.5">-- ppm</div>
           </div>
-          <div class="p-2 rounded-lg bg-slate-950 border border-cyan-500/30">
+          <div class="p-2 rounded-lg bg-stone-950 border border-cyan-500/30">
             <div class="text-[10px] text-cyan-300">Pedaleo Real</div>
             <div id="fbStatCAD" class="text-sm font-extrabold text-white mono mt-0.5">-- rpm</div>
           </div>
@@ -489,27 +489,27 @@
       </div>
 
       <div id="fbStrengthConfirmBox" class="hidden p-3.5 rounded-xl bg-purple-950/20 border border-purple-500/30 space-y-3">
-        <p class="text-xs text-slate-300">Confirma tu sesión de fuerza sin bicicleta:</p>
+        <p class="text-xs text-stone-300">Confirma tu sesión de fuerza sin bicicleta:</p>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-[11px] font-bold text-slate-300 mb-1">¿Hiciste los ejercicios?</label>
-            <select id="fbStrengthDone" onchange="generateStrengthAdvice()" class="w-full rounded-lg bg-slate-900 border border-slate-700 px-2.5 py-2 text-xs text-white">
+            <label class="block text-[11px] font-bold text-stone-300 mb-1">¿Hiciste los ejercicios?</label>
+            <select id="fbStrengthDone" onchange="generateStrengthAdvice()" class="w-full rounded-lg bg-stone-950 border border-stone-700 px-2.5 py-2 text-xs text-white">
               <option value="full">Sí, completa</option>
               <option value="partial">Una parte</option>
               <option value="skipped">Descansé</option>
             </select>
           </div>
           <div>
-            <label class="block text-[11px] font-bold text-slate-300 mb-1">Cansancio muscular: <span id="fbRPEVal" class="text-emerald-400">6</span>/10</label>
-            <input id="fbRPE" type="range" min="1" max="10" value="6" oninput="document.getElementById('fbRPEVal').textContent=this.value; generateStrengthAdvice();" class="w-full accent-emerald-400 mt-1.5" />
+            <label class="block text-[11px] font-bold text-stone-300 mb-1">Cansancio muscular: <span id="fbRPEVal" class="text-amber-400">6</span>/10</label>
+            <input id="fbRPE" type="range" min="1" max="10" value="6" oninput="document.getElementById('fbRPEVal').textContent=this.value; generateStrengthAdvice();" class="w-full accent-amber-500 mt-1.5" />
           </div>
         </div>
       </div>
 
-      <div id="fbResultBox" class="p-4 rounded-xl bg-slate-900 border border-slate-700 space-y-3">
-        <div id="fbDiagnosisText" class="text-xs text-slate-200 leading-relaxed whitespace-pre-line"></div>
-        <div class="flex flex-wrap gap-2 pt-3 border-t border-slate-800">
-          <button onclick="sendFeedbackByEmail()" class="px-3.5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs flex items-center gap-1.5">
+      <div id="fbResultBox" class="p-4 rounded-xl bg-stone-900 border border-stone-700 space-y-3">
+        <div id="fbDiagnosisText" class="text-xs text-stone-200 leading-relaxed whitespace-pre-line"></div>
+        <div class="flex flex-wrap gap-2 pt-3 border-t border-stone-800">
+          <button onclick="sendFeedbackByEmail()" class="px-3.5 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-stone-950 font-extrabold text-xs flex items-center gap-1.5">
             <i class="fa-solid fa-envelope"></i> Correo
           </button>
           <button onclick="sendFeedbackByWhatsApp()" class="px-3.5 py-2 rounded-lg bg-green-600 hover:bg-green-500 text-white font-bold text-xs flex items-center gap-1.5">
@@ -520,35 +520,35 @@
     </div>
   </div>
 
-  <!-- MODAL NUEVO: BALANCE SEMANAL DE CIERRE Y ADAPTACIÓN DE LA SIGUIENTE SEMANA -->
-  <div id="weeklyReviewModal" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="glass rounded-2xl max-w-xl w-full p-6 border border-indigo-500/50 space-y-5 max-h-[92vh] overflow-y-auto">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+  <!-- MODAL BALANCE SEMANAL -->
+  <div id="weeklyReviewModal" class="fixed inset-0 z-50 hidden bg-stone-950/90 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass rounded-2xl max-w-xl w-full p-6 border border-amber-500/50 space-y-5 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-stone-800 pb-3">
         <div>
-          <span class="text-[10px] font-extrabold uppercase tracking-wider text-indigo-400">Cierre de Ciclo</span>
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-400">Cierre de Ciclo Pro</span>
           <h3 id="wrModalTitle" class="text-base font-extrabold text-white">Balance Total de la Semana</h3>
         </div>
-        <button onclick="closeWeeklyReviewModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+        <button onclick="closeWeeklyReviewModal()" class="text-stone-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
 
       <div class="space-y-3">
-        <p class="text-xs text-slate-300">
-          Para preparar y adaptar científicamente el entrenamiento de la <strong>siguiente semana</strong> basándonos en hechos reales, cuéntanos cómo cerraste estos últimos 7 días:
+        <p class="text-xs text-stone-300" id="wrIntroText">
+          Evaluemos cómo cerraste la semana para que el Coach adapte científicamente la siguiente:
         </p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+          <div class="p-3 rounded-xl bg-stone-900 border border-stone-800">
             <label class="block text-xs font-bold text-purple-300 mb-1">¿Hiciste los entrenamientos de Fuerza?</label>
-            <select id="wrStrengthStatus" class="w-full rounded-lg bg-slate-950 border border-slate-700 px-2.5 py-2 text-xs text-white">
+            <select id="wrStrengthStatus" class="w-full rounded-lg bg-stone-950 border border-stone-700 px-2.5 py-2 text-xs text-white">
               <option value="all">Sí, completé ambas sesiones</option>
               <option value="partial">Hice solo una sesión</option>
               <option value="none">No pude hacer fuerza esta semana</option>
             </select>
           </div>
 
-          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
-            <label class="block text-xs font-bold text-cyan-300 mb-1">¿Cómo sentiste el descanso global?</label>
-            <select id="wrRestStatus" class="w-full rounded-lg bg-slate-950 border border-slate-700 px-2.5 py-2 text-xs text-white">
+          <div class="p-3 rounded-xl bg-stone-900 border border-stone-800">
+            <label class="block text-xs font-bold text-orange-300 mb-1">¿Cómo sentiste el descanso global?</label>
+            <select id="wrRestStatus" class="w-full rounded-lg bg-stone-950 border border-stone-700 px-2.5 py-2 text-xs text-white">
               <option value="good">Descansé bien y dormí completo</option>
               <option value="tired">Acumulé algo de fatiga o insomnio</option>
               <option value="exhausted">Llegué agotado al fin de semana</option>
@@ -556,81 +556,81 @@
           </div>
         </div>
 
-        <div class="p-4 rounded-xl bg-indigo-950/30 border border-indigo-500/40 space-y-2">
-          <div class="text-xs font-bold text-indigo-200"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Adaptación Automática del Coach</div>
-          <p class="text-xs text-slate-300" id="wrPreviewAdaptation">
-            Al procesar este balance, la app evaluará tus salidas reales en Intervals.icu, tu descanso y tu fuerza para desbloquear y ajustar el siguiente ciclo a tu condición exacta.
+        <div class="p-4 rounded-xl bg-amber-950/20 border border-amber-500/40 space-y-2">
+          <div class="text-xs font-bold text-amber-200"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Resumen y Adaptación Automática</div>
+          <p class="text-xs text-stone-300" id="wrPreviewAdaptation">
+            Calculando balance basado en tus salidas reales de Intervals.icu...
           </p>
         </div>
       </div>
 
-      <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
-        <button onclick="closeWeeklyReviewModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold">Cancelar</button>
-        <button onclick="processWeeklyBalanceAndUnlockNext()" class="px-5 py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-slate-950 text-xs font-extrabold shadow-lg">
-          Generar Balance y Desbloquear Siguiente Semana
+      <div class="flex justify-end gap-2 pt-2 border-t border-stone-800">
+        <button onclick="closeWeeklyReviewModal()" class="px-4 py-2 rounded-xl bg-stone-800 text-stone-300 text-xs font-bold">Cancelar</button>
+        <button onclick="processWeeklyBalanceAndUnlockNext()" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 text-xs font-extrabold shadow-lg">
+          Guardar Balance, Enviar Consejo y Desbloquear Siguiente Semana
         </button>
       </div>
     </div>
   </div>
 
   <!-- MODAL BACKUP -->
-  <div id="backupModal" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="glass rounded-2xl max-w-lg w-full p-5 border border-emerald-500/40 space-y-4">
+  <div id="backupModal" class="fixed inset-0 z-50 hidden bg-stone-950/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass rounded-2xl max-w-lg w-full p-5 border border-amber-500/40 space-y-4">
       <div class="flex items-center justify-between">
         <h3 class="text-base font-extrabold text-white">Copia de Seguridad</h3>
-        <button onclick="closeBackupModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+        <button onclick="closeBackupModal()" class="text-stone-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
       <div class="flex flex-wrap gap-2 pt-1">
-        <button onclick="exportProfileBackup()" class="px-3.5 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs">Descargar Datos (.json)</button>
-        <label class="px-3.5 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 font-bold text-xs cursor-pointer">
+        <button onclick="exportProfileBackup()" class="px-3.5 py-2 rounded-xl bg-amber-500 text-stone-950 font-bold text-xs">Descargar Datos (.json)</button>
+        <label class="px-3.5 py-2 rounded-xl bg-orange-500/20 text-orange-300 font-bold text-xs cursor-pointer">
           Restaurar Datos
           <input type="file" accept=".json" onchange="importProfileBackup(event)" class="hidden" />
         </label>
       </div>
-      <div class="pt-3 border-t border-slate-800 flex justify-between items-center">
+      <div class="pt-3 border-t border-stone-800 flex justify-between items-center">
         <button onclick="resetAllData()" class="text-xs text-rose-400">Reiniciar Todo</button>
-        <button onclick="closeBackupModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-200 text-xs">Cerrar</button>
+        <button onclick="closeBackupModal()" class="px-4 py-2 rounded-xl bg-stone-800 text-stone-300 text-xs">Cerrar</button>
       </div>
     </div>
   </div>
 
   <!-- MODAL TIMER -->
-  <div id="liveTimerModal" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="glass rounded-2xl max-w-md w-full p-5 border border-cyan-500/40 space-y-4 text-center">
+  <div id="liveTimerModal" class="fixed inset-0 z-50 hidden bg-stone-950/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass rounded-2xl max-w-md w-full p-5 border border-orange-500/40 space-y-4 text-center">
       <div class="flex items-center justify-between">
-        <span class="text-xs font-bold text-cyan-400">Reloj de Agua y Comida</span>
-        <button onclick="closeLiveTimerModal()" class="text-slate-400"><i class="fa-solid fa-xmark text-lg"></i></button>
+        <span class="text-xs font-bold text-orange-400">Reloj de Agua y Comida</span>
+        <button onclick="closeLiveTimerModal()" class="text-stone-400"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
       <div id="liveTimerClock" class="text-4xl font-extrabold mono text-white py-2">00:00:00</div>
-      <p id="liveTimerTargets" class="text-xs text-slate-300 bg-slate-900/90 p-3 rounded-xl"></p>
+      <p id="liveTimerTargets" class="text-xs text-stone-300 bg-stone-900/90 p-3 rounded-xl"></p>
       <div id="liveTimerAlertBanner" class="hidden p-3 rounded-xl bg-amber-500/20 text-amber-200 text-xs font-bold"></div>
       <div class="flex justify-center gap-2">
-        <button onclick="startLiveRideTimer()" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs">Iniciar</button>
-        <button onclick="pauseLiveRideTimer()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-200 font-bold text-xs">Pausar</button>
+        <button onclick="startLiveRideTimer()" class="px-4 py-2 rounded-xl bg-amber-500 text-stone-950 font-bold text-xs">Iniciar</button>
+        <button onclick="pauseLiveRideTimer()" class="px-4 py-2 rounded-xl bg-stone-800 text-stone-200 font-bold text-xs">Pausar</button>
       </div>
     </div>
   </div>
 
   <!-- BARRA DE NAVEGACIÓN INFERIOR -->
-  <nav class="fixed bottom-0 left-0 right-0 z-40 glass border-t border-slate-800 bottom-nav">
+  <nav class="fixed bottom-0 left-0 right-0 z-40 glass border-t border-stone-800 bottom-nav">
     <div class="max-w-xl mx-auto grid grid-cols-5 px-2 pt-1.5">
-      <button onclick="switchTab('step1')" id="nav-step1" class="nav-btn flex flex-col items-center py-1.5 text-emerald-400">
+      <button onclick="switchTab('step1')" id="nav-step1" class="nav-btn flex flex-col items-center py-1.5 text-amber-500">
         <i class="fa-solid fa-user-check text-base"></i>
         <span class="text-[10px] font-bold mt-0.5">1. Ciclista</span>
       </button>
-      <button onclick="switchTab('step2')" id="nav-step2" class="nav-btn flex flex-col items-center py-1.5 text-slate-400">
+      <button onclick="switchTab('step2')" id="nav-step2" class="nav-btn flex flex-col items-center py-1.5 text-stone-400">
         <i class="fa-solid fa-bicycle text-base"></i>
         <span class="text-[10px] font-bold mt-0.5">2. Mi Bici</span>
       </button>
-      <button onclick="switchTab('step3')" id="nav-step3" class="nav-btn flex flex-col items-center py-1.5 text-slate-400">
+      <button onclick="switchTab('step3')" id="nav-step3" class="nav-btn flex flex-col items-center py-1.5 text-stone-400">
         <i class="fa-solid fa-clock text-base"></i>
         <span class="text-[10px] font-bold mt-0.5">3. Mi Tiempo</span>
       </button>
-      <button onclick="switchTab('plan')" id="nav-plan" class="nav-btn flex flex-col items-center py-1.5 text-slate-400">
+      <button onclick="switchTab('plan')" id="nav-plan" class="nav-btn flex flex-col items-center py-1.5 text-stone-400">
         <i class="fa-solid fa-calendar-check text-base"></i>
         <span class="text-[10px] font-bold mt-0.5">Mi Plan</span>
       </button>
-      <button onclick="switchTab('sync')" id="nav-sync" class="nav-btn flex flex-col items-center py-1.5 text-slate-400">
+      <button onclick="switchTab('sync')" id="nav-sync" class="nav-btn flex flex-col items-center py-1.5 text-stone-400">
         <i class="fa-solid fa-download text-base"></i>
         <span class="text-[10px] font-bold mt-0.5">Pasar a Bici</span>
       </button>
@@ -638,7 +638,7 @@
   </nav>
 
   <script>
-    const STORAGE_KEY = 'trenin_plan_v36_database';
+    const STORAGE_KEY = 'trenin_plan_v37_database';
 
     const state = {
       hasSavedProfile: false,
@@ -684,13 +684,13 @@
         lastSyncDate: ''
       },
       intervalsActivities: [],
-      totalWeeks: 8,
+      totalWeeks: 12,
       currentWeek: 1,
-      maxUnlockedWeek: 1, // Solo desbloquea la siguiente semana tras hacer el balance
-      effectiveTrainingWeeksCount: 0, // Cuenta semanas efectivas para programar Test FTP cada 8 semanas
+      maxUnlockedWeek: 1,
+      effectiveTrainingWeeksCount: 0,
       weeklyProgressionFactor: 1.0,
       completedLogs: {},
-      weeklySummaries: {}, // Guarda los balances de cada semana
+      weeklySummaries: {},
       zones: [],
       plan: [],
       selectedDayForFeedback: 0,
@@ -816,20 +816,20 @@
       document.getElementById('tab-' + tabId).classList.remove('hidden');
 
       document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.remove('text-emerald-400');
-        btn.classList.add('text-slate-400');
+        btn.classList.remove('text-amber-500');
+        btn.classList.add('text-stone-400');
       });
       const activeNav = document.getElementById('nav-' + tabId);
       if (activeNav) {
-        activeNav.classList.remove('text-slate-400');
-        activeNav.classList.add('text-emerald-400');
+        activeNav.classList.remove('text-stone-400');
+        activeNav.classList.add('text-amber-500');
       }
       saveStateToLocal();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function readInputsAndComputeMetrics() {
-      state.rider.name = document.getElementById('inName').value.trim() || 'Ciclista';
+      state.rider.name = document.getElementById('inName').value.trim() || '';
       state.rider.email = document.getElementById('inEmail').value.trim() || '';
       state.rider.age = parseInt(document.getElementById('inAge').value) || 40;
       state.rider.weight = parseFloat(document.getElementById('inWeight').value) || 72;
@@ -883,7 +883,7 @@
       const ftp = state.rider.ftpCalculated;
 
       state.zones = [
-        { z: 1, name: 'Ritmo 1: Suave', feel: 'Conversación fluida sin fatiga.', color: 'border-slate-500/50 bg-slate-900/70 text-slate-200', hrMin: Math.round(maxHR * 0.55), hrMax: Math.round(maxHR * 0.65), wMin: Math.round(ftp * 0.45), wMax: Math.round(ftp * 0.55), cadMin: 85, cadMax: 95 },
+        { z: 1, name: 'Ritmo 1: Suave', feel: 'Conversación fluida sin fatiga.', color: 'border-stone-500/50 bg-stone-900/70 text-stone-200', hrMin: Math.round(maxHR * 0.55), hrMax: Math.round(maxHR * 0.65), wMin: Math.round(ftp * 0.45), wMax: Math.round(ftp * 0.55), cadMin: 85, cadMax: 95 },
         { z: 2, name: 'Ritmo 2: Fondo', feel: 'Frases completas. Quema grasa y da base aeróbica.', color: 'border-sky-500/50 bg-sky-950/30 text-sky-200', hrMin: Math.round(maxHR * 0.66), hrMax: Math.round(maxHR * 0.76), wMin: Math.round(ftp * 0.56), wMax: Math.round(ftp * 0.75), cadMin: 85, cadMax: 95 },
         { z: 3, name: 'Ritmo 3: Paso Firme', feel: 'Frases cortas. Sube a buen ritmo sin reventarte.', color: 'border-emerald-500/50 bg-emerald-950/30 text-emerald-200', hrMin: Math.round(maxHR * 0.77), hrMax: Math.round(maxHR * 0.84), wMin: Math.round(ftp * 0.76), wMax: Math.round(ftp * 0.90), cadMin: 80, cadMax: 90 },
         { z: 4, name: 'Ritmo 4: Fuerte (FTP)', feel: 'Ardor controlado. Tu umbral funcional de potencia.', color: 'border-amber-500/50 bg-amber-950/30 text-amber-200', hrMin: Math.round(maxHR * 0.85), hrMax: Math.round(maxHR * 0.91), wMin: Math.round(ftp * 0.91), wMax: Math.round(ftp * 1.05), cadMin: 82, cadMax: 95 },
@@ -959,7 +959,7 @@
     }
 
     // =========================================================================
-    // GENERADOR DINÁMICO SEMANA A SEMANA (EVITA COPY-PASTE ESTÁTICO)
+    // GENERADOR DINÁMICO DE LA SEMANA ACTIVA (NUNCA PREGENERA SEMANAS FUTURAS)
     // =========================================================================
     function buildWeekSchedule(weekNum) {
       const z1 = state.zones[0];
@@ -1065,23 +1065,35 @@
           item.nutrition = buildNutritionProtocol(item.durationMin, item.zone, 'bike');
         }
       });
-      matchIntervalsActivitiesToPlanDays();
+      matchIntervalsActivitiesToCurrentWeek();
     }
 
-    function matchIntervalsActivitiesToPlanDays() {
+    // =========================================================================
+    // EMPAREJAMIENTO ESTRICTO POR FECHAS DE LA SEMANA ACTUAL (EVITA FALSOS POSITIVOS)
+    // =========================================================================
+    function matchIntervalsActivitiesToCurrentWeek() {
       if (!state.intervalsActivities || state.intervalsActivities.length === 0) return;
-      const recentActs = [...state.intervalsActivities].filter(a => a && a.moving_time > 300 && a.start_date_local).sort((a, b) => new Date(b.start_date_local) - new Date(a.start_date_local));
-      const sevenDaysAgo = new Date();
-      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+      // Calcular la fecha de inicio y fin de la semana actual (simulando 7 días por semana desde el inicio)
+      const planStartDate = state.planStartDate ? new Date(state.planStartDate) : new Date();
+      const weekStart = new Date(planStartDate);
+      weekStart.setDate(weekStart.getDate() + (state.currentWeek - 1) * 7);
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekEnd.getDate() + 7);
 
       state.plan.forEach((dayItem, idx) => {
         if (dayItem.type !== 'bike') return;
-        const matchingAct = recentActs.find(act => {
+        const logKey = `W${state.currentWeek}_D${idx}`;
+
+        const matchingAct = state.intervalsActivities.find(act => {
+          if (!act || !act.start_date_local || act.moving_time < 300) return false;
           const actDate = new Date(act.start_date_local);
-          return actDate >= sevenDaysAgo && actDate.getDay() === dayItem.jsDay;
+          // Verificar que la actividad caiga estrictamente en esta semana y coincida con el día de la semana
+          return actDate >= weekStart && actDate < weekEnd && actDate.getDay() === dayItem.jsDay;
         });
+
         if (matchingAct) {
-          state.completedLogs[`W${state.currentWeek}_D${idx}`] = {
+          state.completedLogs[logKey] = {
             status: 'full',
             source: 'intervals',
             actName: matchingAct.name || `Salida ${dayItem.day}`,
@@ -1117,7 +1129,7 @@
         return false;
       }
       try {
-        const oldestStr = new Date(Date.now() - 14*86400000).toISOString().split('T')[0];
+        const oldestStr = new Date(Date.now() - 30*86400000).toISOString().split('T')[0];
         const newestStr = new Date().toISOString().split('T')[0];
         const res = await fetch(`https://intervals.icu/api/v1/athlete/${encodeURIComponent(athleteId)}/activities?oldest=${oldestStr}&newest=${newestStr}`, {
           headers: { 'Authorization': 'Basic ' + btoa('API_KEY:' + apiKey), 'Accept': 'application/json' }
@@ -1134,6 +1146,7 @@
           state.intervalsAuth.lastSyncDate = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
           state.intervalsAuth.lastSyncSummary = `Sintonía perfecta: ${state.intervalsActivities.length} actividades leídas de Intervals.icu.`;
         }
+        if (!state.planStartDate) state.planStartDate = new Date().toISOString();
         readInputsAndComputeMetrics();
         buildWeekSchedule(state.currentWeek);
         renderPlanUI();
@@ -1157,19 +1170,16 @@
         document.getElementById('intervalsFetchedContainer').classList.remove('hidden');
         document.getElementById('intervalsCountBadge').textContent = `${state.intervalsActivities.length} sesiones`;
         document.getElementById('intervalsActivitiesList').innerHTML = state.intervalsActivities.slice(0, 5).map(a => `
-          <div class="p-2 bg-slate-900 rounded text-xs text-slate-200 flex justify-between">
+          <div class="p-2 bg-stone-900 rounded text-xs text-stone-200 flex justify-between">
             <span>${a.name || 'Salida'} (${(a.start_date_local||'').split('T')[0]})</span>
-            <span class="text-emerald-400 mono">${Math.round(a.moving_time/60)}m | ${Math.round(a.average_heartrate||0)}ppm</span>
+            <span class="text-amber-400 mono">${Math.round(a.moving_time/60)}m | ${Math.round(a.average_heartrate||0)}ppm</span>
           </div>
         `).join('');
-        document.getElementById('intervalsAiVerdict').textContent = '¡Listo! Las salidas reales ya están enlazadas a tu semana.';
+        document.getElementById('intervalsAiVerdict').textContent = '¡Listo! Las salidas reales ya están enlazadas a tu semana actual.';
       } catch (err) { alert(err.message); }
       finally { btn.innerHTML = 'Sincronizar Mis Entrenamientos Ahora'; btn.disabled = false; }
     }
 
-    // =========================================================================
-    // RENDERIZADO DEL PLAN PROGRESIVO Y BLOQUEADO PARA SEMANAS FUTURAS
-    // =========================================================================
     function renderPlanUI() {
       const theme = state.currentWeekTheme || { badge: `SEMANA ${state.currentWeek}`, desc: '' };
       document.getElementById('planPhaseBadge').textContent = theme.badge;
@@ -1192,7 +1202,7 @@
           <div class="text-xs font-extrabold">${z.name}</div>
           <p class="text-[10px] opacity-85 leading-snug">${z.feel}</p>
           <div class="text-[11px] mono pt-1 border-t border-white/10 flex justify-between">
-            <span class="text-rose-300">Pulso:</span><span>${z.hrMin}-${z.hrMax} ppm</span>
+            <span class="text-amber-300">Pulso:</span><span>${z.hrMin}-${z.hrMax} ppm</span>
           </div>
         </div>
       `).join('');
@@ -1203,20 +1213,20 @@
 
         if (d.type === 'rest') {
           return `
-            <div class="glass rounded-2xl p-4 border border-slate-800 space-y-3">
-              <div class="flex justify-between"><span class="text-xs font-bold text-slate-400">${d.day}</span><span class="px-2 py-0.5 text-[10px] font-bold bg-slate-800 text-slate-300 rounded">DESCANSO</span></div>
+            <div class="glass rounded-2xl p-4 border border-stone-800 space-y-3">
+              <div class="flex justify-between"><span class="text-xs font-bold text-stone-400">${d.day}</span><span class="px-2 py-0.5 text-[10px] font-bold bg-stone-800 text-stone-300 rounded">DESCANSO</span></div>
               <h3 class="text-base font-bold text-white">${d.title}</h3>
-              <p class="text-xs text-slate-300">${d.details}</p>
+              <p class="text-xs text-stone-300">${d.details}</p>
             </div>
           `;
         }
 
         if (d.type === 'strength') {
           return `
-            <div class="glass rounded-2xl p-4 border ${savedLog ? 'border-emerald-400' : 'border-purple-500/30'} space-y-3">
+            <div class="glass rounded-2xl p-4 border ${savedLog ? 'border-amber-400' : 'border-purple-500/30'} space-y-3">
               <div class="flex justify-between"><span class="text-xs font-bold text-purple-300">${d.day} • ${d.durationMin} MIN</span><span class="px-2 py-0.5 text-[10px] font-bold bg-purple-500/20 text-purple-300 rounded">FUERZA</span></div>
               <h3 class="text-base font-bold text-white">${d.title}</h3>
-              <ul class="text-xs text-slate-200 space-y-1">${d.exercises.map(ex => `<li>• ${ex}</li>`).join('')}</ul>
+              <ul class="text-xs text-stone-200 space-y-1">${d.exercises.map(ex => `<li>• ${ex}</li>`).join('')}</ul>
               <button onclick="openSmartAdviceModal(${idx})" class="w-full py-2 rounded-xl bg-purple-500/20 text-purple-200 font-bold text-xs">Recibir Consejo de Recuperación</button>
             </div>
           `;
@@ -1224,22 +1234,22 @@
 
         const t = d.targets;
         const structureText = d.reps > 1 ? `Calentamiento ${d.warmMin}m + <strong>${d.reps} × ${d.workMin}m</strong> (Rec. ${d.restMin}m) + Enfriamiento ${d.coolMin}m` : `Calentamiento ${d.warmMin}m + <strong>${d.workMin}m continuos</strong> + Enfriamiento ${d.coolMin}m`;
-        const syncedStrip = savedLog && savedLog.source === 'intervals' ? `<div class="p-2.5 rounded-xl bg-emerald-950/40 border border-emerald-500/50 text-xs text-emerald-300 font-bold">✔ Sincronizado Intervals: ${savedLog.durationMin} min | Pulso: ${savedLog.realHR} ppm</div>` : '';
+        const syncedStrip = savedLog && savedLog.source === 'intervals' ? `<div class="p-2.5 rounded-xl bg-amber-950/40 border border-amber-500/50 text-xs text-amber-300 font-bold">✔ Sincronizado Intervals: ${savedLog.durationMin} min | Pulso: ${savedLog.realHR} ppm</div>` : '';
 
         return `
-          <div class="glass rounded-2xl p-4 border ${savedLog ? 'border-emerald-400' : 'border-emerald-500/35'} space-y-3">
-            <div class="flex justify-between"><span class="text-xs font-bold text-emerald-400">${d.day} • ${d.durationMin} MIN</span><span class="px-2 py-0.5 text-[10px] font-bold bg-emerald-500/20 text-emerald-300 rounded">ZONA ${d.zone}</span></div>
+          <div class="glass rounded-2xl p-4 border ${savedLog ? 'border-amber-400 ring-1 ring-amber-400/40' : 'border-amber-500/35'} space-y-3">
+            <div class="flex justify-between"><span class="text-xs font-bold text-amber-400">${d.day} • ${d.durationMin} MIN</span><span class="px-2 py-0.5 text-[10px] font-bold bg-amber-500/20 text-amber-300 rounded">ZONA ${d.zone}</span></div>
             <div>
               <h3 class="text-base font-extrabold text-white">${d.title}</h3>
-              <p class="text-xs text-slate-200 mt-1 bg-slate-900/80 p-2.5 rounded-xl">${structureText}</p>
+              <p class="text-xs text-stone-200 mt-1 bg-stone-900/80 p-2.5 rounded-xl">${structureText}</p>
             </div>
             ${syncedStrip}
             <div class="grid grid-cols-2 gap-2 text-xs mono">
-              <div class="p-2 bg-rose-950/30 rounded border border-rose-500/30 text-rose-300">Pulso Meta: <strong>${t.hrWorkMin}-${t.hrWorkMax} ppm</strong></div>
+              <div class="p-2 bg-amber-950/30 rounded border border-amber-500/30 text-amber-300">Pulso Meta: <strong>${t.hrWorkMin}-${t.hrWorkMax} ppm</strong></div>
               <div class="p-2 bg-cyan-950/30 rounded border border-cyan-500/30 text-cyan-300">Cadencia: <strong>${t.cadWorkMin}-${t.cadWorkMax} rpm</strong></div>
             </div>
-            <p class="text-xs text-slate-300">${d.details}</p>
-            <button onclick="openSmartAdviceModal(${idx})" class="w-full py-2.5 rounded-xl bg-indigo-500/25 border border-indigo-400/50 text-indigo-200 font-extrabold text-xs">
+            <p class="text-xs text-stone-300">${d.details}</p>
+            <button onclick="openSmartAdviceModal(${idx})" class="w-full py-2.5 rounded-xl bg-amber-500/25 border border-amber-400/50 text-amber-200 font-extrabold text-xs">
               ${savedLog && savedLog.source === 'intervals' ? '✨ Ver Consejo con Datos Reales' : '🔄 Sincronizar y Ver Consejo'}
             </button>
           </div>
@@ -1251,19 +1261,29 @@
       const list = document.getElementById('syncWorkoutsList');
       const bikeDays = state.plan.map((d, idx) => ({ ...d, idx })).filter(d => d.type === 'bike');
       list.innerHTML = bikeDays.map(d => `
-        <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 flex justify-between items-center text-xs">
-          <div><strong class="text-emerald-400">${d.day}</strong> — ${d.title} (${d.durationMin} min)</div>
-          <button onclick="openIntervalsExport(${d.idx})" class="px-3 py-1.5 bg-emerald-500 text-slate-950 font-bold rounded">Enviar a Intervals</button>
+        <div class="p-3.5 rounded-xl bg-stone-900 border border-stone-800 flex justify-between items-center text-xs">
+          <div><strong class="text-amber-400">${d.day}</strong> — ${d.title} (${d.durationMin} min)</div>
+          <button onclick="openIntervalsExport(${d.idx})" class="px-3 py-1.5 bg-amber-500 text-stone-950 font-bold rounded">Enviar a Intervals</button>
         </div>
       `).join('');
     }
 
     // =========================================================================
-    // MODAL DE BALANCE SEMANAL Y CIERRE (ADAPTACIÓN DE LA SIGUIENTE SEMANA)
+    // BALANCE SEMANAL Y ADAPTACIÓN DE LA SIGUIENTE SEMANA
     // =========================================================================
     function openWeeklyReviewModal() {
+      // Contar cuántos entrenamientos se completaron esta semana en Intervals
+      let bikeCompletedCount = 0;
+      for (let i = 0; i < 7; i++) {
+        if (state.completedLogs[`W${state.currentWeek}_D${i}`]) bikeCompletedCount++;
+      }
+
+      document.getElementById('wrIntroText').innerHTML =
+        `Has completado la <strong>Semana ${state.currentWeek}</strong>. El sistema detectó <strong>${bikeCompletedCount} sesiones de bici sincronizadas</strong> desde Intervals.icu. Completa este breve balance para generar la devolución global y desbloquear la semana siguiente:`;
+
       document.getElementById('wrPreviewAdaptation').textContent =
-        `Al procesar el balance de la Semana ${state.currentWeek}, evaluaremos tus salidas reales y tu descanso para adaptar matemáticamente la Semana ${state.currentWeek + 1}.`;
+        `Al procesar este balance, evaluaremos tu fatiga y tu consistencia para escalar matemáticamente la dificultad de la Semana ${state.currentWeek + 1}.`;
+
       document.getElementById('weeklyReviewModal').classList.remove('hidden');
     }
 
@@ -1275,23 +1295,39 @@
       const strengthStatus = document.getElementById('wrStrengthStatus').value;
       const restStatus = document.getElementById('wrRestStatus').value;
 
-      // Guardar resumen de la semana
-      state.weeklySummaries[`W${state.currentWeek}`] = {
-        strengthStatus,
-        restStatus,
-        date: new Date().toISOString()
-      };
-
-      // Adaptar el factor de progresión científico según fatiga y cumplimiento
-      if (restStatus === 'good' && strengthStatus === 'all') {
-        state.weeklyProgressionFactor = Math.min(1.30, +(state.weeklyProgressionFactor + 0.04).toFixed(2));
-      } else if (restStatus === 'exhausted' || strengthStatus === 'none') {
-        state.weeklyProgressionFactor = Math.max(0.85, +(state.weeklyProgressionFactor - 0.05).toFixed(2));
+      // Calcular cuántas bicis se hicieron
+      let bikeCount = 0;
+      let totalLoadSum = 0;
+      for (let i = 0; i < 7; i++) {
+        const log = state.completedLogs[`W${state.currentWeek}_D${i}`];
+        if (log) {
+          bikeCount++;
+          totalLoadSum += (log.load || 50);
+        }
       }
 
+      // Generar Balance de la Semana (Coach Pro)
+      let weekVerdict = `BALANCE DE LA SEMANA ${state.currentWeek}:\n`;
+      weekVerdict += `• Sesiones de bicicleta registradas en Intervals.icu: ${bikeCount} de 4 programadas.\n`;
+      weekVerdict += `• Carga acumulada de esfuerzo: ${totalLoadSum} puntos.\n`;
+      weekVerdict += `• Cumplimiento de fuerza: ${strengthStatus === 'all' ? 'Excelente (ambas sesiones)' : (strengthStatus === 'partial' ? 'A medias' : 'Sin sesiones de fuerza')}.\n`;
+      weekVerdict += `• Percepción de descanso: ${restStatus === 'good' ? 'Óptimo' : (restStatus === 'tired' ? 'Fatiga moderada' : 'Agotamiento total')}.\n\n`;
+
+      if (restStatus === 'good' && strengthStatus === 'all' && bikeCount >= 3) {
+        weekVerdict += `VEREDICTO DEL COACH: ¡Semana sobresaliente! Tu motor aeróbico asimiló perfectamente los estímulos. Por esta razón, el Nivel Adaptativo subirá para la siguiente semana con bloques ligeramente más retadores.`;
+        state.weeklyProgressionFactor = Math.min(1.30, +(state.weeklyProgressionFactor + 0.05).toFixed(2));
+      } else if (restStatus === 'exhausted' || strengthStatus === 'none' || bikeCount <= 1) {
+        weekVerdict += `VEREDICTO DEL COACH: Semana pesada o con baja consistencia. El cuerpo acumuló estrés o faltó soporte de fuerza. Para protegerte del sobreentrenamiento, la siguiente semana mantendrá un volumen controlado y priorizará la recuperación.`;
+        state.weeklyProgressionFactor = Math.max(0.85, +(state.weeklyProgressionFactor - 0.05).toFixed(2));
+      } else {
+        weekVerdict += `VEREDICTO DEL COACH: Semana correcta y estable. Cumpliste con lo fundamental. Mantendremos la progresión constante en el siguiente ciclo.`;
+        state.weeklyProgressionFactor = Math.min(1.25, +(state.weeklyProgressionFactor + 0.02).toFixed(2));
+      }
+
+      state.weeklySummaries[`W${state.currentWeek}`] = weekVerdict;
       state.effectiveTrainingWeeksCount++;
 
-      // Desbloquear la siguiente semana
+      // Desbloquear siguiente semana
       if (state.currentWeek < state.totalWeeks) {
         state.currentWeek += 1;
         state.maxUnlockedWeek = Math.max(state.maxUnlockedWeek, state.currentWeek);
@@ -1304,11 +1340,11 @@
       renderSyncUI();
       saveStateToLocal();
 
-      alert(`✅ ¡Balance de la Semana ${state.currentWeek - 1} guardado con éxito!\n\nEl Coach ha adaptado los estímulos y ya quedó desbloqueada la Semana ${state.currentWeek}.`);
+      alert(`✅ ¡Balance de la Semana ${state.currentWeek - 1} generado con éxito!\n\n${weekVerdict}\n\nLa Semana ${state.currentWeek} ya está desbloqueada y adaptada a tu rendimiento.`);
     }
 
     // =========================================================================
-    // CONSEJO TÉCNICO PROFUNDO (FTP, VO2MÁX, FATIGA)
+    // CONSEJO TÉCNICO PROFUNDO (FTP, VO2MÁX, FATIGA, CADENCIA Y PIÑONES)
     // =========================================================================
     async function openSmartAdviceModal(dayIdx) {
       state.selectedDayForFeedback = dayIdx;
@@ -1327,7 +1363,7 @@
         return;
       }
 
-      document.getElementById('fbModalBadge').textContent = 'ANÁLISIS PROFESIONAL (FTP, VO2MÁX, FATIGA)';
+      document.getElementById('fbModalBadge').textContent = 'ANÁLISIS PROFESIONAL Y TRADUCCIÓN TÉCNICA';
       document.getElementById('fbStrengthConfirmBox').classList.add('hidden');
 
       if (!state.completedLogs[logKey] || state.completedLogs[logKey].source !== 'intervals') {
@@ -1365,22 +1401,37 @@
       const t = w.targets;
       let analysisLines = [];
 
+      // 1. Fatiga y Carga
       const loadVal = realData.load || Math.round(realData.durationMin * 0.7);
-      analysisLines.push(`• **Fatiga y Carga Acumulada (Training Load):** Hoy sumaste una carga de esfuerzo de **${loadVal} puntos**. En castellano claro: es el peaje que le pagaste a tus piernas hoy. Al mantenerlo en este rango, estimulas el crecimiento sin romper el tejido.`);
+      analysisLines.push(`• **Fatiga y Carga Acumulada (Training Load):** Hoy sumaste una carga de **${loadVal} puntos**. Es el desgaste total que le pediste a tus músculos y a tu sistema nervioso. Al mantenerlo en este rango, estimulas la adaptación sin llegar al sobreentrenamiento.`);
 
+      // 2. FTP / Umbral
       if (w.zone >= 4) {
-        analysisLines.push(`• **Traducción del FTP (Umbral Funcional):** Al rodar en Ritmo 4, pusiste a prueba tu FTP (la potencia máxima que sostienes 1 hora). Tu pulso promedio fue de ${realData.realHR} ppm (meta: ${t.hrWorkMin}-${t.hrWorkMax} ppm). ${realData.realHR <= t.hrWorkMax ? '¡Excelente trabajo! Tu umbral está sólido.' : 'Tu pulso superó ligeramente el umbral; cuida el descanso mañana.'}`);
+        analysisLines.push(`• **Traducción del FTP (Umbral de Potencia):** Al rodar en Ritmo 4, pusiste a prueba tu FTP (la potencia máxima que sostienes 1 hora). Tu pulso promedio fue de ${realData.realHR} ppm (meta: ${t.hrWorkMin}-${t.hrWorkMax} ppm). ${realData.realHR <= t.hrWorkMax ? '¡Excelente! Demuestra que tu umbral está sólido y respondiendo bien.' : 'Tu pulso superó ligeramente el umbral; cuida el descanso mañana.'}`);
       } else {
-        analysisLines.push(`• **Base Aeróbica:** Hoy trabajamos en zona ${w.zone}. Esto construye la resistencia mitocondrial que sostiene tu FTP a largo plazo.`);
+        analysisLines.push(`• **Base Aeróbica:** Hoy trabajamos en zona ${w.zone}. Esto construye la red capilar y mitocondrial que sostiene tu FTP a largo plazo sin quemarte.`);
       }
 
+      // 3. VO2máx
       if (w.zone === 5) {
-        analysisLines.push(`• **Traducción del VO2máx (Tanque de Oxígeno):** Al hacer intervalos en Ritmo 5, tus pulmones y corazón bombearon al máximo. Con un pulso pico de ${realData.maxHR} ppm, ampliaste tu cilindrada.`);
+        analysisLines.push(`• **Traducción del VO2máx (Tanque de Oxígeno):** Al hacer intervalos en Ritmo 5, tus pulmones y corazón bombearon al máximo. Con un pulso pico de ${realData.maxHR} ppm, ampliaste tu cilindrada pulmonar.`);
       }
 
-      let nextAdvice = `• **Para mañana (${nextDay.day}):** Tienes "${nextDay.title}". Mantén la hidratación (${nextDay.nutrition.totalMl} ml) y pedalea con control.`;
+      // 4. Cadencia y recomendación de piñón
+      if (realData.realCAD > 0) {
+        if (realData.realCAD < t.cadWorkMin - 4) {
+          analysisLines.push(`• **Análisis de Cadencia (${realData.realCAD} rpm frente a meta de ${t.cadWorkMin}-${t.cadWorkMax} rpm):** Noté que fuiste un poco atrancado. Te recomiendo que en la próxima salida de este tipo **subas uno o dos piñones atrás (uses un piñón más grande)** para desahogar las rodillas y descansar los cuádriceps, manteniendo las piernas ágiles.`);
+        } else {
+          analysisLines.push(`• **Análisis de Cadencia (${realData.realCAD} rpm):** ¡Muy buen trabajo de pedaleo! Te mantuviste dentro del rango ágil, protegiendo tus articulaciones.`);
+        }
+      }
 
-      const report = `Hola ${state.rider.name || 'Ciclista'}, aquí tienes el análisis técnico detallado de tu salida:\n\n` + analysisLines.join('\n\n') + `\n\n` + nextAdvice;
+      // 5. Nutrición e Hidratación recordatorio
+      analysisLines.push(`• **Nutrición e Hidratación:** Recuerda que para salidas de este tipo debías consumir al menos ${w.nutrition.totalMl} ml de líquido y ${w.nutrition.carbsPerHour}g de carbohidratos por hora.`);
+
+      let nextAdvice = `• **Para mañana (${nextDay.day}):** Tienes "${nextDay.title}". Sigue las pautas de recuperación y pedalea con control.`;
+
+      const report = `Hola ${state.rider.name || 'Ciclista'}, aquí tienes el análisis profesional detallado de tu salida:\n\n` + analysisLines.join('\n\n') + `\n\n` + nextAdvice;
       state.lastFeedbackReport = report;
       document.getElementById('fbDiagnosisText').textContent = report;
       document.getElementById('feedbackModal').classList.remove('hidden');
