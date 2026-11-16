@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="VeloPlan Pro" />
+  <meta name="apple-mobile-web-app-title" content="Veltempo" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#0f172a" />
-  <title>VeloPlan Pro v3.4 — Análisis Automático con Intervals.icu</title>
+  <title>Veltempo — Tu Plan de Ciclismo Inteligente</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <style>
@@ -45,19 +45,19 @@
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white">VeloPlan <span class="text-emerald-400">PRO 3.4</span></h1>
+            <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white">Veltempo <span class="text-emerald-400">PRO</span></h1>
             <span id="saveStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>Memoria Activa
+              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>Sincronizado
             </span>
           </div>
-          <p class="text-[11px] text-slate-400">Lectura Automática de <span class="text-indigo-400 font-semibold">Intervals.icu</span> • <span class="text-rose-400 font-semibold">Pulso</span> • <span class="text-amber-400 font-semibold">Potencia</span> • <span class="text-cyan-400 font-semibold">Pedaleo</span></p>
+          <p class="text-[11px] text-slate-400">Intervals.icu • <span class="text-rose-400 font-semibold">Pulso</span> • <span class="text-amber-400 font-semibold">FTP</span> • <span class="text-cyan-400 font-semibold">Cadencia</span></p>
         </div>
       </div>
 
       <div class="flex items-center gap-1.5">
         <button onclick="openIntervalsSyncModal()" class="px-2.5 py-1.5 rounded-lg bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-400/50 text-indigo-200 text-xs font-bold flex items-center gap-1.5 transition">
           <i class="fa-solid fa-rotate"></i>
-          <span>Sincronizar Intervals.icu</span>
+          <span>Intervals.icu</span>
         </button>
         <button onclick="openLiveTimerModal()" class="px-2.5 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/40 text-cyan-300 text-xs font-semibold flex items-center gap-1.5 transition">
           <i class="fa-solid fa-stopwatch"></i>
@@ -79,7 +79,7 @@
         <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
           <div>
             <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Paso 1 de 3</span>
-            <h2 class="text-lg sm:text-xl font-bold text-white">Tus Datos Básicos (Guardado Automático)</h2>
+            <h2 class="text-lg sm:text-xl font-bold text-white">Tus Datos Fisiológicos</h2>
           </div>
           <i class="fa-solid fa-id-card-clip text-2xl text-slate-600"></i>
         </div>
@@ -90,7 +90,7 @@
             <input id="inName" type="text" value="Diego Montoya" oninput="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none" />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Tu Correo (Para enviarte los consejos de cada entrenamiento)</label>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Tu Correo (Para consejos post-entreno)</label>
             <input id="inEmail" type="email" value="" placeholder="tucorreo@dominio.com" oninput="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none" />
           </div>
           <div>
@@ -106,11 +106,11 @@
             <input id="inHeight" type="number" value="175" min="135" max="215" oninput="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white mono focus:border-emerald-400 focus:outline-none" />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Tu Experiencia en la Bicicleta</label>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Experiencia</label>
             <select id="inLevel" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none">
-              <option value="beginner">Principiante (Llevo menos de 1 año montando seguido)</option>
-              <option value="intermediate" selected>Intermedio (Monto hace 1 a 3 años regularmente)</option>
-              <option value="advanced">Avanzado (Llevo más de 3 años y aguanto salidas duras)</option>
+              <option value="beginner">Principiante (< 1 año)</option>
+              <option value="intermediate" selected>Intermedio (1 a 3 años)</option>
+              <option value="advanced">Avanzado (> 3 años)</option>
             </select>
           </div>
         </div>
@@ -121,7 +121,7 @@
               <i class="fa-solid fa-heart-pulse mr-1"></i>Pulsaciones Máximas (FC Máx)
             </label>
             <input id="inMaxHR" type="number" value="182" min="0" max="220" oninput="autoSaveInputs()" class="w-full rounded-lg bg-slate-900 border border-rose-500/40 px-3 py-1.5 text-sm text-white mono" />
-            <p class="text-[11px] text-slate-400 mt-1">El número más alto de latidos al que llega tu corazón a tope. <strong>Si no lo sabes, pon 0</strong> y lo calculamos con tu edad.</p>
+            <p class="text-[11px] text-slate-400 mt-1">Pon 0 para calcular automático por edad.</p>
           </div>
 
           <div class="p-3.5 rounded-xl bg-rose-950/25 border border-rose-500/30">
@@ -129,21 +129,21 @@
               <i class="fa-solid fa-bed mr-1"></i>Pulsaciones en Reposo
             </label>
             <input id="inRestHR" type="number" value="56" min="35" max="100" oninput="autoSaveInputs()" class="w-full rounded-lg bg-slate-900 border border-rose-500/40 px-3 py-1.5 text-sm text-white mono" />
-            <p class="text-[11px] text-slate-400 mt-1">Tus latidos cuando estás tranquilo o recién despierto (lo normal es entre 50 y 70).</p>
+            <p class="text-[11px] text-slate-400 mt-1">Latidos al despertar tranquilamente.</p>
           </div>
 
           <div class="p-3.5 rounded-xl bg-amber-950/25 border border-amber-500/30">
             <label class="block text-xs font-bold text-amber-300 mb-1">
-              <i class="fa-solid fa-bolt mr-1"></i>Potencia Sostenible (Vatios)
+              <i class="fa-solid fa-bolt mr-1"></i>FTP (Potencia Sostenible / Vatios)
             </label>
-            <input id="inFTP" type="number" value="0" min="0" max="500" placeholder="0 = Calcular automático" oninput="autoSaveInputs()" class="w-full rounded-lg bg-slate-900 border border-amber-500/40 px-3 py-1.5 text-sm text-white mono" />
-            <p class="text-[11px] text-slate-400 mt-1">Fuerza en vatios que sostienes por 1 hora. <strong>Si no tienes potenciómetro, déjalo en 0</strong>.</p>
+            <input id="inFTP" type="number" value="0" min="0" max="500" placeholder="0 = Automático" oninput="autoSaveInputs()" class="w-full rounded-lg bg-slate-900 border border-amber-500/40 px-3 py-1.5 text-sm text-white mono" />
+            <p class="text-[11px] text-slate-400 mt-1">Vatios que aguantas 1 hora. Pon 0 si no tienes potenciómetro.</p>
           </div>
         </div>
 
         <div class="mt-5 flex justify-end">
           <button onclick="switchTab('step2')" class="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm flex items-center gap-2 transition">
-            Siguiente: Tu Bicicleta y Dispositivos <i class="fa-solid fa-arrow-right"></i>
+            Siguiente: Tu Bici y Sensores <i class="fa-solid fa-arrow-right"></i>
           </button>
         </div>
       </div>
@@ -155,151 +155,121 @@
         <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
           <div>
             <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Paso 2 de 3</span>
-            <h2 class="text-lg sm:text-xl font-bold text-white">Tu Bicicleta y Sensores</h2>
+            <h2 class="text-lg sm:text-xl font-bold text-white">Bicicleta y Sensores</h2>
           </div>
           <i class="fa-solid fa-gears text-2xl text-slate-600"></i>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Marca y Modelo de tu Bicicleta</label>
-            <input id="inBikeBrand" type="text" value="Giant TCR Advanced" oninput="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white" />
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Marca / Modelo</label>
+            <input id="inBikeBrand" type="text" value="Giant TCR" oninput="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white" />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Talla del Marco</label>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Talla</label>
             <select id="inBikeSize" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
-              <option value="XS">XS (47-49 cm)</option>
-              <option value="S">S (50-52 cm)</option>
-              <option value="M" selected>M (53-55 cm)</option>
-              <option value="L">L (56-58 cm)</option>
-              <option value="XL">XL (59+ cm)</option>
+              <option value="XS">XS</option>
+              <option value="S">S</option>
+              <option value="M" selected>M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Grupo de Cambios y Velocidades</label>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Grupo de Cambios</label>
             <select id="inGroupset" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
               <option value="Shimano 105 (11v)" selected>Shimano 105 (11v / 12v)</option>
               <option value="Shimano Ultegra">Shimano Ultegra / Dura-Ace</option>
-              <option value="Shimano Tiagra/Sora">Shimano Tiagra / Sora (9-10v)</option>
               <option value="SRAM Rival/Force">SRAM Rival / Force AXS</option>
-              <option value="MTB 1x12">Todoterreno MTB / Gravel (1 solo plato)</option>
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Relación de Platos y Pacha (Piñones)</label>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Relación (Platos y Pacha)</label>
             <select id="inGearing" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
-              <option value="compact-34" selected>Platos 50/34 con pacha suave 11-32 o 11-34 (Cómoda para subir)</option>
-              <option value="semi-28">Platos 52/36 con pacha dura 11-28 (Más pesada en loma)</option>
-              <option value="semi-30">Platos 52/36 con pacha intermedia 11-30 / 11-32</option>
-              <option value="standard">Platos grandes 53/39 con pacha 11-28 (Para terreno plano)</option>
-              <option value="mtb">Monoplato 32T/34T con pacha grande 10-51</option>
+              <option value="compact-34" selected>Compact 50/34 con 11-32/34 (Ideal Montaña)</option>
+              <option value="semi-28">Semi-Compact 52/36 con 11-28 (Dura en loma)</option>
             </select>
           </div>
           <div class="sm:col-span-2">
-            <label class="block text-xs font-semibold text-slate-300 mb-1">¿Qué Ciclocomputador tienes?</label>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Ciclocomputador</label>
             <select id="inHeadUnit" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-emerald-500/50 px-3 py-2 text-sm text-white font-semibold">
-              <option value="magene" selected>Magene C706 / C606 / C506 (Se carga con Intervals.icu + OnelapFit)</option>
-              <option value="garmin">Garmin Edge (530, 540, 830, 840, 1040)</option>
-              <option value="wahoo">Wahoo ELEMNT (BOLT / ROAM)</option>
-              <option value="igpsport">iGPSPORT (BSC200, BSC300, iGS630)</option>
-              <option value="hammerhead">Hammerhead Karoo 2 / 3</option>
+              <option value="magene" selected>Magene C706 / C606 (Vía Intervals.icu)</option>
+              <option value="garmin">Garmin Edge</option>
+              <option value="wahoo">Wahoo ELEMNT</option>
             </select>
           </div>
         </div>
 
         <div class="mt-5 pt-4 border-t border-slate-800">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
-            ¿Qué sensores tienes conectados a tu bicicleta?
-          </h3>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Sensores Activos</h3>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-900/90 border border-rose-500/40 cursor-pointer hover:bg-slate-800/80 transition">
+            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-900/90 border border-rose-500/40 cursor-pointer">
               <input id="chkHR" type="checkbox" checked onchange="autoSaveInputs()" class="mt-1 w-4 h-4 accent-rose-500" />
               <div>
-                <div class="text-sm font-bold text-rose-300"><i class="fa-solid fa-heart-pulse mr-1"></i>Banda Cardíaca (Pulsaciones)</div>
-                <p class="text-[11px] text-slate-400">Mide los latidos de tu corazón por minuto (`ppm`).</p>
+                <div class="text-sm font-bold text-rose-300">Banda Cardíaca (Pulso)</div>
               </div>
             </label>
-
-            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-900/90 border border-amber-500/40 cursor-pointer hover:bg-slate-800/80 transition">
+            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-900/90 border border-amber-500/40 cursor-pointer">
               <input id="chkPM" type="checkbox" onchange="autoSaveInputs()" class="mt-1 w-4 h-4 accent-amber-500" />
               <div>
-                <div class="text-sm font-bold text-amber-300"><i class="fa-solid fa-bolt mr-1"></i>Potenciómetro (Fuerza en Vatios)</div>
-                <p class="text-[11px] text-slate-400"><strong>Desmárcalo si no tienes.</strong> Así tu Magene te guiará con tus Pulsaciones.</p>
+                <div class="text-sm font-bold text-amber-300">Potenciómetro (Vatios)</div>
               </div>
             </label>
-
-            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-900/90 border border-cyan-500/40 cursor-pointer hover:bg-slate-800/80 transition">
+            <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-900/90 border border-cyan-500/40 cursor-pointer">
               <input id="chkCAD" type="checkbox" checked onchange="autoSaveInputs()" class="mt-1 w-4 h-4 accent-cyan-500" />
               <div>
-                <div class="text-sm font-bold text-cyan-300"><i class="fa-solid fa-rotate mr-1"></i>Sensor de Cadencia (Pedaleo)</div>
-                <p class="text-[11px] text-slate-400">Mide cuántas pedaladas das por minuto (`rpm`).</p>
+                <div class="text-sm font-bold text-cyan-300">Sensor Cadencia (Pedaleo)</div>
               </div>
             </label>
           </div>
         </div>
 
         <div class="mt-5 flex justify-between">
-          <button onclick="switchTab('step1')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm">
-            <i class="fa-solid fa-arrow-left mr-1"></i> Anterior
-          </button>
-          <button onclick="switchTab('step3')" class="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm flex items-center gap-2">
-            Siguiente: Tu Tiempo Disponible y Meta <i class="fa-solid fa-arrow-right"></i>
-          </button>
+          <button onclick="switchTab('step1')" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-semibold text-sm">Anterior</button>
+          <button onclick="switchTab('step3')" class="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-sm">Siguiente: Tiempo y Meta</button>
         </div>
       </div>
     </section>
 
-    <!-- PASO 3: OBJETIVO Y TIEMPO DISPONIBLE -->
+    <!-- PASO 3: OBJETIVO Y TIEMPO -->
     <section id="tab-step3" class="tab-panel hidden space-y-4">
       <div class="glass rounded-2xl p-4 sm:p-6">
         <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
           <div>
             <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Paso 3 de 3</span>
-            <h2 class="text-lg sm:text-xl font-bold text-white">Tu Objetivo y Tiempo Disponible para Entrenar</h2>
+            <h2 class="text-lg sm:text-xl font-bold text-white">Disponibilidad y Objetivo</h2>
           </div>
           <i class="fa-solid fa-clock text-2xl text-emerald-400"></i>
         </div>
 
         <div class="p-4 rounded-2xl bg-emerald-950/25 border border-emerald-500/40 mb-5">
-          <h3 class="text-xs font-extrabold uppercase tracking-wider text-emerald-300 mb-3 flex items-center gap-1.5">
-            <i class="fa-solid fa-calendar-day"></i> ¿Cuánto tiempo libre tienes para montar?
-          </h3>
+          <h3 class="text-xs font-extrabold uppercase tracking-wider text-emerald-300 mb-3">Tiempo Libre para Entrenar</h3>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label class="block text-xs font-bold text-white mb-1">
-                Tiempo por día ENTRE SEMANA (Mar a Vie)
-              </label>
+              <label class="block text-xs font-bold text-white mb-1">Entre Semana (Mar a Vie)</label>
               <select id="inWeekdayMin" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-emerald-500/50 px-3 py-2.5 text-sm text-emerald-300 font-bold">
-                <option value="45">45 minutos (Entreno corto y al grano)</option>
-                <option value="60" selected>1 hora (60 minutos)</option>
-                <option value="75">1 hora y 15 min (75 minutos)</option>
-                <option value="90">1 hora y media (90 minutos)</option>
-                <option value="120">2 horas (120 minutos)</option>
+                <option value="45">45 minutos</option>
+                <option value="60" selected>1 hora (60 min)</option>
+                <option value="75">1 hora y 15 min</option>
+                <option value="90">1 hora y media (90 min)</option>
+                <option value="120">2 horas (120 min)</option>
               </select>
             </div>
-
             <div>
-              <label class="block text-xs font-bold text-white mb-1">
-                Tiempo para el Fondo del FIN DE SEMANA
-              </label>
+              <label class="block text-xs font-bold text-white mb-1">Fondo de Fin de Semana</label>
               <select id="inWeekendMin" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-emerald-500/50 px-3 py-2.5 text-sm text-emerald-300 font-bold">
-                <option value="90">1 hora y media (90 min)</option>
                 <option value="120">2 horas (120 min)</option>
                 <option value="150" selected>2 horas y media (150 min)</option>
                 <option value="180">3 horas (180 min)</option>
-                <option value="240">4 horas (240 min - Salida larga)</option>
-                <option value="300">5 horas (300 min - Gran Fondo)</option>
+                <option value="240">4 horas (240 min)</option>
               </select>
             </div>
-
             <div>
-              <label class="block text-xs font-bold text-white mb-1">
-                ¿Cuántos días a la semana puedes usar la bici?
-              </label>
+              <label class="block text-xs font-bold text-white mb-1">Días de Bici por Semana</label>
               <select id="inBikeDays" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2.5 text-sm text-white font-semibold">
-                <option value="3">3 días de Bici + 2 de Fortalecimiento + 2 Descanso</option>
-                <option value="4" selected>4 días de Bici + 2 de Fortalecimiento + 1 Descanso</option>
-                <option value="5">5 días de Bici + 1 de Fortalecimiento + 1 Descanso</option>
+                <option value="3">3 días Bici + 2 Fuerza + 2 Descanso</option>
+                <option value="4" selected>4 días Bici + 2 Fuerza + 1 Descanso</option>
+                <option value="5">5 días Bici + 1 Fuerza + 1 Descanso</option>
               </select>
             </div>
           </div>
@@ -307,108 +277,97 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">¿Cuál es tu Meta Principal?</label>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Meta Principal</label>
             <select id="inGoalType" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
-              <option value="granfondo" selected>Preparar un Evento o Competencia</option>
-              <option value="climbing">Subir Mejor en Montaña sin Ahogarme</option>
-              <option value="structured">Montar con Orden y Mejorar mi Salud</option>
-              <option value="crit">Ganar Velocidad en Terreno Rápido</option>
+              <option value="granfondo" selected>Gran Fondo / Competencia</option>
+              <option value="climbing">Subir Mejor en Montaña</option>
+              <option value="structured">Salud y Orden</option>
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Fecha de la Competencia (o Meta)</label>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Fecha del Evento</label>
             <input id="inEventDate" type="date" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white mono" />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">¿Cómo es el terreno donde montas?</label>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Terreno Habitual</label>
             <select id="inTerrain" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
-              <option value="mountain" selected>Montaña / Subidas Largas</option>
-              <option value="rolling">Columpios / Subidas y Bajadas Cortas</option>
-              <option value="flat">Terreno Plano</option>
+              <option value="mountain" selected>Montaña / Puertos</option>
+              <option value="rolling">Ondulado / Repechos</option>
+              <option value="flat">Plano</option>
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">¿Dónde harás el fortalecimiento sin bici?</label>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Fortalecimiento</label>
             <select id="inStrengthMode" onchange="autoSaveInputs()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
-              <option value="gym" selected>Con Pesas / Mancuernas o Gimnasio</option>
-              <option value="home">En Casa (Con tu propio peso / Sin equipos)</option>
+              <option value="gym" selected>Gimnasio / Pesas</option>
+              <option value="home">En Casa (Peso corporal)</option>
             </select>
           </div>
         </div>
 
         <div class="mt-4">
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Clima donde entrenas normalmente</label>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Clima</label>
           <select id="inClimate" onchange="autoSaveInputs()" class="w-full sm:w-1/2 rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white">
-            <option value="warm" selected>Caluroso o Húmedo (24°C a 32°C — Ej. Cali / Valle / Costa)</option>
-            <option value="temperate">Templado (16°C a 23°C — Ej. Medellín / Eje Cafetero)</option>
-            <option value="cold">Frío / Páramo (Menos de 15°C — Ej. Bogotá / Boyacá)</option>
+            <option value="warm" selected>Caluroso / Húmedo</option>
+            <option value="temperate">Templado</option>
+            <option value="cold">Frío / Altura</option>
           </select>
         </div>
 
         <div class="mt-6 flex flex-wrap justify-between items-center gap-3">
-          <button onclick="switchTab('step2')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm">
-            <i class="fa-solid fa-arrow-left mr-1"></i> Anterior
-          </button>
-          <button onclick="saveAndGeneratePlan()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 text-slate-950 font-extrabold text-sm shadow-lg shadow-emerald-500/25 flex items-center gap-2">
-            <i class="fa-solid fa-floppy-disk"></i> Guardar Mis Datos y Ver Mi Plan
+          <button onclick="switchTab('step2')" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-semibold text-sm">Anterior</button>
+          <button onclick="saveAndGeneratePlan()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-400 to-cyan-400 text-slate-950 font-extrabold text-sm shadow-lg">
+            Guardar Mis Datos y Ver Mi Plan
           </button>
         </div>
       </div>
     </section>
 
-    <!-- SECCIÓN 4: MI PLAN SEMANAL CON ANÁLISIS AUTOMÁTICO DE INTERVALS.ICU -->
+    <!-- SECCIÓN 4: MI PLAN SEMANAL -->
     <section id="tab-plan" class="tab-panel hidden space-y-4">
 
-      <!-- CABECERA DEL PLAN -->
       <div class="glass rounded-2xl p-4 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-l-4 border-l-emerald-400">
         <div class="space-y-1">
           <div class="flex flex-wrap items-center gap-2">
-            <span id="planPhaseBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-              FASE DE LA SEMANA
-            </span>
-            <span id="fitnessLevelBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">
-              Nivel Adaptativo: 100%
-            </span>
+            <span id="planPhaseBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">FASE</span>
+            <span id="fitnessLevelBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">Nivel: 100%</span>
           </div>
-          <h2 id="planHeaderTitle" class="text-lg sm:text-xl font-extrabold text-white">Plan Semanal de Entrenamiento</h2>
+          <h2 id="planHeaderTitle" class="text-lg sm:text-xl font-extrabold text-white">Plan Semanal</h2>
           <p id="planFocusDescription" class="text-xs text-emerald-300 font-medium"></p>
           <p id="planSubSummary" class="text-[11px] text-slate-400"></p>
         </div>
 
         <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto justify-end">
           <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5">
-            <label class="text-xs font-semibold text-slate-400">Cambiar Semana:</label>
+            <label class="text-xs font-semibold text-slate-400">Semana:</label>
             <select id="selActiveWeek" onchange="changeActiveWeek(this.value)" class="bg-transparent text-xs font-bold text-emerald-400 focus:outline-none mono"></select>
           </div>
-          <button onclick="syncAllFromIntervalsQuietly(true)" class="px-3 py-2 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-slate-950 text-xs font-extrabold flex items-center gap-1.5 transition shadow-lg shadow-indigo-500/20">
-            <i class="fa-solid fa-rotate"></i> Actualizar Entrenos desde Intervals.icu
+          <button onclick="syncAllFromIntervalsQuietly(true)" class="px-3 py-2 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-slate-950 text-xs font-extrabold flex items-center gap-1.5 transition">
+            <i class="fa-solid fa-rotate"></i> Sintonizar Intervals
           </button>
         </div>
       </div>
 
-      <!-- CAJA RESUMEN DE ADAPTACIÓN SI YA SE SINCRONIZÓ CON INTERVALS.ICU -->
       <div id="intervalsAdaptationBanner" class="hidden glass rounded-2xl p-4 border border-indigo-500/40 bg-indigo-950/20 space-y-1.5">
         <div class="flex items-center justify-between">
           <span class="text-xs font-extrabold uppercase tracking-wider text-indigo-300">
-            <i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Entrenamientos Sincronizados Automáticamente con Intervals.icu
+            <i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Sintonizado con Intervals.icu
           </span>
           <span id="intervalsLastSyncDate" class="text-[10px] text-slate-400 mono"></span>
         </div>
         <p id="intervalsAdaptationSummary" class="text-xs text-slate-200 leading-relaxed"></p>
       </div>
 
-      <!-- TABLA DE RITMOS EXPLICADOS EN SENCILLO -->
       <div class="glass rounded-2xl p-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-3">
           <h3 class="text-xs font-bold uppercase tracking-wider text-slate-200">
-            <i class="fa-solid fa-gauge-high mr-1.5 text-emerald-400"></i>Guía Rápida de tus 5 Ritmos (Explicados en sencillo)
+            <i class="fa-solid fa-gauge-high mr-1.5 text-emerald-400"></i>Guía Rápida de tus 5 Ritmos
           </h3>
           <span id="zonesRefMeta" class="text-[11px] text-slate-400 mono"></span>
         </div>
         <div id="zonesGrid" class="grid grid-cols-1 sm:grid-cols-5 gap-2.5"></div>
       </div>
 
-      <!-- TARJETAS DE LOS 7 DÍAS -->
       <div id="weeklyCardsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
 
     </section>
@@ -418,8 +377,8 @@
       <div class="glass rounded-2xl p-4 sm:p-6 space-y-5">
         <div class="flex items-center justify-between border-b border-slate-800 pb-3">
           <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Pasar al Ciclocomputador</span>
-            <h2 class="text-lg sm:text-xl font-extrabold text-white">Enviar Entrenamientos a Intervals.icu → OnelapFit (Magene C706)</h2>
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Magene C706 / Garmin</span>
+            <h2 class="text-lg sm:text-xl font-extrabold text-white">Enviar Entrenamientos a Intervals.icu</h2>
           </div>
           <i class="fa-solid fa-satellite-dish text-2xl text-emerald-400"></i>
         </div>
@@ -427,19 +386,15 @@
         <div class="p-4 rounded-xl bg-indigo-950/30 border border-indigo-500/40 space-y-2">
           <div class="flex items-center gap-2 text-sm font-bold text-indigo-200">
             <i class="fa-solid fa-bolt text-amber-400"></i>
-            Ciclo Completo Automático: De VeloPlan a tu Magene C706 y de regreso
+            Alertas en Pantalla y Cadencia Activa
           </div>
           <p class="text-xs text-slate-300 leading-relaxed">
-            1. Toca <strong>"Enviar a Intervals"</strong> antes de salir para mandar el entrenamiento a tu calendario.<br/>
-            2. Haz tu entrenamiento con tu <strong>Magene C706</strong>.<br/>
-            3. Cuando termines y se suba a Intervals.icu, entra a <strong>Mi Plan</strong> y toca el botón <strong>"Recibir Consejo del Entrenamiento"</strong>: la aplicación leerá automáticamente tus pulsaciones, cadencia y tiempo real sin que tengas que digitar nada.
+            Los entrenamientos generados ahora envían **avisos de pantalla automáticos** para hidratación y nutrición al Magene C706, y configuran explícitamente el rango de **Cadencia objetivo (RPM)** para que tu ciclocomputador te avise si vas muy atrancado o muy suelto.
           </p>
         </div>
 
         <div>
-          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3">
-            Entrenamientos de Bicicleta de la Semana Activa
-          </h3>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3">Sesiones de la Semana</h3>
           <div id="syncWorkoutsList" class="space-y-3"></div>
         </div>
       </div>
@@ -447,46 +402,35 @@
 
   </main>
 
-  <!-- MODAL CONEXIÓN CON INTERVALS.ICU -->
+  <!-- MODAL INTERVALS -->
   <div id="intervalsSyncModal" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="glass rounded-2xl max-w-xl w-full p-5 border border-indigo-500/50 space-y-4 max-h-[92vh] overflow-y-auto">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <div>
-          <span class="text-[10px] font-extrabold uppercase tracking-wider text-indigo-400">Conexión Automática</span>
-          <h3 class="text-base font-extrabold text-white flex items-center gap-2">
-            <i class="fa-solid fa-link text-indigo-400"></i>
-            Vincular con Intervals.icu
-          </h3>
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-indigo-400">Sintonía</span>
+          <h3 class="text-base font-extrabold text-white">Vincular con Intervals.icu</h3>
         </div>
         <button onclick="closeIntervalsSyncModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
 
-      <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300 space-y-1.5">
-        <div class="font-bold text-white"><i class="fa-solid fa-circle-question text-indigo-400 mr-1"></i>Solo necesitas configurar esto una vez:</div>
-        <ol class="list-decimal list-inside space-y-1 text-[11px] text-slate-300">
-          <li>En <strong>intervals.icu</strong> entra a <strong>Settings</strong> (menú izquierdo) y baja hasta <strong>Developer Settings</strong>.</li>
-          <li>Copia tu <strong>Athlete ID</strong> (ej. <code>i123456</code>) y tu <strong>API Key</strong>.</li>
-        </ol>
-      </div>
-
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">Tu Athlete ID de Intervals.icu</label>
-          <input id="inIntervalsId" type="text" placeholder="Ej: i184920" oninput="saveIntervalsCredentials()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white mono focus:border-indigo-400 focus:outline-none" />
+          <label class="block text-xs font-bold text-slate-300 mb-1">Athlete ID</label>
+          <input id="inIntervalsId" type="text" placeholder="Ej: i184920" oninput="saveIntervalsCredentials()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white mono" />
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">Tu API Key de Intervals.icu</label>
-          <input id="inIntervalsKey" type="password" placeholder="Pega aquí tu API Key" oninput="saveIntervalsCredentials()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white mono focus:border-indigo-400 focus:outline-none" />
+          <label class="block text-xs font-bold text-slate-300 mb-1">API Key</label>
+          <input id="inIntervalsKey" type="password" placeholder="API Key" oninput="saveIntervalsCredentials()" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white mono" />
         </div>
       </div>
 
-      <button onclick="fetchAndAnalyzeIntervalsActivities()" id="btnFetchIntervals" class="w-full py-2.5 px-4 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 transition">
-        <i class="fa-solid fa-cloud-arrow-down"></i> Sincronizar Mis Entrenamientos Reales Ahora
+      <button onclick="fetchAndAnalyzeIntervalsActivities()" id="btnFetchIntervals" class="w-full py-2.5 px-4 rounded-xl bg-indigo-500 text-slate-950 font-extrabold text-xs">
+        Sincronizar Mis Entrenamientos Ahora
       </button>
 
       <div id="intervalsFetchedContainer" class="hidden space-y-3 pt-2 border-t border-slate-800">
         <div class="text-xs font-bold text-emerald-300 flex items-center justify-between">
-          <span><i class="fa-solid fa-check-circle mr-1"></i>Entrenamientos leídos automáticamente:</span>
+          <span>Sesiones leídas:</span>
           <span id="intervalsCountBadge" class="mono text-[11px] text-slate-400"></span>
         </div>
         <div id="intervalsActivitiesList" class="space-y-2 max-h-52 overflow-y-auto pr-1"></div>
@@ -495,46 +439,40 @@
     </div>
   </div>
 
-  <!-- MODAL ENVIAR ENTRENAMIENTO A INTERVALS.ICU -->
+  <!-- MODAL ENVIAR A INTERVALS -->
   <div id="intervalsModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="glass rounded-2xl max-w-lg w-full p-5 border border-emerald-500/40 space-y-4">
       <div class="flex items-center justify-between">
-        <h3 class="text-base font-extrabold text-white flex items-center gap-2">
-          <i class="fa-solid fa-clipboard-check text-emerald-400"></i>
-          Enviar Entrenamiento a Intervals.icu → Magene
-        </h3>
+        <h3 class="text-base font-extrabold text-white">Enviar a Intervals.icu</h3>
         <button onclick="closeIntervalsModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
       <p id="intervalsModalSubtitle" class="text-xs text-slate-300"></p>
       <textarea id="intervalsModalTextarea" readonly rows="10" class="w-full rounded-xl bg-slate-950 border border-slate-700 p-3 text-xs mono text-emerald-300 focus:outline-none"></textarea>
       <div class="flex flex-wrap justify-between items-center gap-2">
         <div class="flex flex-wrap gap-2">
-          <button onclick="pushWorkoutDirectlyToIntervals()" id="btnDirectPushIntervals" class="px-3.5 py-2 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-slate-950 font-extrabold text-xs flex items-center gap-1.5">
-            <i class="fa-solid fa-cloud-arrow-up"></i> Subir Directo al Calendario de Intervals.icu
+          <button onclick="pushWorkoutDirectlyToIntervals()" id="btnDirectPushIntervals" class="px-3.5 py-2 rounded-xl bg-indigo-500 text-slate-950 font-extrabold text-xs">
+            Subir al Calendario
           </button>
-          <button onclick="copyIntervalsTextarea()" class="px-3.5 py-2 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold text-xs flex items-center gap-1.5">
-            <i class="fa-solid fa-copy"></i> Copiar Texto
+          <button onclick="copyIntervalsTextarea()" class="px-3.5 py-2 rounded-xl bg-emerald-500/20 text-emerald-300 font-bold text-xs">
+            Copiar Texto
           </button>
         </div>
-        <button onclick="closeIntervalsModal()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs">
-          Cerrar
-        </button>
+        <button onclick="closeIntervalsModal()" class="px-3.5 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs">Cerrar</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL NUEVO: CONSEJO AUTOMÁTICO DEL ENTRENAMIENTO (CON LOS DATOS REALES DE INTERVALS.ICU) -->
+  <!-- MODAL CONSEJO INTELIGENTE (CON TRADUCCIÓN TÉCNICA DE FTP, VO2MAX Y FATIGA) -->
   <div id="feedbackModal" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="glass rounded-2xl max-w-lg w-full p-5 border border-emerald-500/40 space-y-4 max-h-[92vh] overflow-y-auto">
       <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
         <div>
-          <span id="fbModalBadge" class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400">Análisis Inteligente del Entrenamiento</span>
-          <h3 id="fbModalTitle" class="text-base font-extrabold text-white mt-0.5">Consejo de tu Entrenamiento</h3>
+          <span id="fbModalBadge" class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400">Análisis con Traducción Técnica</span>
+          <h3 id="fbModalTitle" class="text-base font-extrabold text-white mt-0.5">Consejo del Entrenamiento</h3>
         </div>
         <button onclick="closeFeedbackModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
 
-      <!-- CAJA DE DATOS REALES LEÍDOS DE INTERVALS.ICU (SIN ENTRADA MANUAL EN BICI) -->
       <div id="fbAutoStatsCard" class="hidden p-3.5 rounded-xl bg-slate-900 border border-emerald-500/30 space-y-2">
         <div class="flex items-center justify-between">
           <span id="fbActivityName" class="text-xs font-extrabold text-emerald-300"></span>
@@ -556,18 +494,15 @@
         </div>
       </div>
 
-      <!-- SOLO APARECE EN LOS DÍAS DE FORTALECIMIENTO SIN BICI (MIÉRCOLES Y VIERNES) -->
       <div id="fbStrengthConfirmBox" class="hidden p-3.5 rounded-xl bg-purple-950/20 border border-purple-500/30 space-y-3">
-        <p class="text-xs text-slate-300">
-          Como esta es tu sesión de <strong>ejercicios sin bicicleta</strong>, confirma cómo te sentiste hoy para darte tu recomendación de comida y ajustar la salida en bici de mañana:
-        </p>
+        <p class="text-xs text-slate-300">Confirma tu sesión de fuerza sin bicicleta:</p>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-[11px] font-bold text-slate-300 mb-1">¿Hiciste la rutina de ejercicios?</label>
+            <label class="block text-[11px] font-bold text-slate-300 mb-1">¿Hiciste los ejercicios?</label>
             <select id="fbStrengthDone" onchange="generateStrengthAdvice()" class="w-full rounded-lg bg-slate-900 border border-slate-700 px-2.5 py-2 text-xs text-white">
               <option value="full">Sí, completa</option>
-              <option value="partial">Hice una parte</option>
-              <option value="skipped">Hoy descansé</option>
+              <option value="partial">Una parte</option>
+              <option value="skipped">Descansé</option>
             </select>
           </div>
           <div>
@@ -577,80 +512,54 @@
         </div>
       </div>
 
-      <!-- EXPLICACIÓN CLARA Y SENCILLA DEL ENTRENAMIENTO REAL -->
       <div id="fbResultBox" class="p-4 rounded-xl bg-slate-900 border border-slate-700 space-y-3">
         <div id="fbDiagnosisText" class="text-xs text-slate-200 leading-relaxed whitespace-pre-line"></div>
         <div class="flex flex-wrap gap-2 pt-3 border-t border-slate-800">
           <button onclick="sendFeedbackByEmail()" class="px-3.5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs flex items-center gap-1.5">
-            <i class="fa-solid fa-envelope"></i> Enviarme este Consejo al Correo
+            <i class="fa-solid fa-envelope"></i> Correo
           </button>
           <button onclick="sendFeedbackByWhatsApp()" class="px-3.5 py-2 rounded-lg bg-green-600 hover:bg-green-500 text-white font-bold text-xs flex items-center gap-1.5">
-            <i class="fa-brands fa-whatsapp"></i> Enviarlo a mi WhatsApp
+            <i class="fa-brands fa-whatsapp"></i> WhatsApp
           </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL 3: GESTIÓN DE DATOS Y RESPALDO -->
+  <!-- MODAL BACKUP -->
   <div id="backupModal" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="glass rounded-2xl max-w-lg w-full p-5 border border-emerald-500/40 space-y-4">
       <div class="flex items-center justify-between">
-        <h3 class="text-base font-extrabold text-white flex items-center gap-2">
-          <i class="fa-solid fa-database text-emerald-400"></i>
-          Memoria y Respaldo de tus Datos
-        </h3>
+        <h3 class="text-base font-extrabold text-white">Copia de Seguridad</h3>
         <button onclick="closeBackupModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
-
-      <div class="p-3.5 rounded-xl bg-emerald-950/25 border border-emerald-500/30 text-xs text-slate-200 space-y-1">
-        <div class="font-bold text-emerald-300"><i class="fa-solid fa-circle-check mr-1"></i>Estado de la memoria interna: Activa</div>
-        <p class="text-[11px] text-slate-300">
-          Tus datos, tu conexión con Intervals.icu y los entrenamientos analizados se guardan automáticamente en este teléfono.
-        </p>
-      </div>
-
       <div class="flex flex-wrap gap-2 pt-1">
-        <button onclick="exportProfileBackup()" class="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-1.5">
-          <i class="fa-solid fa-download"></i> Descargar Copia (.json)
-        </button>
-        <label class="px-3.5 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 font-bold text-xs flex items-center gap-1.5 cursor-pointer">
-          <i class="fa-solid fa-upload"></i> Restaurar Copia
+        <button onclick="exportProfileBackup()" class="px-3.5 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs">Descargar Datos (.json)</button>
+        <label class="px-3.5 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 font-bold text-xs cursor-pointer">
+          Restaurar Datos
           <input type="file" accept=".json" onchange="importProfileBackup(event)" class="hidden" />
         </label>
       </div>
-
       <div class="pt-3 border-t border-slate-800 flex justify-between items-center">
-        <button onclick="resetAllData()" class="text-xs text-rose-400 hover:text-rose-300 font-semibold">
-          <i class="fa-solid fa-trash-can mr-1"></i>Borrar todo y reiniciar
-        </button>
-        <button onclick="closeBackupModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs">
-          Cerrar
-        </button>
+        <button onclick="resetAllData()" class="text-xs text-rose-400">Reiniciar Todo</button>
+        <button onclick="closeBackupModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-200 text-xs">Cerrar</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL 4: RELOJ DE ALERTAS DE AGUA Y COMIDA -->
+  <!-- MODAL TIMER -->
   <div id="liveTimerModal" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="glass rounded-2xl max-w-md w-full p-5 border border-cyan-500/40 space-y-4 text-center">
       <div class="flex items-center justify-between">
-        <span class="text-xs font-bold uppercase tracking-wider text-cyan-400"><i class="fa-solid fa-bell mr-1"></i>Avisador de Agua y Comida en Ruta</span>
-        <button onclick="closeLiveTimerModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+        <span class="text-xs font-bold text-cyan-400">Reloj de Agua y Comida</span>
+        <button onclick="closeLiveTimerModal()" class="text-slate-400"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
       <div id="liveTimerClock" class="text-4xl font-extrabold mono text-white py-2">00:00:00</div>
-      <p id="liveTimerTargets" class="text-xs text-slate-300 bg-slate-900/90 p-3 rounded-xl border border-slate-800"></p>
-      <div id="liveTimerAlertBanner" class="hidden p-3 rounded-xl bg-amber-500/20 border border-amber-400 text-amber-200 text-xs font-bold"></div>
+      <p id="liveTimerTargets" class="text-xs text-slate-300 bg-slate-900/90 p-3 rounded-xl"></p>
+      <div id="liveTimerAlertBanner" class="hidden p-3 rounded-xl bg-amber-500/20 text-amber-200 text-xs font-bold"></div>
       <div class="flex justify-center gap-2">
-        <button onclick="startLiveRideTimer()" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs">
-          <i class="fa-solid fa-play mr-1"></i>Iniciar Reloj
-        </button>
-        <button onclick="pauseLiveRideTimer()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-200 font-bold text-xs">
-          <i class="fa-solid fa-pause mr-1"></i>Pausar
-        </button>
-        <button onclick="testBeepAlert()" class="px-4 py-2 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-bold text-xs">
-          <i class="fa-solid fa-volume-high mr-1"></i>Probar Sonido
-        </button>
+        <button onclick="startLiveRideTimer()" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs">Iniciar</button>
+        <button onclick="pauseLiveRideTimer()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-200 font-bold text-xs">Pausar</button>
       </div>
     </div>
   </div>
@@ -682,10 +591,7 @@
   </nav>
 
   <script>
-    // =========================================================================
-    // ESTADO GLOBAL Y BASE DE DATOS LOCAL (VELOPLAN PRO v3.4)
-    // =========================================================================
-    const STORAGE_KEY = 'veloplan_pro_v32_database';
+    const STORAGE_KEY = 'veltempo_pro_v35_database';
 
     const state = {
       hasSavedProfile: false,
@@ -705,7 +611,7 @@
         ftpEstimated: true
       },
       bike: {
-        brand: 'Giant TCR Advanced',
+        brand: 'Giant TCR',
         size: 'M',
         groupset: 'Shimano 105 (11v)',
         gearing: 'compact-34',
@@ -730,11 +636,11 @@
         lastSyncSummary: '',
         lastSyncDate: ''
       },
-      intervalsActivities: [], // Actividades reales descargadas de Intervals.icu
+      intervalsActivities: [],
       totalWeeks: 8,
       currentWeek: 1,
       weeklyProgressionFactor: 1.0,
-      completedLogs: {}, // { "W1_D1": { status, realHR, maxHR, realCAD, durationMin, actName, actDate, load, source: 'intervals'|'strength' } }
+      completedLogs: {},
       zones: [],
       plan: [],
       selectedDayForFeedback: 0,
@@ -742,9 +648,6 @@
       lastFeedbackReport: ''
     };
 
-    // =========================================================================
-    // PERSISTENCIA AUTOMÁTICA (LOCALSTORAGE + INDEXEDDB)
-    // =========================================================================
     function saveStateToLocal() {
       const payload = {
         hasSavedProfile: true,
@@ -763,21 +666,6 @@
         localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
         flashSaveIndicator();
       } catch (e) {}
-
-      try {
-        const req = indexedDB.open('VeloPlanDB', 1);
-        req.onupgradeneeded = function(ev) {
-          const db = ev.target.result;
-          if (!db.objectStoreNames.contains('profile')) {
-            db.createObjectStore('profile');
-          }
-        };
-        req.onsuccess = function(ev) {
-          const db = ev.target.result;
-          const tx = db.transaction('profile', 'readwrite');
-          tx.objectStore('profile').put(payload, 'main');
-        };
-      } catch (e) {}
     }
 
     function loadStateFromLocal(callback) {
@@ -792,33 +680,7 @@
         callback(true);
         return;
       }
-
-      try {
-        const req = indexedDB.open('VeloPlanDB', 1);
-        req.onupgradeneeded = function(ev) {
-          const db = ev.target.result;
-          if (!db.objectStoreNames.contains('profile')) {
-            db.createObjectStore('profile');
-          }
-        };
-        req.onsuccess = function(ev) {
-          const db = ev.target.result;
-          const tx = db.transaction('profile', 'readonly');
-          const getReq = tx.objectStore('profile').get('main');
-          getReq.onsuccess = function() {
-            if (getReq.result && getReq.result.rider) {
-              applyLoadedDataToStateAndForm(getReq.result);
-              callback(true);
-            } else {
-              callback(false);
-            }
-          };
-          getReq.onerror = function() { callback(false); };
-        };
-        req.onerror = function() { callback(false); };
-      } catch (e) {
-        callback(false);
-      }
+      callback(false);
     }
 
     function applyLoadedDataToStateAndForm(data) {
@@ -854,9 +716,7 @@
       document.getElementById('chkCAD').checked = Boolean(state.bike.hasCAD);
 
       document.getElementById('inGoalType').value = state.goal.type || 'granfondo';
-      if (state.goal.eventDate) {
-        document.getElementById('inEventDate').value = state.goal.eventDate;
-      }
+      if (state.goal.eventDate) document.getElementById('inEventDate').value = state.goal.eventDate;
       document.getElementById('inTerrain').value = state.goal.terrain || 'mountain';
       document.getElementById('inWeekdayMin').value = String(state.goal.weekdayMin || 60);
       document.getElementById('inWeekendMin').value = String(state.goal.weekendMin || 150);
@@ -872,9 +732,7 @@
       const badge = document.getElementById('saveStatusBadge');
       if (!badge) return;
       badge.innerHTML = '<i class="fa-solid fa-check mr-1"></i>Guardado';
-      setTimeout(() => {
-        badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>Memoria Activa';
-      }, 1400);
+      setTimeout(() => { badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>Sincronizado'; }, 1400);
     }
 
     function autoSaveInputs() {
@@ -914,9 +772,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // =========================================================================
-    // CÁLCULO DE LAS 5 ZONAS CON NOMBRES SENCILLOS
-    // =========================================================================
     function readInputsAndComputeMetrics() {
       state.rider.name = document.getElementById('inName').value.trim() || 'Ciclista';
       state.rider.email = document.getElementById('inEmail').value.trim() || '';
@@ -972,160 +827,50 @@
       const ftp = state.rider.ftpCalculated;
 
       state.zones = [
-        {
-          z: 1,
-          name: 'Ritmo 1: Paseo Suave',
-          feel: 'Puedes cantar o charlar sin cansarte. Sirve para soltar las piernas.',
-          color: 'border-slate-500/50 bg-slate-900/70 text-slate-200',
-          hrMin: Math.round(maxHR * 0.55),
-          hrMax: Math.round(maxHR * 0.65),
-          hrPctText: '55-65% HR',
-          wMin: Math.round(ftp * 0.45),
-          wMax: Math.round(ftp * 0.55),
-          pwrPct: 0.52,
-          pwrPctText: '45-55%',
-          cadMin: 85,
-          cadMax: 95
-        },
-        {
-          z: 2,
-          name: 'Ritmo 2: Fondo Cómodo',
-          feel: 'Puedes hablar en frases completas. Es el ritmo para aguantar varias horas.',
-          color: 'border-sky-500/50 bg-sky-950/30 text-sky-200',
-          hrMin: Math.round(maxHR * 0.66),
-          hrMax: Math.round(maxHR * 0.76),
-          hrPctText: '66-76% HR',
-          wMin: Math.round(ftp * 0.56),
-          wMax: Math.round(ftp * 0.75),
-          pwrPct: 0.68,
-          pwrPctText: '60-75%',
-          cadMin: 85,
-          cadMax: 95
-        },
-        {
-          z: 3,
-          name: 'Ritmo 3: Paso Firme',
-          feel: 'Respiración profunda; solo dices frases cortas. Ideal para subir a buen paso.',
-          color: 'border-emerald-500/50 bg-emerald-950/30 text-emerald-200',
-          hrMin: Math.round(maxHR * 0.77),
-          hrMax: Math.round(maxHR * 0.84),
-          hrPctText: '77-84% HR',
-          wMin: Math.round(ftp * 0.76),
-          wMax: Math.round(ftp * 0.90),
-          pwrPct: 0.85,
-          pwrPctText: '78-90%',
-          cadMin: state.goal.terrain === 'mountain' ? 75 : 85,
-          cadMax: state.goal.terrain === 'mountain' ? 85 : 95
-        },
-        {
-          z: 4,
-          name: 'Ritmo 4: Esfuerzo Fuerte',
-          feel: 'Cuesta hablar; sientes ardor controlado en las piernas para subir rápido.',
-          color: 'border-amber-500/50 bg-amber-950/30 text-amber-200',
-          hrMin: Math.round(maxHR * 0.85),
-          hrMax: Math.round(maxHR * 0.91),
-          hrPctText: '85-91% HR',
-          wMin: Math.round(ftp * 0.91),
-          wMax: Math.round(ftp * 1.05),
-          pwrPct: 0.97,
-          pwrPctText: '92-102%',
-          cadMin: state.goal.terrain === 'mountain' ? 72 : 85,
-          cadMax: state.goal.terrain === 'mountain' ? 82 : 95
-        },
-        {
-          z: 5,
-          name: 'Ritmo 5: Tope de Capacidad',
-          feel: 'No puedes hablar; respiración al máximo para esfuerzos cortos de 3 a 5 minutos.',
-          color: 'border-rose-500/50 bg-rose-950/30 text-rose-200',
-          hrMin: Math.round(maxHR * 0.92),
-          hrMax: Math.round(maxHR * 0.98),
-          hrPctText: '92-98% HR',
-          wMin: Math.round(ftp * 1.06),
-          wMax: Math.round(ftp * 1.20),
-          pwrPct: 1.12,
-          pwrPctText: '106-118%',
-          cadMin: 90,
-          cadMax: 105
-        }
+        { z: 1, name: 'Ritmo 1: Suave', feel: 'Conversación fluida sin fatiga.', color: 'border-slate-500/50 bg-slate-900/70 text-slate-200', hrMin: Math.round(maxHR * 0.55), hrMax: Math.round(maxHR * 0.65), wMin: Math.round(ftp * 0.45), wMax: Math.round(ftp * 0.55), cadMin: 85, cadMax: 95 },
+        { z: 2, name: 'Ritmo 2: Fondo', feel: 'Frases completas. Quema grasa y da base.', color: 'border-sky-500/50 bg-sky-950/30 text-sky-200', hrMin: Math.round(maxHR * 0.66), hrMax: Math.round(maxHR * 0.76), wMin: Math.round(ftp * 0.56), wMax: Math.round(ftp * 0.75), cadMin: 85, cadMax: 95 },
+        { z: 3, name: 'Ritmo 3: Paso Firme', feel: 'Frases cortas. Sube a buen ritmo.', color: 'border-emerald-500/50 bg-emerald-950/30 text-emerald-200', hrMin: Math.round(maxHR * 0.77), hrMax: Math.round(maxHR * 0.84), wMin: Math.round(ftp * 0.76), wMax: Math.round(ftp * 0.90), cadMin: 80, cadMax: 90 },
+        { z: 4, name: 'Ritmo 4: Fuerte (FTP)', feel: 'Ardor controlado. Tu umbral de potencia.', color: 'border-amber-500/50 bg-amber-950/30 text-amber-200', hrMin: Math.round(maxHR * 0.85), hrMax: Math.round(maxHR * 0.91), wMin: Math.round(ftp * 0.91), wMax: Math.round(ftp * 1.05), cadMin: 82, cadMax: 95 },
+        { z: 5, name: 'Ritmo 5: VO2máx', feel: 'Esfuerzo máximo (tanque de oxígeno).', color: 'border-rose-500/50 bg-rose-950/30 text-rose-200', hrMin: Math.round(maxHR * 0.92), hrMax: Math.round(maxHR * 0.98), wMin: Math.round(ftp * 1.06), wMax: Math.round(ftp * 1.20), cadMin: 90, cadMax: 105 }
       ];
     }
 
-    // =========================================================================
-    // ALIMENTACIÓN E HIDRATACIÓN EN LENGUAJE CLARO
-    // =========================================================================
     function buildNutritionProtocol(durationMin, zoneNumber, workoutType) {
       const weight = state.rider.weight;
       const climateBonus = state.goal.climate === 'warm' ? 180 : (state.goal.climate === 'temperate' ? 80 : 0);
 
       if (workoutType === 'rest') {
-        const dailyWater = Math.round(weight * 35);
-        return {
-          mlPerHour: 0,
-          mlEvery15: 0,
-          totalMl: dailyWater,
-          carbsPerHour: 0,
-          before: 'Hoy tu cuerpo repara los músculos. Toma agua normal durante el día y come buena proteína (huevos, pollo, pescado o legumbres).',
-          during: `Sin entrenamiento hoy. Procura tomar unos ${dailyWater} ml de agua (${Math.round(dailyWater / 250)} vasos) repartidos en el día.`,
-          after: 'En la noche come ligero y duerme bien; el descanso es cuando tus piernas realmente ganan fuerza.'
-        };
+        return { mlPerHour: 0, mlEvery15: 0, totalMl: Math.round(weight * 35), before: 'Hidratación normal y proteína.', during: 'Agua moderada.', after: 'Descanso total.' };
       }
-
       if (workoutType === 'strength') {
-        const mlH = 500 + Math.round(climateBonus * 0.5);
-        return {
-          mlPerHour: mlH,
-          mlEvery15: Math.round(mlH / 4),
-          totalMl: Math.round((durationMin / 60) * mlH),
-          carbsPerHour: 20,
-          before: '1 hora antes: 1 banano o 1 tostada con queso/mantequilla de maní y un café o vaso de agua.',
-          during: `Toma unos ${Math.round(mlH / 4)} ml de agua (4 o 5 sorbos grandes) cada 15 minutos mientras haces los ejercicios.`,
-          after: 'Al terminar (primeros 30 min): Come proteína para reparar las fibras musculares (3 huevos, atún, pollo o 1 batido de proteína).'
-        };
+        const mlH = 500;
+        return { mlPerHour: mlH, mlEvery15: 125, totalMl: Math.round((durationMin/60)*mlH), before: 'Banano o tostada previa.', during: '125 ml de agua cada 15 min.', after: 'Proteína post-ejercicio.' };
       }
 
-      const baseMl = zoneNumber >= 4 ? 720 : (zoneNumber === 3 ? 640 : 550);
-      const mlPerHour = Math.round(baseMl + climateBonus + (weight - 70) * 4);
+      const mlPerHour = Math.round(580 + climateBonus + (weight - 70) * 4);
       const mlEvery15 = Math.round(mlPerHour / 4);
       const totalMl = Math.round((durationMin / 60) * mlPerHour);
-
-      let carbsPerHour = 35;
-      let foodExample = '1 banano mediano, o 1 bocadillo de guayaba grande, o 1 barra de cereal';
-      if (durationMin >= 120 || zoneNumber >= 4) {
-        carbsPerHour = 60;
-        foodExample = '1 gel energético + 1 bocadillo (o 1 banano + bebida con sales y carbohidratos en la caramañola)';
-      } else if (durationMin >= 75 || zoneNumber === 3) {
-        carbsPerHour = 45;
-        foodExample = '1 barra energética o 2 bocadillos de guayaba o 1 gel cada 40 minutos';
-      }
-
-      const sips = Math.max(3, Math.round(mlEvery15 / 35));
+      const carbs = durationMin >= 120 ? 60 : 45;
 
       return {
         mlPerHour,
         mlEvery15,
         totalMl,
-        carbsPerHour,
-        before: `1 hora y media antes de salir: Come algo fácil de digerir (un plato de avena con banano, o 2 tostadas con mermelada/miel y café) + 1 vaso grande de agua (350 ml).`,
-        during: `Agua: Toma ${sips} sorbos buenos (${mlEvery15} ml) cada 15 minutos (en total necesitas ${totalMl} ml para esta salida, ponle electrolitos o una pizca de sal si hace calor). Comida en la bici: Consume ${foodExample} (${carbsPerHour}g de energía por hora).`,
-        after: `Apenas te bajes de la bici (primeros 30 min): Toma 2 vasos de agua (500 ml) y combina energía + proteína (yogur con fruta y avena, o huevos con pan/arepa) para no sentir las piernas pesadas mañana.`
+        carbsPerHour: carbs,
+        before: `1.5 horas antes: Avena o pan con mermelada + 350 ml de agua.`,
+        during: `Agua: ${mlEvery15} ml cada 15 min (Total: ${totalMl} ml). Comer: ${carbs}g de carbohidratos/hora (bocadillo o gel c/40 min).`,
+        after: `Al llegar: 500 ml de agua con sales y carbohidrato con proteína.`
       };
     }
 
     function populateWeekSelector() {
       const sel = document.getElementById('selActiveWeek');
       sel.innerHTML = '';
-      const themes = [
-        'Base y Pedaleo Ágil',
-        'Fuerza en Loma (Torque)',
-        'Cambios de Ritmo y Pulmón',
-        'Semana de Asimilación y Descarga'
-      ];
+      const themes = ['Base Ágil', 'Fuerza (Torque)', 'Intervalos VO2máx', 'Descarga y Asimilación'];
       for (let w = 1; w <= state.totalWeeks; w++) {
         const opt = document.createElement('option');
         opt.value = w;
-        const isTaper = (w === state.totalWeeks);
-        const themeName = isTaper ? 'Semana Pre-Competencia (Llegar Fresco)' : themes[(w - 1) % 4];
-        opt.textContent = `Semana ${w}: ${themeName}`;
+        opt.textContent = `Semana ${w}: ${w === state.totalWeeks ? 'Pre-Competencia' : themes[(w - 1) % 4]}`;
         if (w === state.currentWeek) opt.selected = true;
         sel.appendChild(opt);
       }
@@ -1147,18 +892,12 @@
       }
       const blocksTime = (reps * workMin) + ((reps - 1) * restMin);
       const leftover = Math.max(0, availMin - (warmMin + blocksTime + coolMin));
-      const finalWarm = warmMin + Math.floor(leftover / 2);
-      const finalCool = coolMin + (leftover - Math.floor(leftover / 2));
-      return { reps, warmMin: finalWarm, coolMin: finalCool, workMin, restMin };
+      return { reps, warmMin: warmMin + Math.floor(leftover / 2), coolMin: coolMin + (leftover - Math.floor(leftover / 2)), workMin, restMin };
     }
 
-    // =========================================================================
-    // MOTOR GENERADOR DE SEMANAS DINÁMICAS (4 ESTÍMULOS DISTINTOS)
-    // =========================================================================
     function buildWeekSchedule(weekNum) {
       const z1 = state.zones[0];
       const z2 = state.zones[1];
-
       const cycleIndex = (weekNum - 1) % 4;
       const blockNumber = Math.floor((weekNum - 1) / 4);
       const isTaper = (weekNum === state.totalWeeks);
@@ -1171,354 +910,119 @@
       const weekendCap = state.goal.weekendMin;
       const isGym = state.goal.strengthMode === 'gym';
 
-      const weekThemes = [
-        {
-          badge: `SEMANA ${weekNum}: BASE Y PEDALEO SUELTO`,
-          desc: 'Esta semana nos enfocamos en acostumbrar al corazón a trabajar a paso constante y mejorar la velocidad de tus piernas sin trancar los cambios.'
-        },
-        {
-          badge: `SEMANA ${weekNum}: FUERZA EN SUBIDA Y RESISTENCIA`,
-          desc: 'Esta semana cambiamos el estímulo: haremos bloques más largos sentados en el sillín con un cambio un poco más firme para ganar fuerza en las piernas en montaña.'
-        },
-        {
-          badge: `SEMANA ${weekNum}: CAMBIOS DE RITMO Y CAPACIDAD PULMONAR`,
-          desc: 'Semana de exigencia alta: repeticiones más intensas para enseñar a tu corazón a recuperarse rápido después de cada repecho o ataque.'
-        },
-        {
-          badge: `SEMANA ${weekNum}: DESCARGA ACTIVA Y ASIMILACIÓN`,
-          desc: 'Semana más corta y suave a propósito: aquí tu cuerpo absorbe el trabajo de las 3 semanas anteriores y das el salto de nivel físico.'
-        }
-      ];
       state.currentWeekTheme = isTaper
-        ? { badge: `SEMANA ${weekNum}: AFINACIÓN PRE-EVENTO`, desc: 'Reducimos el cansancio acumulado manteniendo cortos toques de ritmo para que llegues con las piernas frescas al día clave.' }
-        : weekThemes[cycleIndex];
+        ? { badge: `SEMANA ${weekNum}: AFINACIÓN`, desc: 'Descarga de piernas para llegar al 100%.' }
+        : [
+            { badge: `SEMANA ${weekNum}: BASE ÁGIL`, desc: 'Ritmo constante y velocidad de pedaleo.' },
+            { badge: `SEMANA ${weekNum}: FUERZA (TORQUE)`, desc: 'Bloques largos en subida con cadencia controlada.' },
+            { badge: `SEMANA ${weekNum}: VO2MÁX / PULMÓN`, desc: 'Intervalos intensos para ampliar capacidad aeróbica.' },
+            { badge: `SEMANA ${weekNum}: DESCARGA`, desc: 'Semana suave de asimilación y descanso.' }
+          ][cycleIndex];
 
       let tueConfig;
       if (cycleIndex === 0) {
-        const workM = Math.max(5, Math.min(10, Math.round(6 * fitnessMult)));
-        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, workM, 3, 4 + blockNumber);
-        tueConfig = {
-          title: `Series de Ritmo Fuerte Controlado (${fit.reps} × ${fit.workMin} min)`,
-          subtitle: `Semana ${weekNum} • Acostumbrar al corazón a sostener subidas alegres`,
-          zone: 4,
-          ...fit,
-          cadWorkMin: 86, cadWorkMax: 94,
-          details: `Hoy buscamos ritmo parejo: haz ${fit.reps} repeticiones de ${fit.workMin} minutos en Ritmo 4 con un pedaleo suelto (86-94 rpm). No arranques a tope; deja que las pulsaciones entren al rango durante el primer minuto.`
-        };
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, 6, 3, 4);
+        tueConfig = { title: `Series Ritmo Fuerte (${fit.reps} × ${fit.workMin}m)`, zone: 4, ...fit, cadWorkMin: 86, cadWorkMax: 94, details: 'Ritmo parejo en Z4 con cadencia suelta.' };
       } else if (cycleIndex === 1) {
-        const workM = Math.max(7, Math.min(14, Math.round(9 * fitnessMult)));
-        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, workM, 4, 3 + blockNumber);
-        tueConfig = {
-          title: `Escalones Largos de Resistencia en Subida (${fit.reps} × ${fit.workMin} min)`,
-          subtitle: `Semana ${weekNum} • Más minutos seguidos aguantando el paso fuerte`,
-          zone: 4,
-          ...fit,
-          cadWorkMin: 80, cadWorkMax: 88,
-          details: `Fíjate que esta semana las repeticiones duran más (${fit.workMin} min cada una) para aumentar tu aguante. Mantente sentado y respira profundo.`
-        };
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, 9, 4, 3);
+        tueConfig = { title: `Escalones de Umbral (${fit.reps} × ${fit.workMin}m)`, zone: 4, ...fit, cadWorkMin: 80, cadWorkMax: 88, details: 'Bloques largos sostenidos en umbral.' };
       } else if (cycleIndex === 2) {
-        const workM = Math.max(3, Math.min(5, Math.round(3.5 * fitnessMult)));
-        const fit = fitIntervalsToAvailableTime(weekdayCap, 12, 8, workM, 3, 6 + blockNumber);
-        tueConfig = {
-          title: `Repeticiones Intensas de Capacidad Pulmonar (${fit.reps} × ${fit.workMin} min)`,
-          subtitle: `Semana ${weekNum} • Techo aeróbico para no ahogarte en los repechos duros`,
-          zone: 5,
-          ...fit,
-          cadWorkMin: 92, cadWorkMax: 102,
-          details: `Semana de choque: son ${fit.reps} repeticiones más cortas (${fit.workMin} min) pero en Ritmo 5 (pulsaciones altas y pedaleo muy ágil por encima de 92 rpm). Recupera muy suave durante los ${fit.restMin} min de descanso.`
-        };
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 12, 8, 4, 3, 5);
+        tueConfig = { title: `Intervalos VO2máx (${fit.reps} × ${fit.workMin}m)`, zone: 5, ...fit, cadWorkMin: 92, cadWorkMax: 102, details: 'Esfuerzo máximo para expandir el tanque de oxígeno.' };
       } else {
         const fit = fitIntervalsToAvailableTime(weekdayCap, 12, 10, 4, 4, 3);
-        tueConfig = {
-          title: `Activación Ligera con Cambios de Ritmo (${fit.reps} × ${fit.workMin} min)`,
-          subtitle: `Semana ${weekNum} (Descarga) • Mantener chispa sin cansar las piernas`,
-          zone: 3,
-          ...fit,
-          cadWorkMin: 90, cadWorkMax: 98,
-          details: `Como esta es semana de recuperación y asimilación, solo hacemos ${fit.reps} bloques cortos en Ritmo 3 con piernas muy ágiles.`
-        };
+        tueConfig = { title: `Activación Suave`, zone: 3, ...fit, cadWorkMin: 90, cadWorkMax: 98, details: 'Recuperación activa.' };
       }
 
       let thuConfig;
       if (cycleIndex === 0) {
-        const workM = Math.max(8, Math.min(16, Math.round(10 * fitnessMult)));
-        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, workM, 4, 3);
-        thuConfig = {
-          title: `Paso Firme Constante (${fit.reps} × ${fit.workMin} min en Ritmo 3)`,
-          subtitle: `Ajustado a tus ${weekdayCap} min • Ritmo crucero para devorar kilómetros`,
-          zone: 3,
-          ...fit,
-          cadWorkMin: 84, cadWorkMax: 92,
-          details: `Sostén ${fit.reps} bloques de ${fit.workMin} minutos en Ritmo 3 llevando un pedaleo fluido de 84 a 92 rpm.`
-        };
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, 10, 4, 3);
+        thuConfig = { title: `Paso Firme Constante`, zone: 3, ...fit, cadWorkMin: 84, cadWorkMax: 92, details: 'Ritmo crucero aeróbico.' };
       } else if (cycleIndex === 1) {
-        const workM = Math.max(6, Math.min(12, Math.round(8 * fitnessMult)));
-        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, workM, 4, 4);
-        thuConfig = {
-          title: `Fuerza Específica en Pedales / Torque (${fit.reps} × ${fit.workMin} min a 68-75 rpm)`,
-          subtitle: `Semana ${weekNum} • Ganar potencia muscular en las piernas sin subir tanto el pulso`,
-          zone: 3,
-          ...fit,
-          cadWorkMin: 68, cadWorkMax: 75,
-          details: `Entrenamiento especial de fuerza: pon un piñón un poco más duro y pedalea sentado más lento a propósito (entre 68 y 75 pedaladas por minuto) empujando firme y parejo cada pedalada.`
-        };
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, 8, 4, 4);
+        thuConfig = { title: `Torque / Fuerza (68-75 rpm)`, zone: 3, ...fit, cadWorkMin: 68, cadWorkMax: 75, details: 'Pedaleo lento y pesado en subida para fuerza muscular.' };
       } else if (cycleIndex === 2) {
-        const workM = Math.max(10, Math.min(18, Math.round(12 * fitnessMult)));
-        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, workM, 4, 3);
-        thuConfig = {
-          title: `Resistencia Muscular Prolongada (${fit.reps} × ${fit.workMin} min en Ritmo 3-4)`,
-          subtitle: `Semana ${weekNum} • Bloques largos para simular un puerto de montaña`,
-          zone: 3,
-          ...fit,
-          cadWorkMin: 78, cadWorkMax: 86,
-          details: `Aumentamos el tiempo de cada bloque a ${fit.workMin} minutos seguidos para que tus piernas se acostumbren a subidas largas sin aflojar el paso.`
-        };
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, 12, 4, 3);
+        thuConfig = { title: `Resistencia Prolongada`, zone: 3, ...fit, cadWorkMin: 78, cadWorkMax: 86, details: 'Simulación de puerto largo.' };
       } else {
         const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 10, 8, 4, 2);
-        thuConfig = {
-          title: `Rodaje Técnico de Pedaleo Redondo (${fit.reps} × ${fit.workMin} min)`,
-          subtitle: `Semana ${weekNum} (Descarga) • Oxigenar músculos y cuidar articulaciones`,
-          zone: 2,
-          ...fit,
-          cadWorkMin: 88, cadWorkMax: 96,
-          details: `Sesión suave en Ritmo 2 concentrándote en pedalear redondo sin dar pisotones bruscos.`
-        };
+        thuConfig = { title: `Rodaje Redondo`, zone: 2, ...fit, cadWorkMin: 88, cadWorkMax: 96, details: 'Técnica de pedaleo.' };
       }
 
-      const satTotalTarget = Math.min(weekendCap, Math.max(weekdayCap, Math.round(weekendCap * (cycleIndex === 3 ? 0.45 : 0.58))));
-      const satWarm = 10, satCool = 10;
-      const satWork = Math.max(25, satTotalTarget - satWarm - satCool);
-
+      const satTarget = Math.min(weekendCap, Math.max(weekdayCap, Math.round(weekendCap * (cycleIndex === 3 ? 0.45 : 0.58))));
       const sunScale = cycleIndex === 0 ? 0.88 : (cycleIndex === 1 ? 0.95 : (cycleIndex === 2 ? 1.0 : 0.72));
-      const sunTotalTarget = Math.max(75, Math.min(weekendCap, Math.round(weekendCap * sunScale * (isTaper ? 0.65 : 1))));
-      const sunWarm = 15, sunCool = 15, sunRest = 10;
-      const sunWorkEach = Math.max(20, Math.floor((sunTotalTarget - sunWarm - sunCool - sunRest) / 2));
+      const sunTarget = Math.max(75, Math.min(weekendCap, Math.round(weekendCap * sunScale)));
+      const sunWorkEach = Math.max(20, Math.floor((sunTarget - 30) / 2));
 
-      const baseLegReps = Math.min(16, Math.round(10 * fitnessMult));
-      const basePlankSec = Math.min(75, Math.round(40 * fitnessMult));
-
-      // jsDay: 1=Lunes, 2=Martes, 3=Miércoles, 4=Jueves, 5=Viernes, 6=Sábado, 0=Domingo
       state.plan = [
-        {
-          day: 'Lunes',
-          shortDay: 'LUN',
-          jsDay: 1,
-          type: 'rest',
-          title: 'Día de Descanso y Recuperación Muscular',
-          subtitle: 'Hoy no se toca la bicicleta ni las pesas para asimilar el entrenamiento',
-          durationMin: 0,
-          zone: 1,
-          details: 'Cuando descansas es cuando tus fibras musculares se reparan y subes de nivel. Hidrátate bien y duerme al menos 7.5 horas.',
-          nutrition: buildNutritionProtocol(0, 1, 'rest')
-        },
-        {
-          day: 'Martes',
-          shortDay: 'MAR',
-          jsDay: 2,
-          type: 'bike',
-          ...tueConfig,
-          cadWarmMin: 85, cadWarmMax: 95,
-          cadRestMin: 80, cadRestMax: 90
-        },
-        {
-          day: 'Miércoles',
-          shortDay: 'MIÉ',
-          jsDay: 3,
-          type: 'strength',
-          title: `Fortalecimiento sin Bici A: Piernas y Abdomen (Nivel Sem. ${weekNum})`,
-          subtitle: isGym ? `Rutina con pesas (${Math.min(50, weekdayCap)} min)` : `Rutina en casa (${Math.min(45, weekdayCap)} min)`,
-          durationMin: Math.min(50, weekdayCap),
-          zone: 2,
-          exercises: isGym ? [
-            'Calentamiento (8 min): Movilidad de cadera y activación de glúteos.',
-            `Sentadilla a una pierna (Búlgara) o con mancuerna: 4 series de ${baseLegReps} repeticiones por lado.`,
-            `Peso Muerto con mancuernas (espalda recta): 3 series de ${baseLegReps + 2} repeticiones.`,
-            `Plancha abdominal sosteniendo el cuerpo recto: 3 series de ${basePlankSec} segundos.`,
-            `Elevación de talones (pantorrillas): 3 series de ${baseLegReps + 5} repeticiones.`
-          ] : [
-            'Calentamiento (8 min): Movilidad de cadera y puentes suaves.',
-            `Zancadas hacia atrás doblando rodilla + Sentadilla en pared: 4 series de ${baseLegReps + 2} repeticiones.`,
-            `Puente de glúteo acostado boca arriba a una pierna: 3 series de ${baseLegReps + 2} repeticiones.`,
-            `Plancha abdominal en el piso: 3 series de ${basePlankSec} segundos.`,
-            `Subir y bajar talones en un escalón: 3 series de ${baseLegReps + 8} repeticiones.`
-          ],
-          nutrition: buildNutritionProtocol(Math.min(50, weekdayCap), 2, 'strength')
-        },
-        {
-          day: 'Jueves',
-          shortDay: 'JUE',
-          jsDay: 4,
-          type: 'bike',
-          ...thuConfig,
-          cadWarmMin: 85, cadWarmMax: 95,
-          cadRestMin: 85, cadRestMax: 95
-        },
-        {
-          day: 'Viernes',
-          shortDay: 'VIE',
-          jsDay: 5,
-          type: 'strength',
-          title: `Fortalecimiento sin Bici B: Espalda, Brazos y Cintura (Sem. ${weekNum})`,
-          subtitle: 'Para sostener la postura en la bici sin dolor de cuello ni cintura',
-          durationMin: Math.min(45, weekdayCap),
-          zone: 1,
-          exercises: isGym ? [
-            `Remo con mancuerna o polea hacia el pecho (espalda): 3 series de ${baseLegReps + 2} repeticiones.`,
-            `Flexiones de pecho o Press con mancuernas (brazos y hombros): 3 series de ${baseLegReps} repeticiones.`,
-            `Ejercicio "Perro-Pájaro" (estabilidad de cintura): 3 series de ${baseLegReps + 2} repeticiones lentas.`,
-            'Estiramiento profundo de espalda, cuello y cadera: 10 minutos.'
-          ] : [
-            `Remo con banda elástica o toalla en puerta (espalda): 3 series de ${baseLegReps + 4} repeticiones.`,
-            `Flexiones de brazos en el piso o apoyado en mesa: 3 series de ${baseLegReps} repeticiones.`,
-            `Estirar brazo y pierna contraria en cuatro apoyos: 3 series de ${baseLegReps + 4} repeticiones.`,
-            'Estiramiento de piernas y columna: 10 minutos.'
-          ],
-          nutrition: buildNutritionProtocol(Math.min(45, weekdayCap), 1, 'strength')
-        },
-        {
-          day: 'Sábado',
-          shortDay: 'SÁB',
-          jsDay: 6,
-          type: state.goal.bikeDays >= 4 ? 'bike' : 'rest',
-          title: state.goal.bikeDays >= 4 ? `Rodaje Fluido de Cadencia Ágil (${satWarm + satWork + satCool} min)` : 'Descanso Activo antes del Fondo del Domingo',
-          subtitle: state.goal.bikeDays >= 4 ? `Semana ${weekNum} • Pedaleo rápido a pulsaciones controladas` : 'Guardar glucógeno para mañana',
-          zone: 2,
-          warmMin: satWarm,
-          reps: 1,
-          workMin: satWork,
-          restMin: 0,
-          coolMin: satCool,
-          cadWorkMin: 88, cadWorkMax: 96,
-          cadWarmMin: 85, cadWarmMax: 92,
-          cadRestMin: 85, cadRestMax: 90,
-          details: 'Lleva un cambio suave que te permita pedalear rápido (88-96 rpm) sin que las pulsaciones se suban del Ritmo 2.'
-        },
-        {
-          day: 'Domingo',
-          shortDay: 'DOM',
-          jsDay: 0,
-          type: 'bike',
-          title: cycleIndex === 2
-            ? `Gran Fondo con Final en Paso Firme (${sunWarm + (2 * sunWorkEach) + sunRest + sunCool} min)`
-            : `Salida Larga de Resistencia (${sunWarm + (2 * sunWorkEach) + sunRest + sunCool} min)`,
-          subtitle: `Semana ${weekNum} • Ajustado a tu disponibilidad de fin de semana`,
-          zone: cycleIndex === 2 ? 3 : 2,
-          warmMin: sunWarm,
-          reps: 2,
-          workMin: sunWorkEach,
-          restMin: sunRest,
-          coolMin: sunCool,
-          cadWorkMin: 82, cadWorkMax: 92,
-          cadWarmMin: 85, cadWarmMax: 95,
-          cadRestMin: 80, cadRestMax: 90,
-          details: cycleIndex === 2
-            ? 'Esta semana el fondo incluye exigencia de Ritmo 3 en las subidas para simular condiciones reales de evento. Sé muy estricto tomando agua cada 15 min.'
-            : 'Salida larga dividida en dos bloques con 10 minutos suaves en la mitad para comer y estirar la espalda.'
-        }
+        { day: 'Lunes', shortDay: 'LUN', jsDay: 1, type: 'rest', title: 'Descanso Total', subtitle: 'Asimilación y recuperación', durationMin: 0, zone: 1, details: 'Día libre de cargas.', nutrition: buildNutritionProtocol(0, 1, 'rest') },
+        { day: 'Martes', shortDay: 'MAR', jsDay: 2, type: 'bike', ...tueConfig, warmMin: 10, coolMin: 10, cadWarmMin: 85, cadWarmMax: 95, cadRestMin: 80, cadRestMax: 90, details: tueConfig.details },
+        { day: 'Miércoles', shortDay: 'MIÉ', jsDay: 3, type: 'strength', title: 'Fortalecimiento: Piernas y Core', subtitle: isGym ? 'Gimnasio / Pesas' : 'En Casa', durationMin: 45, zone: 2, exercises: ['Sentadilla búlgara: 4x10', 'Peso muerto: 3x12', 'Plancha: 3x45s'], nutrition: buildNutritionProtocol(45, 2, 'strength') },
+        { day: 'Jueves', shortDay: 'JUE', jsDay: 4, type: 'bike', ...thuConfig, warmMin: 10, coolMin: 10, cadWarmMin: 85, cadWarmMax: 95, cadRestMin: 85, cadRestMax: 95, details: thuConfig.details },
+        { day: 'Viernes', shortDay: 'VIE', jsDay: 5, type: 'strength', title: 'Fortalecimiento: Espalda y Brazos', subtitle: 'Postura y estabilidad', durationMin: 45, zone: 1, exercises: ['Remo con banda/mancuerna: 3x12', 'Flexiones: 3x12', 'Bird-dog: 3x12'], nutrition: buildNutritionProtocol(45, 1, 'strength') },
+        { day: 'Sábado', shortDay: 'SÁB', jsDay: 6, type: 'bike', title: 'Rodaje Aeróbico Ágil', subtitle: 'Cadencia fluida', zone: 2, warmMin: 10, workMin: satTarget - 20, restMin: 0, coolMin: 10, reps: 1, cadWorkMin: 88, cadWorkMax: 96, cadWarmMin: 85, cadWarmMax: 92, cadRestMin: 85, cadRestMax: 90, details: 'Pedaleo rápido y constante en Z2.', nutrition: buildNutritionProtocol(satTarget, 2, 'bike') },
+        { day: 'Domingo', shortDay: 'DOM', jsDay: 0, type: 'bike', title: 'Salida Larga de Fondo', subtitle: 'Resistencia aeróbica', zone: cycleIndex === 2 ? 3 : 2, warmMin: 15, workMin: sunWorkEach, restMin: 10, coolMin: 15, reps: 2, cadWorkMin: 82, cadWorkMax: 92, cadWarmMin: 85, cadWarmMax: 95, cadRestMin: 80, cadRestMax: 90, details: 'Fondo de fin de semana con hidratación constante.', nutrition: buildNutritionProtocol(sunTarget, cycleIndex === 2 ? 3 : 2, 'bike') }
       ];
 
       const ftp = state.rider.ftpCalculated;
       state.plan.forEach(item => {
         if (item.type === 'bike') {
           const zObj = state.zones[item.zone - 1] || state.zones[1];
-          const totalMin = item.warmMin + (item.reps * item.workMin) + ((item.reps > 1 ? item.reps - 1 : 0) * item.restMin) + item.coolMin;
-          item.durationMin = totalMin;
-
+          item.durationMin = item.warmMin + (item.reps * item.workMin) + ((item.reps > 1 ? item.reps - 1 : 0) * item.restMin) + item.coolMin;
           item.targets = {
-            hrWorkMin: zObj.hrMin,
-            hrWorkMax: zObj.hrMax,
-            hrWorkPct: zObj.hrPctText,
-            hrWarmMin: z1.hrMin,
-            hrWarmMax: z2.hrMin + 4,
-            hrRestMin: z1.hrMin,
-            hrRestMax: z1.hrMax,
-            wWorkMin: zObj.wMin,
-            wWorkMax: zObj.wMax,
-            wWorkPct: zObj.pwrPct,
-            wWorkPctText: zObj.pwrPctText,
-            wWarmMin: z1.wMin,
-            wWarmMax: z2.wMin,
-            wRestMin: Math.round(ftp * 0.48),
-            wRestMax: Math.round(ftp * 0.56),
-            cadWorkMin: item.cadWorkMin,
-            cadWorkMax: item.cadWorkMax,
-            cadWarmMin: item.cadWarmMin,
-            cadWarmMax: item.cadWarmMax,
-            cadRestMin: item.cadRestMin,
-            cadRestMax: item.cadRestMax
+            hrWorkMin: zObj.hrMin, hrWorkMax: zObj.hrMax, hrWorkPct: zObj.hrPctText,
+            hrWarmMin: z1.hrMin, hrWarmMax: z2.hrMin + 4, hrRestMin: z1.hrMin, hrRestMax: z1.hrMax,
+            wWorkMin: zObj.wMin, wWorkMax: zObj.wMax, wWorkPct: zObj.pwrPct, wWorkPctText: zObj.pwrPctText,
+            wWarmMin: z1.wMin, wWarmMax: z2.wMin, wRestMin: Math.round(ftp * 0.48), wRestMax: Math.round(ftp * 0.56),
+            cadWorkMin: item.cadWorkMin, cadWorkMax: item.cadWorkMax, cadWarmMin: item.cadWarmMin, cadWarmMax: item.cadWarmMax, cadRestMin: item.cadRestMin, cadRestMax: item.cadRestMax
           };
-
-          item.nutrition = buildNutritionProtocol(totalMin, item.zone, 'bike');
-        } else if (item.type === 'rest' && !item.nutrition) {
-          item.nutrition = buildNutritionProtocol(0, 1, 'rest');
+          item.nutrition = buildNutritionProtocol(item.durationMin, item.zone, 'bike');
         }
       });
-
-      // Emparejar automáticamente las actividades reales de Intervals.icu con los días de la semana
       matchIntervalsActivitiesToPlanDays();
     }
 
-    // =========================================================================
-    // EMPAREJAMIENTO AUTOMÁTICO DE ACTIVIDADES DE INTERVALS.ICU CON CADA DÍA DEL PLAN
-    // =========================================================================
     function matchIntervalsActivitiesToPlanDays() {
       if (!state.intervalsActivities || state.intervalsActivities.length === 0) return;
-
-      // Ordenar desde la actividad más reciente
-      const recentActs = [...state.intervalsActivities]
-        .filter(a => a && a.moving_time > 300 && a.start_date_local)
-        .sort((a, b) => new Date(b.start_date_local) - new Date(a.start_date_local));
-
-      // Buscar coincidencias en los últimos 7 días por día de la semana (Martes, Jueves, Sábado, Domingo, etc.)
+      const recentActs = [...state.intervalsActivities].filter(a => a && a.moving_time > 300 && a.start_date_local).sort((a, b) => new Date(b.start_date_local) - new Date(a.start_date_local));
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
       state.plan.forEach((dayItem, idx) => {
         if (dayItem.type !== 'bike') return;
-
         const matchingAct = recentActs.find(act => {
           const actDate = new Date(act.start_date_local);
           return actDate >= sevenDaysAgo && actDate.getDay() === dayItem.jsDay;
         });
-
         if (matchingAct) {
-          const logKey = `W${state.currentWeek}_D${idx}`;
-          state.completedLogs[logKey] = {
+          state.completedLogs[`W${state.currentWeek}_D${idx}`] = {
             status: 'full',
             source: 'intervals',
-            actName: matchingAct.name || `Salida del ${dayItem.day}`,
+            actName: matchingAct.name || `Salida ${dayItem.day}`,
             actDate: (matchingAct.start_date_local || '').split('T')[0],
             durationMin: Math.round((matchingAct.moving_time || 0) / 60),
             realHR: matchingAct.average_heartrate ? Math.round(matchingAct.average_heartrate) : 0,
             maxHR: matchingAct.max_heartrate ? Math.round(matchingAct.max_heartrate) : 0,
             realCAD: matchingAct.average_cadence ? Math.round(matchingAct.average_cadence) : 0,
-            realWatts: matchingAct.icu_average_watts ? Math.round(matchingAct.icu_average_watts) : 0,
             load: matchingAct.icu_training_load ? Math.round(matchingAct.icu_training_load) : 0
           };
         }
       });
     }
 
-    // =========================================================================
-    // SINCRONIZACIÓN CON LA API DE INTERVALS.ICU
-    // =========================================================================
     function openIntervalsSyncModal() {
       document.getElementById('inIntervalsId').value = state.intervalsAuth.athleteId || '';
       document.getElementById('inIntervalsKey').value = state.intervalsAuth.apiKey || '';
       document.getElementById('intervalsSyncModal').classList.remove('hidden');
     }
 
-    function closeIntervalsSyncModal() {
-      document.getElementById('intervalsSyncModal').classList.add('hidden');
-    }
-
+    function closeIntervalsSyncModal() { document.getElementById('intervalsSyncModal').classList.add('hidden'); }
     function saveIntervalsCredentials() {
       state.intervalsAuth.athleteId = document.getElementById('inIntervalsId').value.trim();
       state.intervalsAuth.apiKey = document.getElementById('inIntervalsKey').value.trim();
       saveStateToLocal();
     }
 
-    // Sincronización silenciosa al abrir la app o al pedir el consejo de un día de bicicleta
     async function syncAllFromIntervalsQuietly(showAlertIfMissing = false) {
       const athleteId = state.intervalsAuth.athleteId;
       const apiKey = state.intervalsAuth.apiKey;
@@ -1526,385 +1030,147 @@
         if (showAlertIfMissing) openIntervalsSyncModal();
         return false;
       }
-
       try {
-        const now = new Date();
-        const oldestDate = new Date();
-        oldestDate.setDate(now.getDate() - 14);
-        const oldestStr = oldestDate.toISOString().split('T')[0];
-        const newestStr = now.toISOString().split('T')[0];
-
-        const authHeader = 'Basic ' + btoa('API_KEY:' + apiKey);
-        const url = `https://intervals.icu/api/v1/athlete/${encodeURIComponent(athleteId)}/activities?oldest=${oldestStr}&newest=${newestStr}`;
-
-        const res = await fetch(url, {
-          headers: { 'Authorization': authHeader, 'Accept': 'application/json' }
+        const oldestStr = new Date(Date.now() - 14*86400000).toISOString().split('T')[0];
+        const newestStr = new Date().toISOString().split('T')[0];
+        const res = await fetch(`https://intervals.icu/api/v1/athlete/${encodeURIComponent(athleteId)}/activities?oldest=${oldestStr}&newest=${newestStr}`, {
+          headers: { 'Authorization': 'Basic ' + btoa('API_KEY:' + apiKey), 'Accept': 'application/json' }
         });
         if (!res.ok) return false;
-
         const activities = await res.json();
-        const validRides = (activities || []).filter(a => a && a.moving_time > 300);
-        state.intervalsActivities = validRides;
-
-        if (validRides.length > 0) {
-          const observedPeakHR = validRides.reduce((max, a) => Math.max(max, a.max_heartrate || 0), 0);
-          if (observedPeakHR > state.rider.maxHR + 2 && observedPeakHR < 215) {
-            state.rider.maxHR = observedPeakHR;
-            document.getElementById('inMaxHR').value = observedPeakHR;
+        state.intervalsActivities = (activities || []).filter(a => a && a.moving_time > 300);
+        if (state.intervalsActivities.length > 0) {
+          const maxH = state.intervalsActivities.reduce((m, a) => Math.max(m, a.max_heartrate || 0), 0);
+          if (maxH > state.rider.maxHR + 2 && maxH < 215) {
+            state.rider.maxHR = maxH;
+            document.getElementById('inMaxHR').value = maxH;
           }
           state.intervalsAuth.lastSyncDate = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
-          state.intervalsAuth.lastSyncSummary = `Se detectaron ${validRides.length} salidas recientes en tu cuenta de Intervals.icu. Los entrenamientos completados de esta semana ya tienen cargado tu pulso, cadencia y tiempo real.`;
+          state.intervalsAuth.lastSyncSummary = `Sincronización exitosa: ${state.intervalsActivities.length} actividades leídas de Intervals.icu.`;
         }
-
         readInputsAndComputeMetrics();
         buildWeekSchedule(state.currentWeek);
         renderPlanUI();
         renderSyncUI();
         saveStateToLocal();
         return true;
-      } catch (e) {
-        return false;
-      }
+      } catch (e) { return false; }
     }
 
     async function fetchAndAnalyzeIntervalsActivities() {
       const athleteId = document.getElementById('inIntervalsId').value.trim();
       const apiKey = document.getElementById('inIntervalsKey').value.trim();
-
-      if (!athleteId || !apiKey) {
-        alert('Por favor escribe tu Athlete ID (ej. i123456) y tu API Key de Intervals.icu.');
-        return;
-      }
-
+      if (!athleteId || !apiKey) { alert('Escribe tu Athlete ID y API Key.'); return; }
       saveIntervalsCredentials();
       const btn = document.getElementById('btnFetchIntervals');
-      const originalText = btn.innerHTML;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Leyendo tus entrenamientos de Intervals.icu...';
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sincronizando...';
       btn.disabled = true;
-
       try {
         const ok = await syncAllFromIntervalsQuietly(false);
-        if (!ok) {
-          throw new Error('No se pudo conectar. Verifica tu Athlete ID y tu API Key en Settings -> Developer Settings de Intervals.icu.');
-        }
-
-        const validRides = state.intervalsActivities;
-        const listEl = document.getElementById('intervalsActivitiesList');
+        if (!ok) throw new Error('Error de conexión con Intervals.icu.');
         document.getElementById('intervalsFetchedContainer').classList.remove('hidden');
-        document.getElementById('intervalsCountBadge').textContent = `${validRides.length} sesiones encontradas`;
-
-        if (validRides.length === 0) {
-          listEl.innerHTML = `<div class="p-3 rounded-xl bg-slate-900 text-xs text-slate-400">No encontramos entrenamientos en los últimos 14 días en Intervals.icu.</div>`;
-          document.getElementById('intervalsAiVerdict').textContent = 'Apenas subas tu entrenamiento desde OnelapFit a Intervals.icu, aparecerá aquí automáticamente.';
-        } else {
-          listEl.innerHTML = validRides.slice(0, 8).map(act => {
-            const min = Math.round((act.moving_time || 0) / 60);
-            const avgHR = act.average_heartrate ? Math.round(act.average_heartrate) : '--';
-            const maxHR = act.max_heartrate ? Math.round(act.max_heartrate) : '--';
-            const avgCad = act.average_cadence ? Math.round(act.average_cadence) : '--';
-            const dateStr = (act.start_date_local || '').split('T')[0];
-            return `
-              <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between text-xs">
-                <div>
-                  <div class="font-bold text-white">${act.name || 'Salida en Bici'} <span class="text-[10px] text-slate-400 mono">(${dateStr})</span></div>
-                  <div class="text-[11px] text-slate-300 mono mt-0.5">
-                    Tiempo: <strong>${min} min</strong> • Pulso Prom: <strong class="text-rose-300">${avgHR} ppm</strong> (Máx ${maxHR}) • Pedaleo: <strong class="text-cyan-300">${avgCad} rpm</strong>
-                  </div>
-                </div>
-                <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">Sincronizado</span>
-              </div>
-            `;
-          }).join('');
-
-          document.getElementById('intervalsAiVerdict').textContent =
-            `¡Listo! Emparejamos tus salidas reales con los días de tu plan semanal.\nAhora en cada día de bicicleta verás el botón "Recibir Consejo del Entrenamiento" con tus números reales cargados automáticamente.`;
-        }
-      } catch (err) {
-        alert(err.message);
-      } finally {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-      }
+        document.getElementById('intervalsCountBadge').textContent = `${state.intervalsActivities.length} sesiones`;
+        document.getElementById('intervalsActivitiesList').innerHTML = state.intervalsActivities.slice(0, 5).map(a => `
+          <div class="p-2 bg-slate-900 rounded text-xs text-slate-200 flex justify-between">
+            <span>${a.name || 'Salida'} (${(a.start_date_local||'').split('T')[0]})</span>
+            <span class="text-emerald-400 mono">${Math.round(a.moving_time/60)}m | ${Math.round(a.average_heartrate||0)}ppm</span>
+          </div>
+        `).join('');
+        document.getElementById('intervalsAiVerdict').textContent = '¡Listo! Los entrenamientos ya emparejaron con tu plan.';
+      } catch (err) { alert(err.message); }
+      finally { btn.innerHTML = 'Sincronizar Mis Entrenamientos Ahora'; btn.disabled = false; }
     }
 
-    async function pushWorkoutDirectlyToIntervals() {
-      const athleteId = state.intervalsAuth.athleteId;
-      const apiKey = state.intervalsAuth.apiKey;
-
-      if (!athleteId || !apiKey) {
-        alert('Primero conecta tu Athlete ID y API Key en el botón "Sincronizar Intervals.icu" arriba a la derecha.');
-        openIntervalsSyncModal();
-        return;
-      }
-
-      const dayIdx = state.selectedDayForIntervalsExport;
-      const w = state.plan[dayIdx];
-      const syntax = buildIntervalsWorkoutSyntax(dayIdx);
-
-      const defaultDate = new Date().toISOString().split('T')[0];
-      const targetDate = prompt(`¿En qué fecha del calendario de Intervals.icu quieres agendar "${w.title}"? (Formato AAAA-MM-DD):`, defaultDate);
-      if (!targetDate) return;
-
-      const btn = document.getElementById('btnDirectPushIntervals');
-      const oldHtml = btn.innerHTML;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Subiendo a Intervals.icu...';
-      btn.disabled = true;
-
-      try {
-        const authHeader = 'Basic ' + btoa('API_KEY:' + apiKey);
-        const url = `https://intervals.icu/api/v1/athlete/${encodeURIComponent(athleteId)}/events`;
-        const payload = {
-          category: 'WORKOUT',
-          start_date_local: `${targetDate}T06:00:00`,
-          type: 'Ride',
-          name: `VeloPlan Sem${state.currentWeek} - ${w.title}`,
-          description: syntax
-        };
-
-        const res = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Authorization': authHeader,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
-        });
-
-        if (!res.ok) throw new Error(`Código ${res.status}. Verifica tu API Key.`);
-
-        alert(`✅ ¡Entrenamiento subido directamente a tu calendario de Intervals.icu para el ${targetDate}!\n\nAhora abre OnelapFit en tu celular y dale Sincronizar hacia tu Magene C706.`);
-        closeIntervalsModal();
-      } catch (e) {
-        alert('Error al subir a Intervals.icu: ' + e.message);
-      } finally {
-        btn.innerHTML = oldHtml;
-        btn.disabled = false;
-      }
-    }
-
-    // =========================================================================
-    // RENDERIZADO DEL PLAN (BOTÓN DE CONSEJO AUTOMÁTICO SIN REGISTRO MANUAL EN BICI)
-    // =========================================================================
     function renderPlanUI() {
       const theme = state.currentWeekTheme || { badge: `SEMANA ${state.currentWeek}`, desc: '' };
       document.getElementById('planPhaseBadge').textContent = theme.badge;
       document.getElementById('planFocusDescription').textContent = theme.desc;
+      document.getElementById('fitnessLevelBadge').innerHTML = `<i class="fa-solid fa-arrow-trend-up mr-1"></i>Nivel: ${Math.round(state.weeklyProgressionFactor * 100)}%`;
 
-      const pctLevel = Math.round(state.weeklyProgressionFactor * 100);
-      document.getElementById('fitnessLevelBadge').innerHTML =
-        `<i class="fa-solid fa-arrow-trend-up mr-1"></i>Nivel Adaptativo: ${pctLevel}%`;
-
-      document.getElementById('planHeaderTitle').textContent =
-        `Plan de ${state.rider.name} — Semana ${state.currentWeek} de ${state.totalWeeks}`;
-      document.getElementById('planSubSummary').textContent =
-        `Horario: ${state.goal.weekdayMin} min entre semana / ${(state.goal.weekendMin / 60).toFixed(1)} h fin de semana • Pulso Máx: ${state.rider.maxHR} ppm • Potencia Ref.: ${state.rider.ftpCalculated} W`;
-
-      document.getElementById('zonesRefMeta').textContent =
-        `Corazón máx ${state.rider.maxHR} ppm | Fuerza ref. ${state.rider.ftpCalculated} W`;
+      document.getElementById('planHeaderTitle').textContent = `Plan de ${state.rider.name} — Semana ${state.currentWeek} de ${state.totalWeeks}`;
+      document.getElementById('planSubSummary').textContent = `Límites: FC Máx ${state.rider.maxHR} ppm • FTP ref: ${state.rider.ftpCalculated} W`;
+      document.getElementById('zonesRefMeta').textContent = `FC Máx ${state.rider.maxHR} ppm`;
 
       const adaptBanner = document.getElementById('intervalsAdaptationBanner');
       if (state.intervalsAuth.lastSyncSummary) {
         adaptBanner.classList.remove('hidden');
         document.getElementById('intervalsAdaptationSummary').textContent = state.intervalsAuth.lastSyncSummary;
-        document.getElementById('intervalsLastSyncDate').textContent = `Sincronizado: ${state.intervalsAuth.lastSyncDate || 'Hoy'}`;
-      } else {
-        adaptBanner.classList.add('hidden');
-      }
+        document.getElementById('intervalsLastSyncDate').textContent = state.intervalsAuth.lastSyncDate;
+      } else { adaptBanner.classList.add('hidden'); }
 
-      const zGrid = document.getElementById('zonesGrid');
-      zGrid.innerHTML = state.zones.map(z => `
-        <div class="p-3 rounded-xl border ${z.color} flex flex-col justify-between space-y-2">
-          <div>
-            <div class="text-xs font-extrabold">${z.name}</div>
-            <p class="text-[11px] opacity-85 mt-0.5 leading-snug">${z.feel}</p>
-          </div>
-          <div class="space-y-0.5 pt-1 border-t border-white/10">
-            <div class="text-[11px] mono flex items-center justify-between">
-              <span class="text-rose-300 font-bold"><i class="fa-solid fa-heart-pulse mr-1"></i>Pulso:</span>
-              <span>${z.hrMin}-${z.hrMax} ppm</span>
-            </div>
-            <div class="text-[11px] mono flex items-center justify-between">
-              <span class="text-amber-300 font-bold"><i class="fa-solid fa-bolt mr-1"></i>Fuerza:</span>
-              <span>${z.wMin}-${z.wMax} W</span>
-            </div>
-            <div class="text-[11px] mono flex items-center justify-between">
-              <span class="text-cyan-300 font-bold"><i class="fa-solid fa-rotate mr-1"></i>Pedaleo:</span>
-              <span>${z.cadMin}-${z.cadMax} rpm</span>
-            </div>
+      document.getElementById('zonesGrid').innerHTML = state.zones.map(z => `
+        <div class="p-3 rounded-xl border ${z.color} space-y-1">
+          <div class="text-xs font-extrabold">${z.name}</div>
+          <p class="text-[10px] opacity-85 leading-snug">${z.feel}</p>
+          <div class="text-[11px] mono pt-1 border-t border-white/10 flex justify-between">
+            <span class="text-rose-300">Pulso:</span><span>${z.hrMin}-${z.hrMax} ppm</span>
           </div>
         </div>
       `).join('');
 
-      const cardsGrid = document.getElementById('weeklyCardsGrid');
-      cardsGrid.innerHTML = state.plan.map((d, idx) => {
+      document.getElementById('weeklyCardsGrid').innerHTML = state.plan.map((d, idx) => {
         const logKey = `W${state.currentWeek}_D${idx}`;
         const savedLog = state.completedLogs[logKey];
 
         if (d.type === 'rest') {
           return `
-            <div class="glass rounded-2xl p-4 border border-slate-800 flex flex-col justify-between space-y-3">
-              <div>
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-extrabold uppercase tracking-wider text-slate-400">${d.day}</span>
-                  <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-800 text-slate-300">DÍA DE DESCANSO</span>
-                </div>
-                <h3 class="text-base font-bold text-white mt-1">${d.title}</h3>
-                <p class="text-xs text-slate-300 mt-1 leading-relaxed">${d.details}</p>
-              </div>
-              <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-300 space-y-1">
-                <div class="font-bold text-cyan-300"><i class="fa-solid fa-droplet mr-1"></i>Alimentación y Agua en tu Día de Descanso</div>
-                <p class="text-[11px] text-slate-300">${d.nutrition.before}</p>
-                <p class="text-[11px] text-slate-400">${d.nutrition.during}</p>
-              </div>
+            <div class="glass rounded-2xl p-4 border border-slate-800 space-y-3">
+              <div class="flex justify-between"><span class="text-xs font-bold text-slate-400">${d.day}</span><span class="px-2 py-0.5 text-[10px] font-bold bg-slate-800 text-slate-300 rounded">DESCANSO</span></div>
+              <h3 class="text-base font-bold text-white">${d.title}</h3>
+              <p class="text-xs text-slate-300">${d.details}</p>
             </div>
           `;
         }
 
         if (d.type === 'strength') {
-          const strengthBadge = savedLog
-            ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-500 text-slate-950"><i class="fa-solid fa-check mr-1"></i>REALIZADO</span>`
-            : '';
           return `
-            <div class="glass rounded-2xl p-4 border ${savedLog ? 'border-emerald-400' : 'border-purple-500/30'} flex flex-col justify-between space-y-3">
-              <div class="space-y-2">
-                <div class="flex items-center justify-between flex-wrap gap-1">
-                  <span class="text-xs font-extrabold uppercase tracking-wider text-purple-300">${d.day} • ${d.durationMin} MINUTOS</span>
-                  <div class="flex items-center gap-1">
-                    ${strengthBadge}
-                    <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">
-                      <i class="fa-solid fa-dumbbell mr-1"></i>FORTALECIMIENTO SIN BICI
-                    </span>
-                  </div>
-                </div>
-                <h3 class="text-base font-bold text-white">${d.title}</h3>
-                <p class="text-[11px] text-slate-400">${d.subtitle}</p>
-                <ul class="space-y-1.5 pt-1 text-xs text-slate-200">
-                  ${d.exercises.map(ex => `<li class="flex items-start gap-2"><i class="fa-solid fa-check text-purple-400 mt-1 text-[10px]"></i><span>${ex}</span></li>`).join('')}
-                </ul>
-              </div>
-              <div class="space-y-2 pt-2 border-t border-slate-800">
-                <div class="p-2.5 rounded-xl bg-cyan-950/25 border border-cyan-500/30 text-[11px] text-slate-300 space-y-1">
-                  <div><strong class="text-emerald-300">Antes:</strong> ${d.nutrition.before}</div>
-                  <div><strong class="text-cyan-300">Agua:</strong> ${d.nutrition.during}</div>
-                  <div><strong class="text-purple-300">Al terminar:</strong> ${d.nutrition.after}</div>
-                </div>
-                <button onclick="openSmartAdviceModal(${idx})" class="w-full py-2 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 border border-purple-500/40 text-purple-200 font-bold text-xs">
-                  <i class="fa-solid fa-comment-medical mr-1"></i>Recibir Consejo de Recuperación para Mañana
-                </button>
-              </div>
+            <div class="glass rounded-2xl p-4 border ${savedLog ? 'border-emerald-400' : 'border-purple-500/30'} space-y-3">
+              <div class="flex justify-between"><span class="text-xs font-bold text-purple-300">${d.day} • ${d.durationMin} MIN</span><span class="px-2 py-0.5 text-[10px] font-bold bg-purple-500/20 text-purple-300 rounded">FUERZA</span></div>
+              <h3 class="text-base font-bold text-white">${d.title}</h3>
+              <ul class="text-xs text-slate-200 space-y-1">${d.exercises.map(ex => `<li>• ${ex}</li>`).join('')}</ul>
+              <button onclick="openSmartAdviceModal(${idx})" class="w-full py-2 rounded-xl bg-purple-500/20 text-purple-200 font-bold text-xs">Recibir Consejo de Recuperación</button>
             </div>
           `;
         }
 
-        // DÍA DE BICICLETA: 100% CONECTADO CON INTERVALS.ICU (SIN FORMULARIO MANUAL)
         const t = d.targets;
-        const structureText = d.reps > 1
-          ? `Empieza con <strong>${d.warmMin} min suaves</strong> + Haz <strong>${d.reps} repeticiones de ${d.workMin} min</strong> (descansando ${d.restMin} min suave entre cada una) + Termina con <strong>${d.coolMin} min suaves</strong>`
-          : `Empieza con <strong>${d.warmMin} min suaves</strong> + Mantén <strong>${d.workMin} min seguidos a ritmo constante</strong> + Termina con <strong>${d.coolMin} min suaves</strong>`;
-
-        // Si ya se sincronizó el entrenamiento real desde Intervals.icu en este día:
-        const syncedStrip = savedLog && savedLog.source === 'intervals'
-          ? `
-            <div class="p-2.5 rounded-xl bg-emerald-950/40 border border-emerald-500/50 flex items-center justify-between text-xs">
-              <div>
-                <div class="font-extrabold text-emerald-300"><i class="fa-solid fa-circle-check mr-1"></i>Subido a Intervals.icu: ${savedLog.actName} (${savedLog.actDate})</div>
-                <div class="text-[11px] text-slate-200 mono mt-0.5">
-                  Real: <strong>${savedLog.durationMin} min</strong> • Pulso: <strong class="text-rose-300">${savedLog.realHR || '--'} ppm</strong> • Pedaleo: <strong class="text-cyan-300">${savedLog.realCAD || '--'} rpm</strong>
-                </div>
-              </div>
-            </div>
-          `
-          : '';
-
-        const adviceButtonHtml = savedLog && savedLog.source === 'intervals'
-          ? `<button onclick="openSmartAdviceModal(${idx})" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-emerald-500/20">
-               <i class="fa-solid fa-wand-magic-sparkles"></i> Recibir Consejo del Entrenamiento (Datos Reales Intervals.icu)
-             </button>`
-          : `<button onclick="openSmartAdviceModal(${idx})" class="w-full py-2.5 rounded-xl bg-indigo-500/25 hover:bg-indigo-500/35 border border-indigo-400/50 text-indigo-200 font-extrabold text-xs flex items-center justify-center gap-1.5">
-               <i class="fa-solid fa-rotate"></i> Sincronizar Entreno de Hoy en Intervals.icu y Recibir Consejo
-             </button>`;
+        const structureText = d.reps > 1 ? `Calentamiento ${d.warmMin}m + <strong>${d.reps} × ${d.workMin}m</strong> (Rec. ${d.restMin}m) + Enfriamiento ${d.coolMin}m` : `Calentamiento ${d.warmMin}m + <strong>${d.workMin}m continuos</strong> + Enfriamiento ${d.coolMin}m`;
+        const syncedStrip = savedLog && savedLog.source === 'intervals' ? `<div class="p-2.5 rounded-xl bg-emerald-950/40 border border-emerald-500/50 text-xs text-emerald-300 font-bold">✔ Sincronizado Intervals: ${savedLog.durationMin} min | Pulso: ${savedLog.realHR} ppm</div>` : '';
 
         return `
-          <div class="glass rounded-2xl p-4 border ${savedLog ? 'border-emerald-400 ring-1 ring-emerald-400/40' : 'border-emerald-500/35'} flex flex-col justify-between space-y-3">
-            <div class="space-y-3">
-              <div class="flex items-center justify-between flex-wrap gap-1">
-                <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-400">${d.day} • ${d.durationMin} MINUTOS EN TOTAL</span>
-                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                  RITMO ${d.zone}
-                </span>
-              </div>
-
-              <div>
-                <h3 class="text-base font-extrabold text-white">${d.title}</h3>
-                <p class="text-[11px] text-emerald-300/90 font-medium">${d.subtitle}</p>
-                <p class="text-xs text-slate-200 mt-1.5 bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">${structureText}</p>
-              </div>
-
-              ${syncedStrip}
-
-              <div class="grid grid-cols-3 gap-2">
-                <div class="p-2.5 rounded-xl bg-rose-950/35 border ${!state.bike.hasPM ? 'border-rose-400 ring-1 ring-rose-400/50' : 'border-rose-500/30'}">
-                  <div class="flex items-center justify-between text-[10px] font-bold text-rose-300">
-                    <span><i class="fa-solid fa-heart-pulse mr-1"></i>META PULSO</span>
-                    ${!state.bike.hasPM ? '<span class="px-1 rounded bg-rose-500 text-slate-950 text-[9px]">GUÍA</span>' : ''}
-                  </div>
-                  <div class="text-sm sm:text-base font-extrabold text-white mono mt-0.5">${t.hrWorkMin}-${t.hrWorkMax} <span class="text-[10px] font-normal text-rose-200">ppm</span></div>
-                  <div class="text-[10px] text-slate-400 mono">En suave: ${t.hrRestMin}-${t.hrRestMax}</div>
-                </div>
-
-                <div class="p-2.5 rounded-xl bg-amber-950/35 border ${state.bike.hasPM ? 'border-amber-400 ring-1 ring-amber-400/50' : 'border-amber-500/30'}">
-                  <div class="flex items-center justify-between text-[10px] font-bold text-amber-300">
-                    <span><i class="fa-solid fa-bolt mr-1"></i>META POT.</span>
-                    ${state.bike.hasPM ? '<span class="px-1 rounded bg-amber-400 text-slate-950 text-[9px]">GUÍA</span>' : ''}
-                  </div>
-                  <div class="text-sm sm:text-base font-extrabold text-white mono mt-0.5">${t.wWorkMin}-${t.wWorkMax} <span class="text-[10px] font-normal text-amber-200">W</span></div>
-                  <div class="text-[10px] text-slate-400 mono">En suave: ${t.wRestMin}-${t.wRestMax} W</div>
-                </div>
-
-                <div class="p-2.5 rounded-xl bg-cyan-950/35 border border-cyan-500/40">
-                  <div class="flex items-center justify-between text-[10px] font-bold text-cyan-300">
-                    <span><i class="fa-solid fa-rotate mr-1"></i>META PEDALEO</span>
-                  </div>
-                  <div class="text-sm sm:text-base font-extrabold text-white mono mt-0.5">${t.cadWorkMin}-${t.cadWorkMax} <span class="text-[10px] font-normal text-cyan-200">rpm</span></div>
-                  <div class="text-[10px] text-slate-400 mono">En suave: ${t.cadRestMin}-${t.cadRestMax}</div>
-                </div>
-              </div>
-
-              <p class="text-xs text-slate-300 leading-relaxed">${d.details}</p>
-
-              <div class="p-3 rounded-xl bg-slate-900/95 border border-cyan-500/30 space-y-1.5">
-                <div class="flex items-center justify-between">
-                  <span class="text-[11px] font-bold text-cyan-300">
-                    <i class="fa-solid fa-bottle-droplet mr-1"></i>Agua en esta salida: ${d.nutrition.mlEvery15} ml cada 15 min (Total: ${d.nutrition.totalMl} ml)
-                  </span>
-                </div>
-                <div class="text-[11px] text-slate-300"><strong class="text-emerald-300">Antes de salir:</strong> ${d.nutrition.before}</div>
-                <div class="text-[11px] text-slate-300"><strong class="text-cyan-300">Durante el recorrido:</strong> ${d.nutrition.during}</div>
-                <div class="text-[11px] text-slate-300"><strong class="text-purple-300">Al llegar a casa:</strong> ${d.nutrition.after}</div>
-              </div>
+          <div class="glass rounded-2xl p-4 border ${savedLog ? 'border-emerald-400' : 'border-emerald-500/35'} space-y-3">
+            <div class="flex justify-between"><span class="text-xs font-bold text-emerald-400">${d.day} • ${d.durationMin} MIN</span><span class="px-2 py-0.5 text-[10px] font-bold bg-emerald-500/20 text-emerald-300 rounded">ZONA ${d.zone}</span></div>
+            <div>
+              <h3 class="text-base font-extrabold text-white">${d.title}</h3>
+              <p class="text-xs text-slate-200 mt-1 bg-slate-900/80 p-2.5 rounded-xl">${structureText}</p>
             </div>
-
-            <div class="pt-2 border-t border-slate-800 space-y-2">
-              <div class="grid grid-cols-3 gap-1.5">
-                <button onclick="openIntervalsExport(${idx})" class="py-2 px-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-[11px] flex items-center justify-center gap-1">
-                  <i class="fa-solid fa-cloud-arrow-up"></i> Enviar a Intervals
-                </button>
-                <button onclick="downloadBinaryFIT(${idx})" class="py-2 px-2 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 font-bold text-[11px] flex items-center justify-center gap-1">
-                  <i class="fa-solid fa-microchip"></i> Archivo .FIT
-                </button>
-                <button onclick="downloadWorkoutZWO(${idx})" class="py-2 px-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-[11px] flex items-center justify-center gap-1">
-                  <i class="fa-solid fa-file-code"></i> .ZWO
-                </button>
-              </div>
-              ${adviceButtonHtml}
+            ${syncedStrip}
+            <div class="grid grid-cols-2 gap-2 text-xs mono">
+              <div class="p-2 bg-rose-950/30 rounded border border-rose-500/30 text-rose-300">Pulso Meta: <strong>${t.hrWorkMin}-${t.hrWorkMax} ppm</strong></div>
+              <div class="p-2 bg-cyan-950/30 rounded border border-cyan-500/30 text-cyan-300">Cadencia: <strong>${t.cadWorkMin}-${t.cadWorkMax} rpm</strong></div>
             </div>
+            <p class="text-xs text-slate-300">${d.details}</p>
+            <button onclick="openSmartAdviceModal(${idx})" class="w-full py-2.5 rounded-xl bg-indigo-500/25 border border-indigo-400/50 text-indigo-200 font-extrabold text-xs">
+              ${savedLog && savedLog.source === 'intervals' ? '✨ Ver Consejo con Datos Reales de Intervals' : '🔄 Sincronizar y Ver Consejo'}
+            </button>
           </div>
         `;
       }).join('');
     }
 
+    function renderSyncUI() {
+      const list = document.getElementById('syncWorkoutsList');
+      const bikeDays = state.plan.map((d, idx) => ({ ...d, idx })).filter(d => d.type === 'bike');
+      list.innerHTML = bikeDays.map(d => `
+        <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 flex justify-between items-center text-xs">
+          <div><strong class="text-emerald-400">${d.day}</strong> — ${d.title} (${d.durationMin} min)</div>
+          <button onclick="openIntervalsExport(${d.idx})" class="px-3 py-1.5 bg-emerald-500 text-slate-950 font-bold rounded">Enviar a Intervals</button>
+        </div>
+      `).join('');
+    }
+
     // =========================================================================
-    // MOTOR DE CONSEJO AUTOMÁTICO CON LOS DATOS REALES DE INTERVALS.ICU
+    // TRADUCCIÓN TÉCNICA CLARA EN EL MODAL DE CONSEJOS (FTP, VO2MÁX, FATIGA)
     // =========================================================================
     async function openSmartAdviceModal(dayIdx) {
       state.selectedDayForFeedback = dayIdx;
@@ -1912,11 +1178,10 @@
       const nextDay = state.plan[(dayIdx + 1) % 7];
       const logKey = `W${state.currentWeek}_D${dayIdx}`;
 
-      document.getElementById('fbModalTitle').textContent = `Consejo de tu Entrenamiento del ${w.day}`;
+      document.getElementById('fbModalTitle').textContent = `Análisis Técnico y Consejo — ${w.day}`;
 
-      // CASO 1: DÍA DE FORTALECIMIENTO SIN BICI
       if (w.type === 'strength') {
-        document.getElementById('fbModalBadge').textContent = 'FORTALECIMIENTO FUERA DE LA BICICLETA';
+        document.getElementById('fbModalBadge').textContent = 'FORTALECIMIENTO FUERA DE LA BICI';
         document.getElementById('fbAutoStatsCard').classList.add('hidden');
         document.getElementById('fbStrengthConfirmBox').classList.remove('hidden');
         generateStrengthAdvice();
@@ -1924,108 +1189,67 @@
         return;
       }
 
-      // CASO 2: DÍA DE BICICLETA -> LEER AUTOMÁTICAMENTE DE INTERVALS.ICU
-      document.getElementById('fbModalBadge').textContent = 'DATOS REALES LEÍDOS DE INTERVALS.ICU';
+      document.getElementById('fbModalBadge').textContent = 'TRADUCCIÓN TÉCNICA AUTOMÁTICA (FTP, VO2MÁX, FATIGA)';
       document.getElementById('fbStrengthConfirmBox').classList.add('hidden');
 
-      // Si aún no tiene actividad sincronizada para este día, consultar Intervals.icu en vivo ahora mismo
       if (!state.completedLogs[logKey] || state.completedLogs[logKey].source !== 'intervals') {
-        if (!state.intervalsAuth.athleteId || !state.intervalsAuth.apiKey) {
-          alert('Para darte el consejo automático con tus datos reales, primero conecta tu Athlete ID y API Key de Intervals.icu.');
-          openIntervalsSyncModal();
-          return;
-        }
         await syncAllFromIntervalsQuietly(false);
       }
 
       let realData = state.completedLogs[logKey];
-
-      // Si no encontró actividad exactamente el mismo día de la semana, tomar la última actividad subida a Intervals.icu
       if ((!realData || realData.source !== 'intervals') && state.intervalsActivities.length > 0) {
         const latest = [...state.intervalsActivities].sort((a, b) => new Date(b.start_date_local) - new Date(a.start_date_local))[0];
         realData = {
           status: 'full',
           source: 'intervals',
-          actName: latest.name || 'Última salida en Intervals.icu',
+          actName: latest.name || 'Salida reciente',
           actDate: (latest.start_date_local || '').split('T')[0],
           durationMin: Math.round((latest.moving_time || 0) / 60),
           realHR: latest.average_heartrate ? Math.round(latest.average_heartrate) : 0,
           maxHR: latest.max_heartrate ? Math.round(latest.max_heartrate) : 0,
           realCAD: latest.average_cadence ? Math.round(latest.average_cadence) : 0,
-          realWatts: latest.icu_average_watts ? Math.round(latest.icu_average_watts) : 0,
           load: latest.icu_training_load ? Math.round(latest.icu_training_load) : 0
         };
       }
 
       if (!realData) {
-        alert(`Todavía no aparece subido ningún entrenamiento en tu cuenta de Intervals.icu.\n\nApenas termines de montar y tu Magene C706 lo suba a OnelapFit -> Intervals.icu, toca este botón y te daremos el análisis completo.`);
+        alert('Aún no hay entrenamientos registrados en Intervals.icu para hoy. Sube tu rodada y vuelve a tocar este botón.');
         return;
       }
 
-      // Mostrar la tarjeta con los números reales que leyó de Intervals.icu
       document.getElementById('fbAutoStatsCard').classList.remove('hidden');
       document.getElementById('fbActivityName').textContent = realData.actName;
-      document.getElementById('fbActivityDate').textContent = `Fecha: ${realData.actDate}`;
-      document.getElementById('fbStatDuration').textContent = `${realData.durationMin} min (Plan: ${w.durationMin}m)`;
-      document.getElementById('fbStatHR').textContent = `${realData.realHR || '--'} ppm (Máx ${realData.maxHR || '--'})`;
+      document.getElementById('fbActivityDate').textContent = realData.actDate;
+      document.getElementById('fbStatDuration').textContent = `${realData.durationMin} min`;
+      document.getElementById('fbStatHR').textContent = `${realData.realHR || '--'} ppm`;
       document.getElementById('fbStatCAD').textContent = `${realData.realCAD || '--'} rpm`;
 
-      // Construir explicación en lenguaje sencillo comparando lo planeado vs lo real de Intervals.icu
+      // TRADUCCIÓN CLARA DE TÉRMINOS TÉCNICOS
       const t = w.targets;
-      let evalLines = [];
+      let analysisLines = [];
 
-      // 1. Evaluar el tiempo cumplido
-      const timeDiff = realData.durationMin - w.durationMin;
-      if (Math.abs(timeDiff) <= 12) {
-        evalLines.push(`• Tiempo cumplido a la perfección: Rodaste ${realData.durationMin} minutos frente a los ${w.durationMin} minutos que teníamos planeados.`);
-      } else if (timeDiff > 12) {
-        evalLines.push(`• Hiciste ${realData.durationMin} minutos (${timeDiff} minutos más de los ${w.durationMin} min planeados). Qué bueno que tuviste tiempo extra, pero asegúrate de reponer bien el agua y la comida hoy.`);
+      // Explicación de Volumen y Fatiga (Training Load)
+      const loadVal = realData.load || (realData.durationMin * 0.7);
+      analysisLines.push(`• **Fatiga y Carga Acumulada (Training Load):** Hoy sumaste una carga de esfuerzo de **${loadVal} puntos**. Traducido en sencillo: es el desgaste total que le pediste a tus músculos y a tu corazón hoy. Al mantenerlo en este rango, tu cuerpo asimila el trabajo sin romper el tejido muscular.`);
+
+      // Explicación de FTP / Umbral
+      if (w.zone >= 4) {
+        analysisLines.push(`• **Traducción del FTP (Umbral de Potencia):** Como el entreno de hoy fue en Ritmo 4, pusiste a prueba tu FTP (la potencia máxima que sostienes 1 hora). Tu pulso real fue de ${realData.realHR} ppm frente a la meta de ${t.hrWorkMin}-${t.hrWorkMax} ppm. ${realData.realHR <= t.hrWorkMax ? '¡Excelente! Demuestra que tu umbral está sólido y respondiendo bien.' : 'Tu pulso subió más del límite, señal de que el umbral iba exigido hoy; recuerda descansar bien mañana.'}`);
       } else {
-        evalLines.push(`• Hoy rodaste ${realData.durationMin} minutos (el plan era de ${w.durationMin} min). No te preocupes, lo importante es haber salido y mantener el hábito.`);
+        analysisLines.push(`• **Estado del FTP y Base:** Hoy trabajamos en zona aeróbica (${w.zone}). Esto construye la tubería invisible que sostiene tu FTP a largo plazo sin desgastarte.`);
       }
 
-      // 2. Evaluar Pulsaciones Reales vs Meta del Día
-      if (realData.realHR > 0) {
-        if (realData.realHR > t.hrWorkMax + 4) {
-          evalLines.push(`• ¿Cómo trabajó tu corazón?: Tus pulsaciones promedio fueron de ${realData.realHR} ppm (llegando a un máximo de ${realData.maxHR} ppm), lo cual estuvo por encima del techo de ${t.hrWorkMax} ppm que buscábamos hoy.\n  En palabras sencillas: tu corazón fue más acelerado de la cuenta. Esto suele pasar cuando hace calor, falta tomar agua cada 15 minutos o saliste acelerado desde el principio.`);
-        } else if (realData.realHR >= t.hrWarmMin && realData.realHR <= t.hrWorkMax + 4) {
-          evalLines.push(`• ¿Cómo trabajó tu corazón?: ¡Excelente control! Tu pulso promedio fue de ${realData.realHR} ppm (con pico de ${realData.maxHR} ppm), manteniéndote dentro de la zona saludable que queríamos para hoy (${t.hrWorkMin}-${t.hrWorkMax} ppm en los bloques principales). Así es como realmente ganas fondo sin quemar músculo.`);
-        } else {
-          evalLines.push(`• ¿Cómo trabajó tu corazón?: Tu pulso promedio fue de ${realData.realHR} ppm, bastante tranquilo respecto al objetivo de ${t.hrWorkMin}-${t.hrWorkMax} ppm. Fue una salida más suave para el corazón.`);
-        }
+      // Explicación de VO2máx si aplica
+      if (w.zone === 5) {
+        analysisLines.push(`• **Traducción del VO2máx (Tanque de Oxígeno):** Al hacer intervalos en Ritmo 5, obligaste a tus pulmones y a tu corazón a bombear el máximo oxígeno posible. Con un pulso máximo real de ${realData.maxHR} ppm, expandiste tu cilindrada máxima.`);
       }
 
-      // 3. Evaluar Cadencia Real (Pedaleo)
-      if (realData.realCAD > 0) {
-        if (realData.realCAD < t.cadWorkMin - 5) {
-          evalLines.push(`• ¿Cómo estuvo tu pedaleo?: Llevaste un promedio de ${realData.realCAD} pedaladas por minuto (buscábamos entre ${t.cadWorkMin} y ${t.cadWorkMax} rpm). Fuiste con un cambio un poco duro/pesado; en la próxima intenta subir un piñón atrás para llevar las piernas más sueltas y proteger las rodillas.`);
-        } else {
-          evalLines.push(`• ¿Cómo estuvo tu pedaleo?: Muy buena agilidad (${realData.realCAD} rpm en promedio), cuidando las articulaciones y aprovechando bien los cambios de tu bicicleta.`);
-        }
-      }
+      // Siguiente día
+      let nextAdvice = `• **Para mañana (${nextDay.day}):** Tienes "${nextDay.title}". Sigue las pautas de hidratación (${nextDay.nutrition.totalMl} ml) y pedalea con calma.`;
 
-      // 4. Consejo claro para mañana según el calendario
-      let tomorrowAdvice = '';
-      if (nextDay.type === 'rest') {
-        tomorrowAdvice = `• Mañana (${nextDay.day}) te toca DÍA DE DESCANSO TOTAL.\n• Qué tener en cuenta: No salgas en bici. Después de los ${realData.durationMin} minutos que hiciste hoy, tu cuerpo necesita el descanso de mañana para reparar las fibras y asimilar el avance. Toma unos ${nextDay.nutrition.totalMl} ml de agua en el día.`;
-      } else if (nextDay.type === 'strength') {
-        tomorrowAdvice = `• Mañana (${nextDay.day}) te tocan EJERCICIOS SIN BICICLETA (${nextDay.title}, ${nextDay.durationMin} min).\n• Qué tener en cuenta: ${realData.realHR > t.hrWorkMax ? 'Como hoy tu corazón trabajó exigido (' + realData.realHR + ' ppm), mañana haz los ejercicios de piernas con calma y sin excederte en el peso.' : 'Tus pulsaciones hoy estuvieron bien controladas, así que mañana puedes hacer tus series de fortalecimiento completas.'}`;
-      } else {
-        const nt = nextDay.targets;
-        tomorrowAdvice = `• Mañana (${nextDay.day}) te toca BICICLETA: "${nextDay.title}" (${nextDay.durationMin} min).\n• Tus metas para mañana: Mantener el pulso entre ${nt.hrWorkMin} y ${nt.hrWorkMax} ppm y el pedaleo entre ${nt.cadWorkMin} y ${nt.cadWorkMax} rpm. Recuerda alistar tus caramañolas con ${nextDay.nutrition.totalMl} ml de líquido.`;
-      }
-
-      const fullReport =
-        `Hola ${state.rider.name}, analizamos automáticamente tu entrenamiento subido a Intervals.icu:\n` +
-        `--------------------------------------------------\n` +
-        `Actividad leída: ${realData.actName} (${realData.actDate})\n` +
-        `Datos Reales: ${realData.durationMin} min | Pulso prom: ${realData.realHR || '--'} ppm (Máx ${realData.maxHR || '--'} ppm) | Pedaleo: ${realData.realCAD || '--'} rpm\n\n` +
-        `1. EXPLICACIÓN SENCILLA DE CÓMO TE FUE HOY:\n${evalLines.join('\n\n')}\n\n` +
-        `2. QUÉ COMER Y TOMAR AHORA PARA RECUPERAR:\n• ${w.nutrition.after}\n\n` +
-        `3. QUÉ DEBES TENER EN CUENTA PARA MAÑANA (${nextDay.day.toUpperCase()}):\n${tomorrowAdvice}`;
-
-      state.lastFeedbackReport = fullReport;
-      document.getElementById('fbDiagnosisText').textContent = fullReport;
+      const report = `Hola ${state.rider.name}, análisis técnico traducido de tu salida:\n\n` + analysisLines.join('\n\n') + `\n\n` + nextAdvice;
+      state.lastFeedbackReport = report;
+      document.getElementById('fbDiagnosisText').textContent = report;
       document.getElementById('feedbackModal').classList.remove('hidden');
     }
 
@@ -2033,415 +1257,97 @@
       const idx = state.selectedDayForFeedback;
       const w = state.plan[idx];
       const nextDay = state.plan[(idx + 1) % 7];
-      const status = document.getElementById('fbStrengthDone').value;
       const rpe = parseInt(document.getElementById('fbRPE').value) || 6;
-
-      const logKey = `W${state.currentWeek}_D${idx}`;
-      state.completedLogs[logKey] = {
-        status,
-        rpe,
-        source: 'strength',
-        date: new Date().toISOString()
-      };
+      state.completedLogs[`W${state.currentWeek}_D${idx}`] = { status: 'full', rpe, source: 'strength' };
       saveStateToLocal();
-      renderPlanUI();
 
-      const nt = nextDay.targets || { hrWorkMin: 135, hrWorkMax: 150, cadWorkMin: 80, cadWorkMax: 90 };
-      const report =
-        `Hola ${state.rider.name}, resumen de tu sesión de fortalecimiento del ${w.day}:\n` +
-        `--------------------------------------------------\n` +
-        `1. ¿POR QUÉ TE SIRVE LO QUE HICISTE HOY?\n` +
-        `• ${status === 'skipped' ? 'Hoy descansaste de los ejercicios. No pasa nada, retómalos en la siguiente sesión.' : 'Estos ejercicios fuera de la bici fortalecen tus rodillas, abdomen y espalda para que cuando lleves más de 2 horas montando no sufras dolores lumbares ni de cuello.'}\n\n` +
-        `2. NUTRICIÓN RECOMENDADA AHORA:\n• ${w.nutrition.after}\n\n` +
-        `3. QUÉ TENER EN CUENTA PARA MAÑANA (${nextDay.day.toUpperCase()} — BICICLETA):\n` +
-        `• Mañana tienes "${nextDay.title}" (${nextDay.durationMin} min).\n` +
-        `• ${rpe >= 8 ? 'Como hoy terminaste con las piernas cansadas de los ejercicios (' + rpe + '/10), mañana empieza los primeros 15 minutos en la bici muy suave con cambio blando para soltar los músculos.' : 'Mañana busca mantener tus pulsaciones entre ' + nt.hrWorkMin + ' y ' + nt.hrWorkMax + ' ppm con un pedaleo de ' + nt.cadWorkMin + '-' + nt.cadWorkMax + ' rpm.'}`;
-
+      const report = `Hola ${state.rider.name}, resumen de tu sesión de fuerza (${w.day}):\n\n• Terminaste con un cansancio muscular de ${rpe}/10.\n• Estos ejercicios protegen tus rodillas y tu zona lumbar.\n• Mañana en "${nextDay.title}" arranca suave si sientes las piernas pesadas.`;
       state.lastFeedbackReport = report;
       document.getElementById('fbDiagnosisText').textContent = report;
     }
 
-    function closeFeedbackModal() {
-      document.getElementById('feedbackModal').classList.add('hidden');
-    }
+    function closeFeedbackModal() { document.getElementById('feedbackModal').classList.add('hidden'); }
+    function sendFeedbackByEmail() { window.location.href = `mailto:${state.rider.email}?subject=Consejo Veltempo&body=${encodeURIComponent(state.lastFeedbackReport)}`; }
+    function sendFeedbackByWhatsApp() { window.open(`https://wa.me/?text=${encodeURIComponent(state.lastFeedbackReport)}`, '_blank'); }
 
-    function sendFeedbackByEmail() {
-      const email = state.rider.email || 'correo@ejemplo.com';
-      const subject = encodeURIComponent(`Análisis de tu Entrenamiento (${state.plan[state.selectedDayForFeedback].day}) - VeloPlan`);
-      const body = encodeURIComponent(state.lastFeedbackReport);
-      window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-    }
-
-    function sendFeedbackByWhatsApp() {
-      const text = encodeURIComponent(state.lastFeedbackReport);
-      window.open(`https://wa.me/?text=${text}`, '_blank');
-    }
-
-    function renderSyncUI() {
-      const list = document.getElementById('syncWorkoutsList');
-      const bikeDays = state.plan
-        .map((d, idx) => ({ ...d, idx }))
-        .filter(d => d.type === 'bike');
-
-      list.innerHTML = bikeDays.map(d => {
-        const t = d.targets;
-        return `
-          <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <div class="text-xs font-bold text-emerald-400">${d.day} — ${d.title} (${d.durationMin} min)</div>
-              <div class="text-[11px] text-slate-300 mono mt-0.5">
-                <span class="text-rose-300">Pulso: ${t.hrWorkMin}-${t.hrWorkMax} ppm</span> •
-                <span class="text-amber-300">Potencia: ${t.wWorkMin}-${t.wWorkMax} W</span> •
-                <span class="text-cyan-300">Pedaleo: ${t.cadWorkMin}-${t.cadWorkMax} rpm</span>
-              </div>
-            </div>
-            <div class="flex flex-wrap gap-1.5">
-              <button onclick="openIntervalsExport(${d.idx})" class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs">
-                <i class="fa-solid fa-cloud-arrow-up mr-1"></i>Enviar a Intervals
-              </button>
-              <button onclick="downloadBinaryFIT(${d.idx})" class="px-3 py-1.5 rounded-lg bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-bold text-xs">
-                <i class="fa-solid fa-download mr-1"></i>.FIT
-              </button>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    // =========================================================================
-    // EXPORTADORES PARA INTERVALS.ICU, .FIT Y .ZWO
-    // =========================================================================
     function buildIntervalsWorkoutSyntax(dayIdx) {
       const w = state.plan[dayIdx];
       const t = w.targets;
       const hasPM = state.bike.hasPM;
-
-      const warmTarget = hasPM
-        ? `50-65% cadence=${t.cadWarmMin}-${t.cadWarmMax}`
-        : `58-68% HR cadence=${t.cadWarmMin}-${t.cadWarmMax}`;
-
-      const mainTarget = hasPM
-        ? `${t.wWorkPctText} cadence=${t.cadWorkMin}-${t.cadWorkMax}`
-        : `${t.hrWorkPct} cadence=${t.cadWorkMin}-${t.cadWorkMax}`;
-
-      const restTarget = hasPM
-        ? `50% cadence=${t.cadRestMin}-${t.cadRestMax}`
-        : `55-64% HR cadence=${t.cadRestMin}-${t.cadRestMax}`;
-
-      const coolTarget = hasPM
-        ? `45-55% cadence=80-90`
-        : `55-62% HR cadence=80-90`;
+      const mainTarget = hasPM ? `${t.wWorkPctText} cadence=${t.cadWorkMin}-${t.cadWorkMax}` : `${t.hrWorkPct} cadence=${t.cadWorkMin}-${t.cadWorkMax}`;
 
       let txt = `${w.day}: ${w.title} (${w.durationMin} min)\n`;
-      txt += `Agua: Toma ${w.nutrition.mlEvery15}ml cada 15 min (Total ${w.nutrition.totalMl}ml)\n\n`;
-
-      txt += `Calentamiento\n`;
-      txt += `- Empezar suave [Pulso ${t.hrWarmMin}-${t.hrWarmMax}ppm | Pot ${t.wWarmMin}-${t.wWarmMax}W] ${w.warmMin}m ${warmTarget}\n\n`;
-
+      txt += `TEXTEVENT 900 "💧 ¡Toma ${w.nutrition.mlEvery15} ml de agua!"\n`;
+      txt += `TEXTEVENT 2400 "🍌 ¡Come carbohidratos ahora!"\n\n`;
+      txt += `Calentamiento\n- Calentar ${w.warmMin}m 60% HR cadence=85-95\n\n`;
       if (w.reps > 1) {
-        txt += `Serie Principal ${w.reps}x\n`;
-        txt += `- Ritmo ${w.zone} [Pulso ${t.hrWorkMin}-${t.hrWorkMax}ppm | Pot ${t.wWorkMin}-${t.wWorkMax}W | Agua ${w.nutrition.mlEvery15}ml] ${w.workMin}m ${mainTarget}\n`;
-        txt += `- Recuperar suave [Pulso ${t.hrRestMin}-${t.hrRestMax}ppm | Pot ${t.wRestMin}-${t.wRestMax}W] ${w.restMin}m ${restTarget}\n\n`;
+        txt += `Serie ${w.reps}x\n- Bloque ${w.workMin}m ${mainTarget}\n- Recuperar ${w.restMin}m 60% HR\n\n`;
       } else {
-        txt += `Bloque Principal\n`;
-        txt += `- Paso constante [Pulso ${t.hrWorkMin}-${t.hrWorkMax}ppm | Pot ${t.wWorkMin}-${t.wWorkMax}W | Agua ${w.nutrition.mlEvery15}ml c/15m] ${w.workMin}m ${mainTarget}\n\n`;
+        txt += `Constante\n- Fondo ${w.workMin}m ${mainTarget}\n\n`;
       }
-
-      txt += `Enfriamiento\n`;
-      txt += `- Soltar piernas suave [Pulso menor a ${t.hrRestMax}ppm] ${w.coolMin}m ${coolTarget}\n`;
-
+      txt += `Enfriamiento\n- Soltar ${w.coolMin}m 55% HR\n`;
       return txt;
     }
 
     function openIntervalsExport(dayIdx) {
       state.selectedDayForIntervalsExport = dayIdx;
       const w = state.plan[dayIdx];
-      const syntax = buildIntervalsWorkoutSyntax(dayIdx);
-      const modal = document.getElementById('intervalsModal');
-      const sub = document.getElementById('intervalsModalSubtitle');
-      const area = document.getElementById('intervalsModalTextarea');
-
-      sub.innerHTML = state.bike.hasPM
-        ? `<span class="text-amber-300 font-bold">Modo Con Potenciómetro:</span> Tu ciclocomputador te guiará con <strong>Potencia + Cadencia</strong> y te mostrará las <strong>Pulsaciones (${w.targets.hrWorkMin}-${w.targets.hrWorkMax} ppm)</strong> en el texto.`
-        : `<span class="text-rose-300 font-bold">Modo Sin Potenciómetro Activo:</span> Toca el botón morado <strong>"Subir Directo al Calendario de Intervals.icu"</strong> (o copia el texto) para que aparezca de inmediato en OnelapFit y en tu Magene C706.`;
-
-      area.value = syntax;
-      modal.classList.remove('hidden');
-
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(syntax).catch(() => {});
-      }
+      document.getElementById('intervalsModalSubtitle').textContent = `Inyecta avisos de pantalla para agua/comida y cadencia objetivo.`;
+      document.getElementById('intervalsModalTextarea').value = buildIntervalsWorkoutSyntax(dayIdx);
+      document.getElementById('intervalsModal').classList.remove('hidden');
     }
 
     function copyIntervalsTextarea() {
-      const area = document.getElementById('intervalsModalTextarea');
-      area.select();
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(area.value);
-      } else {
-        document.execCommand('copy');
-      }
-      alert('¡Texto copiado! Abre Intervals.icu -> Add Workout -> Pega este texto en el cuadro Description y sincroniza OnelapFit.');
+      navigator.clipboard.writeText(document.getElementById('intervalsModalTextarea').value);
+      alert('¡Copiado! Pégalo en Intervals.icu');
     }
 
-    function closeIntervalsModal() {
-      document.getElementById('intervalsModal').classList.add('hidden');
-    }
+    async function pushWorkoutDirectlyToIntervals() {
+      const athleteId = state.intervalsAuth.athleteId;
+      const apiKey = state.intervalsAuth.apiKey;
+      if (!athleteId || !apiKey) { alert('Conecta primero tu Athlete ID y API Key.'); openIntervalsSyncModal(); return; }
 
-    function computeFitCRC(bytes, length) {
-      const crcTable = [
-        0x0000, 0xCC01, 0xD801, 0x1400, 0xF001, 0x3C00, 0x2800, 0xE401,
-        0xA001, 0x6C00, 0x7800, 0xB401, 0x5000, 0x9C01, 0x8801, 0x4400
-      ];
-      let crc = 0;
-      for (let i = 0; i < length; i++) {
-        const byte = bytes[i];
-        let tmp = crcTable[crc & 0xF];
-        crc = (crc >> 4) & 0x0FFF;
-        crc = crc ^ tmp ^ crcTable[byte & 0xF];
-        tmp = crcTable[crc & 0xF];
-        crc = (crc >> 4) & 0x0FFF;
-        crc = crc ^ tmp ^ crcTable[(byte >> 4) & 0xF];
-      }
-      return crc;
-    }
-
-    function downloadBinaryFIT(dayIdx) {
+      const dayIdx = state.selectedDayForIntervalsExport;
       const w = state.plan[dayIdx];
-      const t = w.targets;
-      const hasPM = state.bike.hasPM;
+      const targetDate = prompt('Fecha del calendario (AAAA-MM-DD):', new Date().toISOString().split('T')[0]);
+      if (!targetDate) return;
 
-      const steps = [];
-      steps.push({
-        name: `Suave FC:${t.hrWarmMin}-${t.hrWarmMax} CAD:${t.cadWarmMin}`,
-        durSec: w.warmMin * 60,
-        hrLow: t.hrWarmMin + 100,
-        hrHigh: t.hrWarmMax + 100,
-        wLow: t.wWarmMin + 1000,
-        wHigh: t.wWarmMax + 1000
-      });
-
-      const loops = Math.max(1, w.reps);
-      for (let r = 0; r < loops; r++) {
-        steps.push({
-          name: `R${w.zone} FC:${t.hrWorkMin}-${t.hrWorkMax} CAD:${t.cadWorkMin}-${t.cadWorkMax}`,
-          durSec: w.workMin * 60,
-          hrLow: t.hrWorkMin + 100,
-          hrHigh: t.hrWorkMax + 100,
-          wLow: t.wWorkMin + 1000,
-          wHigh: t.wWorkMax + 1000
+      try {
+        const res = await fetch(`https://intervals.icu/api/v1/athlete/${encodeURIComponent(athleteId)}/events`, {
+          method: 'POST',
+          headers: { 'Authorization': 'Basic ' + btoa('API_KEY:' + apiKey), 'Content-Type': 'application/json' },
+          body: JSON.stringify({ category: 'WORKOUT', start_date_local: `${targetDate}T06:00:00`, type: 'Ride', name: `Veltempo S${state.currentWeek} - ${w.title}`, description: buildIntervalsWorkoutSyntax(dayIdx) })
         });
-        if (w.reps > 1 && r < loops - 1) {
-          steps.push({
-            name: `Rec FC:${t.hrRestMin}-${t.hrRestMax} CAD:${t.cadRestMin}`,
-            durSec: w.restMin * 60,
-            hrLow: t.hrRestMin + 100,
-            hrHigh: t.hrRestMax + 100,
-            wLow: t.wRestMin + 1000,
-            wHigh: t.wRestMax + 1000
-          });
-        }
-      }
-
-      steps.push({
-        name: `Soltar FC:${t.hrRestMin}-${t.hrRestMax}`,
-        durSec: w.coolMin * 60,
-        hrLow: t.hrRestMin + 100,
-        hrHigh: t.hrRestMax + 100,
-        wLow: t.wRestMin + 1000,
-        wHigh: t.wRestMax + 1000
-      });
-
-      const dataBytes = [];
-      const pushU8 = v => dataBytes.push(v & 0xFF);
-      const pushU16 = v => { dataBytes.push(v & 0xFF, (v >> 8) & 0xFF); };
-      const pushU32 = v => {
-        dataBytes.push(v & 0xFF, (v >> 8) & 0xFF, (v >> 16) & 0xFF, (v >> 24) & 0xFF);
-      };
-      const pushFixedStr = (str, len) => {
-        for (let i = 0; i < len; i++) {
-          pushU8(i < str.length ? str.charCodeAt(i) : 0);
-        }
-      };
-
-      dataBytes.push(0x40, 0x00, 0x00, 0x00, 0x00, 0x04,
-        0x00, 0x01, 0x00, 0x01, 0x02, 0x84, 0x02, 0x02, 0x84, 0x04, 0x04, 0x86
-      );
-      pushU8(0x00); pushU8(5); pushU16(1); pushU16(1);
-      pushU32(Math.floor(Date.now() / 1000) - 631065600);
-
-      dataBytes.push(0x41, 0x00, 0x00, 26, 0x00, 0x03,
-        0x04, 0x01, 0x00, 0x06, 0x02, 0x84, 0x08, 16, 0x07
-      );
-      pushU8(0x01); pushU8(2); pushU16(steps.length);
-      pushFixedStr(`S${state.currentWeek}_${w.shortDay}_R${w.zone}`, 16);
-
-      dataBytes.push(0x42, 0x00, 0x00, 27, 0x00, 0x08,
-        254, 0x02, 0x84, 0x00, 24, 0x07, 0x01, 0x01, 0x00, 0x02, 0x04, 0x86,
-        0x03, 0x01, 0x00, 0x04, 0x04, 0x86, 0x05, 0x04, 0x86, 0x06, 0x04, 0x86
-      );
-
-      steps.forEach((st, idx) => {
-        pushU8(0x02);
-        pushU16(idx);
-        pushFixedStr(st.name, 24);
-        pushU8(0);
-        pushU32(st.durSec * 1000);
-        pushU8(hasPM ? 4 : 1);
-        pushU32(0);
-        pushU32(hasPM ? st.wLow : st.hrLow);
-        pushU32(hasPM ? st.wHigh : st.hrHigh);
-      });
-
-      const dataLen = dataBytes.length;
-      const header = [
-        14, 0x10, 0x6C, 0x08,
-        dataLen & 0xFF, (dataLen >> 8) & 0xFF, (dataLen >> 16) & 0xFF, (dataLen >> 24) & 0xFF,
-        0x2E, 0x46, 0x49, 0x54
-      ];
-      const hdrCRC = computeFitCRC(header, 12);
-      header.push(hdrCRC & 0xFF, (hdrCRC >> 8) & 0xFF);
-
-      const fullFile = new Uint8Array(header.length + dataBytes.length + 2);
-      fullFile.set(header, 0);
-      fullFile.set(dataBytes, header.length);
-      const fileCRC = computeFitCRC(fullFile, header.length + dataBytes.length);
-      fullFile[fullFile.length - 2] = fileCRC & 0xFF;
-      fullFile[fullFile.length - 1] = (fileCRC >> 8) & 0xFF;
-
-      const blob = new Blob([fullFile], { type: 'application/octet-stream' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      const modeTag = hasPM ? 'POT_FC_CAD' : 'FC_CAD_POT';
-      a.download = `VeloPlan_S${state.currentWeek}_${w.shortDay}_${modeTag}.fit`;
-      a.click();
+        if (!res.ok) throw new Error('Error al subir.');
+        alert('✅ ¡Entrenamiento con alertas de pantalla y cadencia subido a Intervals.icu!');
+        closeIntervalsModal();
+      } catch (e) { alert(e.message); }
     }
 
-    function downloadWorkoutZWO(dayIdx) {
-      const w = state.plan[dayIdx];
-      const t = w.targets;
-      const cadAvgWork = Math.round((t.cadWorkMin + t.cadWorkMax) / 2);
-      const cadAvgWarm = Math.round((t.cadWarmMin + t.cadWarmMax) / 2);
-      const cadAvgRest = Math.round((t.cadRestMin + t.cadRestMax) / 2);
-
-      let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<workout_file>\n`;
-      xml += `  <author>VeloPlan Pro 3.4</author>\n`;
-      xml += `  <name>S${state.currentWeek}_${w.day}_Pulso_${t.hrWorkMin}-${t.hrWorkMax}ppm</name>\n`;
-      xml += `  <description>Pulso: ${t.hrWorkMin}-${t.hrWorkMax} ppm | Potencia: ${t.wWorkMin}-${t.wWorkMax} W | Pedaleo: ${t.cadWorkMin}-${t.cadWorkMax} rpm</description>\n`;
-      xml += `  <sportType>bike</sportType>\n  <workout>\n`;
-
-      xml += `    <Warmup Duration="${w.warmMin * 60}" PowerLow="0.48" PowerHigh="0.65" Cadence="${cadAvgWarm}">\n`;
-      xml += `      <textevent timeoffset="10" message="EMPEZAR SUAVE: Pulso ${t.hrWarmMin}-${t.hrWarmMax} ppm | Pedaleo ${t.cadWarmMin}-${t.cadWarmMax} rpm"/>\n`;
-      xml += `    </Warmup>\n`;
-
-      if (w.reps > 1) {
-        xml += `    <IntervalsT Repeat="${w.reps}" OnDuration="${w.workMin * 60}" OffDuration="${w.restMin * 60}" OnPower="${t.wWorkPct}" OffPower="0.52" Cadence="${cadAvgWork}" CadenceResting="${cadAvgRest}">\n`;
-        xml += `      <textevent timeoffset="5" message="BLOQUE PRINCIPAL: Mantener pulso entre ${t.hrWorkMin} y ${t.hrWorkMax} ppm con ${t.cadWorkMin}-${t.cadWorkMax} rpm"/>\n`;
-        xml += `      <textevent timeoffset="300" message="AGUA: Toma ${w.nutrition.mlEvery15} ml de liquido"/>\n`;
-        xml += `    </IntervalsT>\n`;
-      } else {
-        xml += `    <SteadyState Duration="${w.workMin * 60}" Power="${t.wWorkPct}" Cadence="${cadAvgWork}">\n`;
-        xml += `      <textevent timeoffset="10" message="PASO CONSTANTE: Pulso ${t.hrWorkMin}-${t.hrWorkMax} ppm | Pedaleo ${t.cadWorkMin}-${t.cadWorkMax} rpm"/>\n`;
-        xml += `      <textevent timeoffset="900" message="AGUA (15m): Toma ${w.nutrition.mlEvery15} ml"/>\n`;
-        xml += `    </SteadyState>\n`;
-      }
-
-      xml += `    <Cooldown Duration="${w.coolMin * 60}" PowerLow="0.58" PowerHigh="0.45" Cadence="85">\n`;
-      xml += `      <textevent timeoffset="10" message="SOLTAR PIERNAS: Baja tus pulsaciones a ${t.hrRestMin}-${t.hrRestMax} ppm"/>\n`;
-      xml += `    </Cooldown>\n  </workout>\n</workout_file>`;
-
-      const blob = new Blob([xml], { type: 'application/octet-stream' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `VeloPlan_S${state.currentWeek}_${w.shortDay}.zwo`;
-      a.click();
-    }
-
-    // =========================================================================
-    // RESPALDO Y RESTAURACIÓN EN ARCHIVO .JSON
-    // =========================================================================
-    function openBackupModal() {
-      document.getElementById('backupModal').classList.remove('hidden');
-    }
-
-    function closeBackupModal() {
-      document.getElementById('backupModal').classList.add('hidden');
-    }
-
+    function openBackupModal() { document.getElementById('backupModal').classList.remove('hidden'); }
+    function closeBackupModal() { document.getElementById('backupModal').classList.add('hidden'); }
     function exportProfileBackup() {
-      saveStateToLocal();
-      const raw = localStorage.getItem(STORAGE_KEY);
-      const blob = new Blob([raw], { type: 'application/json' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `VeloPlan_Datos_${state.rider.name.replace(/\s+/g, '_')}.json`;
-      a.click();
+      const blob = new Blob([localStorage.getItem(STORAGE_KEY)], { type: 'application/json' });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `Veltempo_Backup.json`; a.click();
     }
-
     function importProfileBackup(ev) {
       const file = ev.target.files[0];
       if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const data = JSON.parse(e.target.result);
-          applyLoadedDataToStateAndForm(data);
-          readInputsAndComputeMetrics();
-          populateWeekSelector();
-          buildWeekSchedule(state.currentWeek);
-          renderPlanUI();
-          renderSyncUI();
-          saveStateToLocal();
-          closeBackupModal();
-          switchTab('plan');
-          alert('✅ ¡Tus datos y progreso fueron restaurados correctamente!');
-        } catch (err) {
-          alert('El archivo seleccionado no es válido.');
-        }
+      const r = new FileReader();
+      r.onload = function(e) {
+        localStorage.setItem(STORAGE_KEY, e.target.result);
+        location.reload();
       };
-      reader.readAsText(file);
+      r.readAsText(file);
     }
+    function resetAllData() { if (confirm('¿Reiniciar todo?')) { localStorage.removeItem(STORAGE_KEY); location.reload(); } }
 
-    function resetAllData() {
-      if (!confirm('¿Estás seguro de borrar tus datos guardados y volver a los valores iniciales?')) return;
-      localStorage.removeItem(STORAGE_KEY);
-      location.reload();
-    }
-
-    // =========================================================================
-    // RELOJ EN RUTA DE AGUA Y COMIDA
-    // =========================================================================
-    let rideTimerInterval = null;
-    let rideSeconds = 0;
-
-    function openLiveTimerModal() {
-      const bikeDay = state.plan.find(d => d.type === 'bike') || {
-        nutrition: { mlEvery15: 175, mlPerHour: 700, carbsPerHour: 50 }
-      };
-      document.getElementById('liveTimerTargets').innerHTML =
-        `Este reloj sonará cada <strong>15 minutos</strong> para recordarte tomar <strong>${bikeDay.nutrition.mlEvery15} ml de agua</strong> y cada <strong>40 minutos</strong> para que comas algo en la bici.`;
-      document.getElementById('liveTimerModal').classList.remove('hidden');
-    }
-
-    function closeLiveTimerModal() {
-      document.getElementById('liveTimerModal').classList.add('hidden');
-    }
-
+    let rideTimerInterval = null, rideSeconds = 0;
+    function openLiveTimerModal() { document.getElementById('liveTimerModal').classList.remove('hidden'); }
+    function closeLiveTimerModal() { document.getElementById('liveTimerModal').classList.add('hidden'); }
     function testBeepAlert() {
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, ctx.currentTime);
-        gain.gain.setValueAtTime(0.25, ctx.currentTime);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.35);
-      } catch (e) {}
+      try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const o = ctx.createOscillator(); o.connect(ctx.destination); o.start(); o.stop(ctx.currentTime + 0.2); } catch (e) {}
     }
-
     function startLiveRideTimer() {
       if (rideTimerInterval) return;
       testBeepAlert();
@@ -2451,50 +1357,21 @@
         const mins = String(Math.floor((rideSeconds % 3600) / 60)).padStart(2, '0');
         const secs = String(rideSeconds % 60).padStart(2, '0');
         document.getElementById('liveTimerClock').textContent = `${hrs}:${mins}:${secs}`;
-
-        const banner = document.getElementById('liveTimerAlertBanner');
-        const bikeDay = state.plan.find(d => d.type === 'bike') || { nutrition: { mlEvery15: 175, carbsPerHour: 50 } };
-
-        if (rideSeconds > 0 && rideSeconds % 900 === 0) {
-          testBeepAlert();
-          banner.classList.remove('hidden');
-          banner.textContent = `💧 ¡Ya pasaron 15 min! Toma ${bikeDay.nutrition.mlEvery15} ml de agua ahora.`;
-        } else if (rideSeconds > 0 && rideSeconds % 2400 === 0) {
-          testBeepAlert();
-          banner.classList.remove('hidden');
-          banner.textContent = `🍌 ¡40 minutos de ruta! Come un bocadillo, barra o medio banano ahora.`;
-        }
+        if (rideSeconds > 0 && rideSeconds % 900 === 0) testBeepAlert();
       }, 1000);
     }
+    function pauseLiveRideTimer() { clearInterval(rideTimerInterval); rideTimerInterval = null; }
 
-    function pauseLiveRideTimer() {
-      clearInterval(rideTimerInterval);
-      rideTimerInterval = null;
-    }
-
-    // =========================================================================
-    // ARRANQUE INICIAL: RECUPERA MEMORIA Y SINCRONIZA INTERVALS.ICU EN SEGUNDO PLANO
-    // =========================================================================
     window.addEventListener('DOMContentLoaded', () => {
-      const d = new Date();
-      d.setDate(d.getDate() + 56);
-      document.getElementById('inEventDate').value = d.toISOString().split('T')[0];
-
-      loadStateFromLocal((hadSavedData) => {
+      document.getElementById('inEventDate').value = new Date(Date.now() + 56*86400000).toISOString().split('T')[0];
+      loadStateFromLocal((hadData) => {
         readInputsAndComputeMetrics();
         populateWeekSelector();
         buildWeekSchedule(state.currentWeek);
         renderPlanUI();
         renderSyncUI();
-
-        if (hadSavedData && state.lastActiveTab) {
-          switchTab(state.lastActiveTab);
-        }
-
-        // Si ya tiene credenciales de Intervals.icu guardadas, sincroniza silenciosamente al abrir la app
-        if (state.intervalsAuth.athleteId && state.intervalsAuth.apiKey) {
-          syncAllFromIntervalsQuietly(false);
-        }
+        if (hadData && state.lastActiveTab) switchTab(state.lastActiveTab);
+        if (state.intervalsAuth.athleteId && state.intervalsAuth.apiKey) syncAllFromIntervalsQuietly(false);
       });
     });
   </script>
