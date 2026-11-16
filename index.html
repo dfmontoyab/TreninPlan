@@ -15,7 +15,7 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: #120e0a; /* Fondo cálido carbón/marrón oscuro */
+      background-color: #120e0a;
       color: #f5f5f4;
       -webkit-tap-highlight-color: transparent;
       padding-bottom: 92px;
@@ -163,7 +163,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
             <label class="block text-xs font-semibold text-stone-300 mb-1">Marca / Modelo</label>
-            <input id="inBikeBrand" type="text" value="BMC Teammachine" oninput="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white" />
+            <input id="inBikeBrand" type="text" value="Giant TCR" oninput="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white" />
           </div>
           <div>
             <label class="block text-xs font-semibold text-stone-300 mb-1">Talla</label>
@@ -317,7 +317,7 @@
       </div>
     </section>
 
-    <!-- SECCIÓN 4: MI PLAN SEMANAL (BLOQUEADO FUTURO, PROGRESIVO) -->
+    <!-- SECCIÓN 4: MI PLAN SEMANAL -->
     <section id="tab-plan" class="tab-panel hidden space-y-4">
 
       <div class="glass rounded-2xl p-4 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-l-4 border-l-amber-500">
@@ -589,7 +589,7 @@
       </div>
       <div class="pt-3 border-t border-stone-800 flex justify-between items-center">
         <button onclick="resetAllData()" class="text-xs text-rose-400">Reiniciar Todo</button>
-        <button onclick="closeBackupModal()" class="px-4 py-2 rounded-xl bg-stone-800 text-stone-300 text-xs">Cerrar</button>
+        <button onclick="closeBackupModal()" class="px-4 py-2 rounded-xl bg-stone-800 text-stone-200 text-xs">Cerrar</button>
       </div>
     </div>
   </div>
@@ -628,7 +628,7 @@
       </button>
       <button onclick="switchTab('plan')" id="nav-plan" class="nav-btn flex flex-col items-center py-1.5 text-stone-400">
         <i class="fa-solid fa-calendar-check text-base"></i>
-        <span class="text-[10px] font-bold mt-0.5">Mi Plan</span>
+        <span class="text-[10px] font-bold mt-0.5">4. Mi Plan</span>
       </button>
       <button onclick="switchTab('sync')" id="nav-sync" class="nav-btn flex flex-col items-center py-1.5 text-stone-400">
         <i class="fa-solid fa-download text-base"></i>
@@ -684,6 +684,7 @@
         lastSyncDate: ''
       },
       intervalsActivities: [],
+      planStartDate: '', // Fecha en que se inició el plan
       totalWeeks: 12,
       currentWeek: 1,
       maxUnlockedWeek: 1,
@@ -707,6 +708,7 @@
         goal: state.goal,
         intervalsAuth: state.intervalsAuth,
         intervalsActivities: state.intervalsActivities,
+        planStartDate: state.planStartDate,
         totalWeeks: state.totalWeeks,
         currentWeek: state.currentWeek,
         maxUnlockedWeek: state.maxUnlockedWeek,
@@ -744,6 +746,7 @@
       if (data.goal) Object.assign(state.goal, data.goal);
       if (data.intervalsAuth) Object.assign(state.intervalsAuth, data.intervalsAuth);
       if (Array.isArray(data.intervalsActivities)) state.intervalsActivities = data.intervalsActivities;
+      if (data.planStartDate) state.planStartDate = data.planStartDate;
       if (data.totalWeeks) state.totalWeeks = data.totalWeeks;
       if (data.currentWeek) state.currentWeek = data.currentWeek;
       if (data.maxUnlockedWeek) state.maxUnlockedWeek = data.maxUnlockedWeek;
@@ -801,6 +804,7 @@
 
     function saveAndGeneratePlan() {
       state.lastActiveTab = 'plan';
+      if (!state.planStartDate) state.planStartDate = new Date().toISOString();
       readInputsAndComputeMetrics();
       populateWeekSelector();
       buildWeekSchedule(state.currentWeek);
@@ -919,6 +923,15 @@
       };
     }
 
+    function getWeekDateRangeStr(weekNum) {
+      const start = new Date(state.planStartDate || Date.now());
+      start.setDate(start.getDate() + (weekNum - 1) * 7);
+      const end = new Date(start);
+      end.setDate(end.getDate() + 6);
+      const options = { day: 'numeric', month: 'short' };
+      return `${start.toLocaleDateString('es-ES', options)} al ${end.toLocaleDateString('es-ES', options)}`;
+    }
+
     function populateWeekSelector() {
       const sel = document.getElementById('selActiveWeek');
       sel.innerHTML = '';
@@ -927,7 +940,8 @@
         opt.value = w;
         const isLocked = w > state.maxUnlockedWeek;
         opt.disabled = isLocked;
-        opt.textContent = `Semana ${w} de ${state.totalWeeks}${isLocked ? ' (🔒 Bloqueada)' : (w === state.currentWeek ? ' (Actual)' : '')}`;
+        const dateStr = getWeekDateRangeStr(w);
+        opt.textContent = `Semana ${w} (${dateStr})${isLocked ? ' 🔒' : (w === state.currentWeek ? ' ⭐' : '')}`;
         if (w === state.currentWeek) opt.selected = true;
         sel.appendChild(opt);
       }
@@ -959,36 +973,35 @@
     }
 
     // =========================================================================
-    // GENERADOR DINÁMICO DE LA SEMANA ACTIVA (NUNCA PREGENERA SEMANAS FUTURAS)
+    // GENERADOR DINÁMICO DE LA SEMANA ACTIVA
     // =========================================================================
     function buildWeekSchedule(weekNum) {
       const z1 = state.zones[0];
       const z2 = state.zones[1];
 
-      // Cada 8 semanas efectivas, programamos un TEST DE FTP obligatorio
       const isFtpTestWeek = (weekNum > 1 && (weekNum % 8 === 0 || state.effectiveTrainingWeeksCount >= 8));
-
       const cycleIndex = (weekNum - 1) % 4;
       const blockNumber = Math.floor((weekNum - 1) / 4);
       const isTaper = (weekNum === state.totalWeeks);
 
       let fitnessMult = state.weeklyProgressionFactor * (1 + (blockNumber * 0.08));
-      if (cycleIndex === 3) fitnessMult *= 0.80; // Descarga
+      if (cycleIndex === 3) fitnessMult *= 0.80;
       if (isTaper) fitnessMult *= 0.65;
 
       const weekdayCap = state.goal.weekdayMin;
       const weekendCap = state.goal.weekendMin;
       const isGym = state.goal.strengthMode === 'gym';
+      const dateRangeStr = getWeekDateRangeStr(weekNum);
 
       state.currentWeekTheme = isTaper
-        ? { badge: `SEMANA ${weekNum}: AFINACIÓN`, desc: 'Descarga de piernas para llegar al 100% de frescura a tu competencia.' }
+        ? { badge: `SEMANA ${weekNum} (${dateRangeStr}): AFINACIÓN`, desc: 'Descarga de piernas para llegar al 100% de frescura a tu competencia.' }
         : (isFtpTestWeek
-          ? { badge: `SEMANA ${weekNum}: TEST DE FTP OBLIGATORIO`, desc: 'Evaluación formal de tu umbral funcional para recalcular tus zonas exactas de vatios y pulso.' }
+          ? { badge: `SEMANA ${weekNum} (${dateRangeStr}): TEST DE FTP`, desc: 'Evaluación formal de tu umbral funcional para recalcular tus zonas exactas.' }
           : [
-              { badge: `SEMANA ${weekNum}: BASE ÁGIL`, desc: 'Ritmo constante y velocidad de pedaleo.' },
-              { badge: `SEMANA ${weekNum}: FUERZA (TORQUE)`, desc: 'Bloques largos en subida con cadencia controlada.' },
-              { badge: `SEMANA ${weekNum}: VO2MÁX / PULMÓN`, desc: 'Intervalos intensos para ampliar capacidad aeróbica.' },
-              { badge: `SEMANA ${weekNum}: DESCARGA`, desc: 'Semana suave de asimilación y descanso.' }
+              { badge: `SEMANA ${weekNum} (${dateRangeStr}): BASE ÁGIL`, desc: 'Ritmo constante y velocidad de pedaleo.' },
+              { badge: `SEMANA ${weekNum} (${dateRangeStr}): FUERZA (TORQUE)`, desc: 'Bloques largos en subida con cadencia controlada.' },
+              { badge: `SEMANA ${weekNum} (${dateRangeStr}): VO2MÁX / PULMÓN`, desc: 'Intervalos intensos para ampliar capacidad aeróbica.' },
+              { badge: `SEMANA ${weekNum} (${dateRangeStr}): DESCARGA`, desc: 'Semana suave de asimilación y descanso.' }
             ][cycleIndex]);
 
       let tueConfig;
@@ -1004,7 +1017,7 @@
           coolMin: 15,
           cadWorkMin: 90,
           cadWorkMax: 100,
-          details: `PROTOCOLO DE TEST DE FTP:\n1. Calentamiento suave 15 min.\n2. 3 minutos a ritmo fuerte + 3 min suave de recuperación.\n3. TEST A FONDO: Sostén el máximo esfuerzo posible y constante durante 20 minutos completos sin reventarte en los primeros 5 minutos.\n4. Enfriamiento de 15 min.\n(Al terminar, toma el 95% de los vatios o pulsaciones promedio de esos 20 min y ese será tu nuevo FTP/Umbral).`
+          details: `PROTOCOLO DE TEST DE FTP:\n1. Calentamiento suave 15 min.\n2. 3 minutos a ritmo fuerte + 3 min suave.\n3. TEST A FONDO: Sostén el máximo esfuerzo constante durante 20 minutos completos.\n4. Enfriamiento de 15 min.`
         };
       } else if (cycleIndex === 0) {
         const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, 6, 3, 4 + blockNumber);
@@ -1069,17 +1082,18 @@
     }
 
     // =========================================================================
-    // EMPAREJAMIENTO ESTRICTO POR FECHAS DE LA SEMANA ACTUAL (EVITA FALSOS POSITIVOS)
+    // FILTRADO ESTRICTO DE ACTIVIDADES POR LA FECHA DE LA SEMANA ACTUAL
     // =========================================================================
     function matchIntervalsActivitiesToCurrentWeek() {
       if (!state.intervalsActivities || state.intervalsActivities.length === 0) return;
 
-      // Calcular la fecha de inicio y fin de la semana actual (simulando 7 días por semana desde el inicio)
       const planStartDate = state.planStartDate ? new Date(state.planStartDate) : new Date();
       const weekStart = new Date(planStartDate);
       weekStart.setDate(weekStart.getDate() + (state.currentWeek - 1) * 7);
+      weekStart.setHours(0,0,0,0);
       const weekEnd = new Date(weekStart);
       weekEnd.setDate(weekEnd.getDate() + 7);
+      weekEnd.setHours(23,59,59,999);
 
       state.plan.forEach((dayItem, idx) => {
         if (dayItem.type !== 'bike') return;
@@ -1088,8 +1102,7 @@
         const matchingAct = state.intervalsActivities.find(act => {
           if (!act || !act.start_date_local || act.moving_time < 300) return false;
           const actDate = new Date(act.start_date_local);
-          // Verificar que la actividad caiga estrictamente en esta semana y coincida con el día de la semana
-          return actDate >= weekStart && actDate < weekEnd && actDate.getDay() === dayItem.jsDay;
+          return actDate >= weekStart && actDate <= weekEnd && actDate.getDay() === dayItem.jsDay;
         });
 
         if (matchingAct) {
@@ -1104,6 +1117,9 @@
             realCAD: matchingAct.average_cadence ? Math.round(matchingAct.average_cadence) : 0,
             load: matchingAct.icu_training_load ? Math.round(matchingAct.icu_training_load) : 0
           };
+        } else {
+          // Si no hay actividad real en esta semana estricta, limpiar log viejo residual
+          delete state.completedLogs[logKey];
         }
       });
     }
@@ -1129,7 +1145,7 @@
         return false;
       }
       try {
-        const oldestStr = new Date(Date.now() - 30*86400000).toISOString().split('T')[0];
+        const oldestStr = new Date(Date.now() - 60*86400000).toISOString().split('T')[0];
         const newestStr = new Date().toISOString().split('T')[0];
         const res = await fetch(`https://intervals.icu/api/v1/athlete/${encodeURIComponent(athleteId)}/activities?oldest=${oldestStr}&newest=${newestStr}`, {
           headers: { 'Authorization': 'Basic ' + btoa('API_KEY:' + apiKey), 'Accept': 'application/json' }
@@ -1175,7 +1191,7 @@
             <span class="text-amber-400 mono">${Math.round(a.moving_time/60)}m | ${Math.round(a.average_heartrate||0)}ppm</span>
           </div>
         `).join('');
-        document.getElementById('intervalsAiVerdict').textContent = '¡Listo! Las salidas reales ya están enlazadas a tu semana actual.';
+        document.getElementById('intervalsAiVerdict').textContent = '¡Listo! Las salidas reales ya están enlazadas estrictamente a su semana correspondiente.';
       } catch (err) { alert(err.message); }
       finally { btn.innerHTML = 'Sincronizar Mis Entrenamientos Ahora'; btn.disabled = false; }
     }
@@ -1269,20 +1285,20 @@
     }
 
     // =========================================================================
-    // BALANCE SEMANAL Y ADAPTACIÓN DE LA SIGUIENTE SEMANA
+    // BALANCE SEMANAL Y ADAPTACIÓN MATEMÁTICA DE LA SIGUIENTE SEMANA
     // =========================================================================
     function openWeeklyReviewModal() {
-      // Contar cuántos entrenamientos se completaron esta semana en Intervals
-      let bikeCompletedCount = 0;
+      let bikeCount = 0;
       for (let i = 0; i < 7; i++) {
-        if (state.completedLogs[`W${state.currentWeek}_D${i}`]) bikeCompletedCount++;
+        if (state.completedLogs[`W${state.currentWeek}_D${i}`]) bikeCount++;
       }
 
+      const dateRangeStr = getWeekDateRangeStr(state.currentWeek);
       document.getElementById('wrIntroText').innerHTML =
-        `Has completado la <strong>Semana ${state.currentWeek}</strong>. El sistema detectó <strong>${bikeCompletedCount} sesiones de bici sincronizadas</strong> desde Intervals.icu. Completa este breve balance para generar la devolución global y desbloquear la semana siguiente:`;
+        `Has completado la <strong>Semana ${state.currentWeek} (${dateRangeStr})</strong>. El sistema detectó <strong>${bikeCount} sesiones de bici sincronizadas</strong> en esta semana exacta. Completa el balance:`;
 
       document.getElementById('wrPreviewAdaptation').textContent =
-        `Al procesar este balance, evaluaremos tu fatiga y tu consistencia para escalar matemáticamente la dificultad de la Semana ${state.currentWeek + 1}.`;
+        `Al guardar este balance, el Coach evaluará tu consistencia y descanso para escalar o regular la exigencia de la Semana ${state.currentWeek + 1}.`;
 
       document.getElementById('weeklyReviewModal').classList.remove('hidden');
     }
@@ -1295,7 +1311,6 @@
       const strengthStatus = document.getElementById('wrStrengthStatus').value;
       const restStatus = document.getElementById('wrRestStatus').value;
 
-      // Calcular cuántas bicis se hicieron
       let bikeCount = 0;
       let totalLoadSum = 0;
       for (let i = 0; i < 7; i++) {
@@ -1306,28 +1321,27 @@
         }
       }
 
-      // Generar Balance de la Semana (Coach Pro)
-      let weekVerdict = `BALANCE DE LA SEMANA ${state.currentWeek}:\n`;
-      weekVerdict += `• Sesiones de bicicleta registradas en Intervals.icu: ${bikeCount} de 4 programadas.\n`;
-      weekVerdict += `• Carga acumulada de esfuerzo: ${totalLoadSum} puntos.\n`;
-      weekVerdict += `• Cumplimiento de fuerza: ${strengthStatus === 'all' ? 'Excelente (ambas sesiones)' : (strengthStatus === 'partial' ? 'A medias' : 'Sin sesiones de fuerza')}.\n`;
-      weekVerdict += `• Percepción de descanso: ${restStatus === 'good' ? 'Óptimo' : (restStatus === 'tired' ? 'Fatiga moderada' : 'Agotamiento total')}.\n\n`;
+      let weekVerdict = `BALANCE TOTAL DE LA SEMANA ${state.currentWeek}:\n`;
+      weekVerdict += `• Fechas del ciclo: ${getWeekDateRangeStr(state.currentWeek)}\n`;
+      weekVerdict += `• Salidas de bicicleta completadas: ${bikeCount} de 4 programadas.\n`;
+      weekVerdict += `• Carga total de estrés acumulado: ${totalLoadSum} puntos TSS.\n`;
+      weekVerdict += `• Cumplimiento de fuerza: ${strengthStatus === 'all' ? 'Óptimo (ambas sesiones)' : (strengthStatus === 'partial' ? 'Parcial' : 'Incompleto')}.\n`;
+      weekVerdict += `• Calidad de descanso: ${restStatus === 'good' ? 'Excelente' : (restStatus === 'tired' ? 'Fatiga moderada' : 'Agotado')}.\n\n`;
 
       if (restStatus === 'good' && strengthStatus === 'all' && bikeCount >= 3) {
-        weekVerdict += `VEREDICTO DEL COACH: ¡Semana sobresaliente! Tu motor aeróbico asimiló perfectamente los estímulos. Por esta razón, el Nivel Adaptativo subirá para la siguiente semana con bloques ligeramente más retadores.`;
+        weekVerdict += `VEREDICTO PROFESIONAL: ¡Excelente semana! Tu motor aeróbico asimiló los estímulos sin sobrecarga. Para el próximo ciclo, el Nivel Adaptativo subirá ligeramente para seguir forjando progreso.`;
         state.weeklyProgressionFactor = Math.min(1.30, +(state.weeklyProgressionFactor + 0.05).toFixed(2));
       } else if (restStatus === 'exhausted' || strengthStatus === 'none' || bikeCount <= 1) {
-        weekVerdict += `VEREDICTO DEL COACH: Semana pesada o con baja consistencia. El cuerpo acumuló estrés o faltó soporte de fuerza. Para protegerte del sobreentrenamiento, la siguiente semana mantendrá un volumen controlado y priorizará la recuperación.`;
+        weekVerdict += `VEREDICTO PROFESIONAL: Semana de alta fatiga o baja adherencia. Para evitar el sobreentrenamiento y proteger tus articulaciones, la siguiente semana ajustará el volumen a la baja y priorizará la asimilación.`;
         state.weeklyProgressionFactor = Math.max(0.85, +(state.weeklyProgressionFactor - 0.05).toFixed(2));
       } else {
-        weekVerdict += `VEREDICTO DEL COACH: Semana correcta y estable. Cumpliste con lo fundamental. Mantendremos la progresión constante en el siguiente ciclo.`;
+        weekVerdict += `VEREDICTO PROFESIONAL: Semana estable. Mantuviste el bloque de entrenamiento dentro de parámetros saludables. Continuaremos con la progresión planificada.`;
         state.weeklyProgressionFactor = Math.min(1.25, +(state.weeklyProgressionFactor + 0.02).toFixed(2));
       }
 
       state.weeklySummaries[`W${state.currentWeek}`] = weekVerdict;
       state.effectiveTrainingWeeksCount++;
 
-      // Desbloquear siguiente semana
       if (state.currentWeek < state.totalWeeks) {
         state.currentWeek += 1;
         state.maxUnlockedWeek = Math.max(state.maxUnlockedWeek, state.currentWeek);
@@ -1340,11 +1354,11 @@
       renderSyncUI();
       saveStateToLocal();
 
-      alert(`✅ ¡Balance de la Semana ${state.currentWeek - 1} generado con éxito!\n\n${weekVerdict}\n\nLa Semana ${state.currentWeek} ya está desbloqueada y adaptada a tu rendimiento.`);
+      alert(`✅ ¡Balance de la Semana ${state.currentWeek - 1} procesado!\n\n${weekVerdict}\n\nLa Semana ${state.currentWeek} ya está desbloqueada y adaptada.`);
     }
 
     // =========================================================================
-    // CONSEJO TÉCNICO PROFUNDO (FTP, VO2MÁX, FATIGA, CADENCIA Y PIÑONES)
+    // ANÁLISIS DE COACH PROFUNDO Y DETALLADO
     // =========================================================================
     async function openSmartAdviceModal(dayIdx) {
       state.selectedDayForFeedback = dayIdx;
@@ -1372,22 +1386,35 @@
 
       let realData = state.completedLogs[logKey];
       if ((!realData || realData.source !== 'intervals') && state.intervalsActivities.length > 0) {
-        const latest = [...state.intervalsActivities].sort((a, b) => new Date(b.start_date_local) - new Date(a.start_date_local))[0];
-        realData = {
-          status: 'full',
-          source: 'intervals',
-          actName: latest.name || 'Salida reciente',
-          actDate: (latest.start_date_local || '').split('T')[0],
-          durationMin: Math.round((latest.moving_time || 0) / 60),
-          realHR: latest.average_heartrate ? Math.round(latest.average_heartrate) : 0,
-          maxHR: latest.max_heartrate ? Math.round(latest.max_heartrate) : 0,
-          realCAD: latest.average_cadence ? Math.round(latest.average_cadence) : 0,
-          load: latest.icu_training_load ? Math.round(latest.icu_training_load) : 0
-        };
+        // Buscar estrictamente dentro de la semana actual
+        const planStartDate = state.planStartDate ? new Date(state.planStartDate) : new Date();
+        const weekStart = new Date(planStartDate);
+        weekStart.setDate(weekStart.getDate() + (state.currentWeek - 1) * 7);
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekEnd.getDate() + 7);
+
+        const matching = state.intervalsActivities.find(act => {
+          const actDate = new Date(act.start_date_local);
+          return actDate >= weekStart && actDate < weekEnd && actDate.getDay() === w.jsDay;
+        });
+
+        if (matching) {
+          realData = {
+            status: 'full',
+            source: 'intervals',
+            actName: matching.name || `Salida ${w.day}`,
+            actDate: (matching.start_date_local || '').split('T')[0],
+            durationMin: Math.round((matching.moving_time || 0) / 60),
+            realHR: matching.average_heartrate ? Math.round(matching.average_heartrate) : 0,
+            maxHR: matching.max_heartrate ? Math.round(matching.max_heartrate) : 0,
+            realCAD: matching.average_cadence ? Math.round(matching.average_cadence) : 0,
+            load: matching.icu_training_load ? Math.round(matching.icu_training_load) : 0
+          };
+        }
       }
 
       if (!realData) {
-        alert('Aún no hay entrenamientos registrados en Intervals.icu para hoy. Sube tu rodada y vuelve a tocar este botón.');
+        alert(`Aún no hay entrenamientos sincronizados desde Intervals.icu para el ${w.day} de la Semana ${state.currentWeek}.\n\nAsegúrate de haber subido la salida y toca "Sincronizar Intervals" arriba.`);
         return;
       }
 
@@ -1401,37 +1428,32 @@
       const t = w.targets;
       let analysisLines = [];
 
-      // 1. Fatiga y Carga
+      // 1. Fatiga y Carga (Training Load)
       const loadVal = realData.load || Math.round(realData.durationMin * 0.7);
-      analysisLines.push(`• **Fatiga y Carga Acumulada (Training Load):** Hoy sumaste una carga de **${loadVal} puntos**. Es el desgaste total que le pediste a tus músculos y a tu sistema nervioso. Al mantenerlo en este rango, estimulas la adaptación sin llegar al sobreentrenamiento.`);
+      analysisLines.push(`• **Fatiga y Carga de Entrenamiento (Training Load):** Hoy acumulaste **${loadVal} puntos de estrés**. Es el volumen de fatiga que le inyectaste a tu organismo. Controlar esto evita que llegues fundido al fin de semana.`);
 
-      // 2. FTP / Umbral
+      // 2. Pulso Meta vs Real (FTP / Umbral)
       if (w.zone >= 4) {
-        analysisLines.push(`• **Traducción del FTP (Umbral de Potencia):** Al rodar en Ritmo 4, pusiste a prueba tu FTP (la potencia máxima que sostienes 1 hora). Tu pulso promedio fue de ${realData.realHR} ppm (meta: ${t.hrWorkMin}-${t.hrWorkMax} ppm). ${realData.realHR <= t.hrWorkMax ? '¡Excelente! Demuestra que tu umbral está sólido y respondiendo bien.' : 'Tu pulso superó ligeramente el umbral; cuida el descanso mañana.'}`);
+        analysisLines.push(`• **Evaluación de Pulso y FTP (Umbral):** Tu objetivo era mantener el pulso entre **${t.hrWorkMin} y ${t.hrWorkMax} ppm** en los bloques fuertes. Tu promedio real fue de **${realData.realHR} ppm**.\n  ${realData.realHR <= t.hrWorkMax ? '¡Excelente ejecución! Te mantuviste dentro de la ventana de umbral sin disparar el ácido láctico prematuramente.' : 'Te pasaste del techo de pulso objetivo. Esto indica que la intensidad fue más alta de lo planeado (por calor o terreno); mañana regula más el esfuerzo.'}`);
       } else {
-        analysisLines.push(`• **Base Aeróbica:** Hoy trabajamos en zona ${w.zone}. Esto construye la red capilar y mitocondrial que sostiene tu FTP a largo plazo sin quemarte.`);
+        analysisLines.push(`• **Control Aeróbico (Zona ${w.zone}):** Buscábamos un fondo controlado (${t.hrWorkMin}-${t.hrWorkMax} ppm). Tu promedio real fue de **${realData.realHR} ppm**. ${realData.realHR <= t.hrWorkMax ? 'Lograste mantener el motor en modo aeróbico puro, ideal para la oxidación de grasas y base.' : 'El pulso se elevó por encima de la zona aeróbica; cuida no acelerar el paso en los repechos.'}`);
       }
 
-      // 3. VO2máx
-      if (w.zone === 5) {
-        analysisLines.push(`• **Traducción del VO2máx (Tanque de Oxígeno):** Al hacer intervalos en Ritmo 5, tus pulmones y corazón bombearon al máximo. Con un pulso pico de ${realData.maxHR} ppm, ampliaste tu cilindrada pulmonar.`);
-      }
-
-      // 4. Cadencia y recomendación de piñón
+      // 3. Cadencia y recomendación explícita de piñón
       if (realData.realCAD > 0) {
-        if (realData.realCAD < t.cadWorkMin - 4) {
-          analysisLines.push(`• **Análisis de Cadencia (${realData.realCAD} rpm frente a meta de ${t.cadWorkMin}-${t.cadWorkMax} rpm):** Noté que fuiste un poco atrancado. Te recomiendo que en la próxima salida de este tipo **subas uno o dos piñones atrás (uses un piñón más grande)** para desahogar las rodillas y descansar los cuádriceps, manteniendo las piernas ágiles.`);
+        if (realData.realCAD < t.cadWorkMin - 3) {
+          analysisLines.push(`• **Análisis de Cadencia y Desarrollo:** Llevaste un promedio de **${realData.realCAD} rpm** (la meta era de ${t.cadWorkMin}-${t.cadWorkMax} rpm). Fuiste un poco atrancado/pesado. Te aconsejo que en la próxima salida **subas uno o dos piñones atrás (uses una relación más suave)** para desahogar las rodillas, descansar los cuádriceps y mantener la agilidad.`);
         } else {
-          analysisLines.push(`• **Análisis de Cadencia (${realData.realCAD} rpm):** ¡Muy buen trabajo de pedaleo! Te mantuviste dentro del rango ágil, protegiendo tus articulaciones.`);
+          analysisLines.push(`• **Análisis de Cadencia:** ¡Muy buena cadencia de **${realData.realCAD} rpm**! Demuestra eficiencia de pedaleo y protección articular.`);
         }
       }
 
-      // 5. Nutrición e Hidratación recordatorio
-      analysisLines.push(`• **Nutrición e Hidratación:** Recuerda que para salidas de este tipo debías consumir al menos ${w.nutrition.totalMl} ml de líquido y ${w.nutrition.carbsPerHour}g de carbohidratos por hora.`);
+      // 4. Nutrición e hidratación
+      analysisLines.push(`• **Protocolo Nutricional:** Para esta sesión debías consumir **${w.nutrition.totalMl} ml** de líquido y **${w.nutrition.carbsPerHour}g** de carbohidratos por hora. Al llegar a casa, recuerda priorizar la ventana de recuperación con carbohidrato y proteína.`);
 
-      let nextAdvice = `• **Para mañana (${nextDay.day}):** Tienes "${nextDay.title}". Sigue las pautas de recuperación y pedalea con control.`;
+      let nextAdvice = `• **Consejo para mañana (${nextDay.day}):** Tienes "${nextDay.title}". Sigue las pautas de recuperación y descansa adecuadamente.`;
 
-      const report = `Hola ${state.rider.name || 'Ciclista'}, aquí tienes el análisis profesional detallado de tu salida:\n\n` + analysisLines.join('\n\n') + `\n\n` + nextAdvice;
+      const report = `Hola ${state.rider.name || 'Ciclista'}, análisis profesional detallado de tu salida:\n\n` + analysisLines.join('\n\n') + `\n\n` + nextAdvice;
       state.lastFeedbackReport = report;
       document.getElementById('fbDiagnosisText').textContent = report;
       document.getElementById('feedbackModal').classList.remove('hidden');
