@@ -149,7 +149,7 @@
       </div>
     </section>
 
-    <!-- PASO 2: BICICLETA Y DISPOSITIVOS (AMPLIADO CON TIPOS DE BICI, SHIMANO, SRAM Y COMPUTADORAS) -->
+    <!-- PASO 2: BICICLETA Y DISPOSITIVOS (CON SELECTOR DE TIPO VACÍO Y MODELO VACÍO) -->
     <section id="tab-step2" class="tab-panel hidden space-y-4">
       <div class="glass rounded-2xl p-4 sm:p-6">
         <div class="flex items-center justify-between border-b border-stone-800 pb-3 mb-4">
@@ -162,17 +162,18 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
-            <label class="block text-xs font-semibold text-stone-300 mb-1">Tipo de Bicicleta</label>
+            <label class="block text-xs font-semibold text-stone-300 mb-1">Tipo de Bicicleta *</label>
             <select id="inBikeType" onchange="updateGroupsetOptions(); autoSaveInputs();" class="w-full rounded-xl bg-stone-950 border border-amber-500/50 px-3 py-2 text-sm text-white font-bold">
-              <option value="road" selected>Ruta (Carretera)</option>
+              <option value="" disabled selected>-- Selecciona tipo de bici --</option>
+              <option value="road">Ruta (Carretera)</option>
               <option value="mtb">Montaña (MTB)</option>
               <option value="gravel">Gravel</option>
             </select>
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-stone-300 mb-1">Marca / Modelo</label>
-            <input id="inBikeBrand" type="text" value="BMC Teammachine" oninput="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white" />
+            <label class="block text-xs font-semibold text-stone-300 mb-1">Modelo / Marca</label>
+            <input id="inBikeBrand" type="text" value="" placeholder="Ej: Specialized, Giant, Trek..." oninput="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white" />
           </div>
 
           <div>
@@ -189,14 +190,14 @@
           <div>
             <label class="block text-xs font-semibold text-stone-300 mb-1">Grupo de Transmisión</label>
             <select id="inGroupset" onchange="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white">
-              <!-- Se llena dinámicamente con JS según el tipo de bici -->
+              <option value="" disabled selected>-- Primero selecciona el tipo de bici --</option>
             </select>
           </div>
 
           <div>
             <label class="block text-xs font-semibold text-stone-300 mb-1">Configuración de Platos</label>
             <select id="inChainringSetup" onchange="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white">
-              <option value="double" selected>Biplato (Doble plato)</option>
+              <option value="double">Biplato (Doble plato)</option>
               <option value="single">Monoplato (1x)</option>
               <option value="triple">Triplato (3 platos)</option>
             </select>
@@ -206,13 +207,13 @@
             <label class="block text-xs font-semibold text-stone-300 mb-1">Ciclocomputador</label>
             <select id="inHeadUnit" onchange="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-amber-500/50 px-3 py-2 text-sm text-white font-semibold">
               <option value="magene" selected>Magene (C706 / C606 / C406)</option>
-              <option value="garmin">Garmin Edge (530/540/830/840/1040/1050)</option>
-              <option value="wahoo">Wahoo ELEMNT (Bolt / Roam)</option>
+              <option value="garmin">Garmin Edge</option>
+              <option value="wahoo">Wahoo ELEMNT</option>
               <option value="coros">Coros (Dura)</option>
-              <option value="polar">Polar (V650 / M460)</option>
-              <option value="huawei">Huawei / Honor Watch (Sincro app)</option>
-              <option value="igpsport">iGPSPORT (BSC200 / BSC300 / iGS630)</option>
-              <option value="zwift">Zwift / Indoor Trainer (Virtual)</option>
+              <option value="polar">Polar</option>
+              <option value="huawei">Huawei / Honor</option>
+              <option value="igpsport">iGPSPORT</option>
+              <option value="zwift">Zwift Virtual</option>
               <option value="other">Otro modelo</option>
             </select>
           </div>
@@ -656,7 +657,7 @@
   </nav>
 
   <script>
-    const STORAGE_KEY = 'trenin_plan_v391_database';
+    const STORAGE_KEY = 'trenin_plan_v392_database';
 
     const state = {
       hasSavedProfile: false,
@@ -676,10 +677,10 @@
         ftpEstimated: true
       },
       bike: {
-        type: 'road',
-        brand: 'Giant TCR',
+        type: '',
+        brand: '',
         size: 'M',
-        groupset: 'Shimano 105 (11v)',
+        groupset: '',
         chainringSetup: 'double',
         headUnit: 'magene',
         hasHR: true,
@@ -705,7 +706,7 @@
       intervalsActivities: [],
       planStartDate: '',
       totalWeeks: 12,
-      currentWeek: 2, // Por defecto hoy arranca la Semana 2 (16 al 22 de noviembre)
+      currentWeek: 2,
       maxUnlockedWeek: 2,
       effectiveTrainingWeeksCount: 1,
       weeklyProgressionFactor: 1.0,
@@ -718,15 +719,14 @@
       lastFeedbackReport: ''
     };
 
-    // Catálogos completos de grupos según tipo de bicicleta
     const groupsetsCatalog = {
       road: [
         { name: 'Shimano Claris (8v)', type: 'double' },
         { name: 'Shimano Sora (9v)', type: 'double' },
         { name: 'Shimano Tiagra (10v)', type: 'double' },
-        { name: 'Shimano 105 Mecánico / 105 Di2 (11v/12v)', type: 'double' },
-        { name: 'Shimano Ultegra / Ultegra Di2 (11v/12v)', type: 'double' },
-        { name: 'Shimano Dura-Ace / Dura-Ace Di2 (11v/12v)', type: 'double' },
+        { name: 'Shimano 105 Mecánico / Di2 (11v/12v)', type: 'double' },
+        { name: 'Shimano Ultegra / Di2 (11v/12v)', type: 'double' },
+        { name: 'Shimano Dura-Ace / Di2 (11v/12v)', type: 'double' },
         { name: 'SRAM RED AXS (12v)', type: 'double' },
         { name: 'SRAM Force AXS (12v)', type: 'double' },
         { name: 'SRAM Rival AXS (12v)', type: 'double' }
@@ -737,8 +737,8 @@
         { name: 'Shimano CUES (9-11v Linkglide)', type: 'single' },
         { name: 'Shimano Deore (10-12v)', type: 'single' },
         { name: 'Shimano SLX (12v)', type: 'single' },
-        { name: 'Shimano Deore XT / XT Di2 (11-12v)', type: 'single' },
-        { name: 'Shimano XTR / XTR Di2 (12v)', type: 'single' },
+        { name: 'Shimano Deore XT / Di2 (11-12v)', type: 'single' },
+        { name: 'Shimano XTR / Di2 (12v)', type: 'single' },
         { name: 'Shimano Saint (Gravity/DH)', type: 'single' },
         { name: 'SRAM XX SL / XX Eagle Transmission (12v)', type: 'single' },
         { name: 'SRAM X0 Eagle Transmission (12v)', type: 'single' },
@@ -765,8 +765,13 @@
 
       const bikeType = typeSel.value;
       state.bike.type = bikeType;
-      const options = groupsetsCatalog[bikeType] || groupsetsCatalog.road;
+      
+      if (!bikeType) {
+        groupSel.innerHTML = '<option value="" disabled selected>-- Primero selecciona el tipo de bici --</option>';
+        return;
+      }
 
+      const options = groupsetsCatalog[bikeType] || groupsetsCatalog.road;
       groupSel.innerHTML = options.map(g => `<option value="${g.name}">${g.name}</option>`).join('');
       if (options.length > 0) {
         groupSel.value = options[0].name;
@@ -844,7 +849,7 @@
       document.getElementById('inRestHR').value = state.rider.restHR || 56;
       document.getElementById('inFTP').value = state.rider.ftpEstimated ? 0 : (state.rider.ftp || 0);
 
-      document.getElementById('inBikeType').value = state.bike.type || 'road';
+      if (state.bike.type) document.getElementById('inBikeType').value = state.bike.type;
       updateGroupsetOptions();
       document.getElementById('inBikeBrand').value = state.bike.brand || '';
       document.getElementById('inBikeSize').value = state.bike.size || 'M';
@@ -886,7 +891,6 @@
     function saveAndGeneratePlan() {
       state.lastActiveTab = 'plan';
       if (!state.planStartDate) {
-        // Fijar inicio exactamente hace 7 días (Lunes 9 de noviembre de 2026 para que la semana pasada sea 1 y hoy 16 sea 2)
         const pastMonday = new Date(2026, 10, 9);
         state.planStartDate = pastMonday.toISOString();
       }
@@ -980,6 +984,34 @@
         { z: 4, name: 'Ritmo 4: Fuerte (FTP)', feel: 'Ardor controlado. Tu umbral funcional de potencia.', color: 'border-amber-500/50 bg-amber-950/30 text-amber-200', hrMin: Math.round(maxHR * 0.85), hrMax: Math.round(maxHR * 0.91), wMin: Math.round(ftp * 0.91), wMax: Math.round(ftp * 1.05), cadMin: 82, cadMax: 95 },
         { z: 5, name: 'Ritmo 5: VO2máx', feel: 'Esfuerzo máximo (tanque de oxígeno pulmonar).', color: 'border-rose-500/50 bg-rose-950/30 text-rose-200', hrMin: Math.round(maxHR * 0.92), hrMax: Math.round(maxHR * 0.98), wMin: Math.round(ftp * 1.06), wMax: Math.round(ftp * 1.20), cadMin: 90, cadMax: 105 }
       ];
+    }
+
+    function buildNutritionProtocol(durationMin, zoneNumber, workoutType) {
+      const weight = state.rider.weight;
+      const climateBonus = state.goal.climate === 'warm' ? 180 : (state.goal.climate === 'temperate' ? 80 : 0);
+
+      if (workoutType === 'rest') {
+        return { mlPerHour: 0, mlEvery15: 0, totalMl: Math.round(weight * 35), before: 'Hidratación normal y proteína de calidad.', during: 'Agua moderada.', after: 'Descanso total y buena cena.' };
+      }
+      if (workoutType === 'strength') {
+        const mlH = 500;
+        return { mlPerHour: mlH, mlEvery15: 125, totalMl: Math.round((durationMin/60)*mlH), before: 'Banano o tostada con maní.', during: '125 ml de agua cada 15 min.', after: 'Proteína post-ejercicio para reparar tejido muscular.' };
+      }
+
+      const mlPerHour = Math.round(580 + climateBonus + (weight - 70) * 4);
+      const mlEvery15 = Math.round(mlPerHour / 4);
+      const totalMl = Math.round((durationMin / 60) * mlPerHour);
+      const carbs = durationMin >= 120 ? 60 : 45;
+
+      return {
+        mlPerHour,
+        mlEvery15,
+        totalMl,
+        carbsPerHour: carbs,
+        before: `1.5 horas antes: Avena o pan con mermelada y café + 350 ml de agua.`,
+        during: `Agua: Bebe ${mlEvery15} ml cada 15 minutos (Total: ${totalMl} ml). Energía: Consume ${carbs}g de carbohidratos por hora (bocadillo o gel cada 40 min).`,
+        after: `Al llegar: 500 ml de agua con sales + carbohidrato con proteína en los primeros 30 minutos.`
+      };
     }
 
     function getWeekDateRangeStr(weekNum) {
@@ -1158,9 +1190,6 @@
       matchIntervalsActivitiesToCurrentWeek();
     }
 
-    // =========================================================================
-    // EMPAREJAMIENTO ESTRICTO DE INTERVALS.ICU BASADO EN EL RANGO DE FECHA DE LA SEMANA
-    // =========================================================================
     function matchIntervalsActivitiesToCurrentWeek() {
       if (!state.intervalsActivities || state.intervalsActivities.length === 0) return;
 
@@ -1172,7 +1201,6 @@
       weekEnd.setDate(weekEnd.getDate() + 7);
       weekEnd.setHours(23,59,59,999);
 
-      // Limpiar logs previos de esta semana para evitar datos residuales
       state.plan.forEach((dayItem, idx) => {
         if (dayItem.type !== 'bike') return;
         const logKey = `W${state.currentWeek}_D${idx}`;
@@ -1346,7 +1374,6 @@
             </div>
             <p class="text-xs text-stone-300">${d.details}</p>
             
-            <!-- BARRA DE EXPORTACIÓN Y CONSEJO -->
             <div class="pt-2 border-t border-stone-800 space-y-2">
               <div class="grid grid-cols-3 gap-1.5">
                 <button onclick="openIntervalsExport(${idx})" class="py-2 px-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-stone-950 font-extrabold text-[11px] flex items-center justify-center gap-1">
@@ -1615,7 +1642,7 @@
         name: `Soltar`,
         durSec: w.coolMin * 60,
         hrLow: t.hrRestMin + 100, hrHigh: t.hrRestMax + 100,
-        wLow: t.wRestMin + 1000, wHigh: t.wRestMax + 1000
+        wLow: t.wRestMin + 1000, wHigh: t.wWarmMax + 1000
       });
 
       const dataBytes = [];
@@ -1766,14 +1793,9 @@
       document.getElementById('inEventDate').value = new Date(Date.now() + 56*86400000).toISOString().split('T')[0];
       loadStateFromLocal((hadData) => {
         readInputsAndComputeMetrics();
-        // Forzar inicio exacto de la semana 1 hace 7 días para que hoy lunes 16 sea la Semana 2 exacta
         if (!state.planStartDate) {
-          const pastMonday = new Date();
-          pastMonday.setDate(pastMonday.getDate() - 7);
-          const day = pastMonday.getDay();
-          const diff = pastMonday.getDate() - day + (day === 0 ? -6 : 1);
-          const monday = new Date(pastMonday.setDate(diff));
-          state.planStartDate = monday.toISOString();
+          const pastMonday = new Date(2026, 10, 9);
+          state.planStartDate = pastMonday.toISOString();
         }
         calculateAllowedWeekByCalendar();
         populateWeekSelector();
