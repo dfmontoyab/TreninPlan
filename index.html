@@ -13,22 +13,52 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    /* Respaldo visual nativo completo para navegadores antiguos o sin CDN */
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       background-color: #120e0a;
       color: #f5f5f4;
       -webkit-tap-highlight-color: transparent;
       padding-bottom: 96px;
+      line-height: 1.45;
     }
     .hidden { display: none !important; }
-    .mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
     .glass {
-      background: rgba(24, 20, 16, 0.94);
+      background: rgba(24, 20, 16, 0.96);
       border: 1px solid rgba(120, 113, 108, 0.35);
       border-radius: 16px;
     }
+    .grid { display: grid; gap: 12px; }
+    .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    @media (min-width: 640px) {
+      .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .sm\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+      .sm\:inline { display: inline; }
+    }
+    @media (min-width: 768px) {
+      .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (min-width: 1024px) {
+      .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+    input, select, textarea {
+      background-color: #0c0a09;
+      color: #ffffff;
+      border: 1px solid #44403c;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 14px;
+      width: 100%;
+    }
+    button { cursor: pointer; font-family: inherit; }
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -48,14 +78,22 @@
   <header class="sticky top-0 z-40 glass border-b border-amber-900/30 px-3 py-2.5">
     <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
       <div class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-amber-500/20">
-          <i class="fa-solid fa-person-biking text-lg"></i>
+        <!-- Emblema basado en Logo TreninPlan.png -->
+        <div class="w-10 h-10 rounded-full bg-stone-900 border border-stone-700 flex items-center justify-center shadow-lg shrink-0 overflow-hidden" title="trenin_plan">
+          <svg viewBox="0 0 120 120" class="w-9 h-9" aria-label="Logo trenin_plan">
+            <circle cx="60" cy="60" r="56" fill="#2b2b2b" />
+            <path d="M34 66 L44 45 C45 43 47 42 49 42 L56 42 L45 64 C44 66 42 67 40 67 L35 67 C34 67 33.5 66.5 34 66 Z" fill="#1da1f2" />
+            <path d="M49 66 L63 32 C64 30 66 29 68 29 L76 29 L61 64 C60 66 58 67 56 67 L50 67 C49 67 48.5 66.5 49 66 Z" fill="#f5b700" />
+            <path d="M65 66 L83 18 C84 16 86 15 88 15 L97 15 L78 64 C77 66 75 67 73 67 L66 67 C65 67 64.5 66.5 65 66 Z" fill="#84cc16" />
+            <text x="60" y="84" text-anchor="middle" fill="#e5e5e5" font-family="Inter, sans-serif" font-weight="800" font-size="18" letter-spacing="-0.5">trenin</text>
+            <text x="60" y="100" text-anchor="middle" fill="#e5e5e5" font-family="Inter, sans-serif" font-weight="800" font-size="18" letter-spacing="-0.5">plan</text>
+          </svg>
         </div>
         <div>
           <div class="flex items-center gap-2">
             <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white">trenin<span class="text-amber-500">_plan</span></h1>
             <span id="saveStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">
-              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.3 Listo
+              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.4 Listo
             </span>
           </div>
           <p class="text-[11px] text-stone-400">Coach Pro • <span class="text-amber-400 font-semibold">Pulso</span> • <span class="text-orange-400 font-semibold">FTP</span> • <span class="text-amber-200 font-semibold">Cadencia</span></p>
@@ -648,26 +686,31 @@
 
           <div id="nextWeekObservationsGuide" class="hidden space-y-3 pt-2 border-t border-stone-800">
             <p class="text-[11px] text-stone-400">
-              Indica qué quieres que ajuste en el cálculo de la próxima semana (días, distribución de zonas, preferencia entre sábado y domingo, tiempo o dolor/malestar) y presiona <strong>Enviar ajustes de próxima semana</strong> para fijarlos:
+              Elige el tipo de entrenamiento o modelo que quieres priorizar la próxima semana, ajusta días/tiempos/estado físico y presiona <strong>Enviar ajustes de próxima semana</strong>:
             </p>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <div class="sm:col-span-2">
+                <label class="block text-[11px] font-semibold text-amber-300 mb-1">Tipo de Entrenamiento o Modelo Sugerido</label>
+                <select id="obsTrainingType" onchange="updateTrainingTypeHint(); refreshWeeklyPreview();" class="w-full rounded-lg bg-stone-950 border border-amber-500/40 px-2.5 py-1.5 text-xs text-white font-semibold">
+                  <option value="default" selected>Continuar progresión actual del plan</option>
+                  <option value="endurance_base">Resistencia aeróbica (base): salidas largas y constantes a intensidad baja/moderada</option>
+                  <option value="pyramidal">Modelo piramidal: mayor volumen en baja intensidad, fracción moderada en media y parte menor en alta</option>
+                  <option value="polarized">Modelo polarizado: prioriza intensidad baja y alta, reduciendo zonas intermedias (Z3)</option>
+                  <option value="strength_threshold">Fuerza y umbral: cadencias bajas o intervalos sostenidos cerca del umbral</option>
+                  <option value="hiit_sprint_fartlek">HIIT, sprints y Fartlek: intervalos cortos de máxima intensidad, aceleraciones o cambios libres</option>
+                  <option value="sweet_spot">Sweet Spot / Tempo controlado: bloques firmes justo bajo el umbral con fatiga moderada</option>
+                  <option value="custom">Otro tipo / enfoque personalizado (escribir abajo)</option>
+                </select>
+                <p id="obsTrainingTypeHint" class="text-[11px] text-stone-400 mt-1"></p>
+              </div>
+
               <div>
                 <label class="block text-[11px] font-semibold text-stone-300 mb-1">Ajuste de días de bici</label>
                 <select id="obsBikeDaysDelta" onchange="refreshWeeklyPreview()" class="w-full rounded-lg bg-stone-950 border border-stone-700 px-2.5 py-1.5 text-xs text-white">
                   <option value="keep" selected>Mantener días actuales</option>
                   <option value="plus1">+1 día de entrenamiento extra</option>
                   <option value="minus1">-1 día de entrenamiento (más recuperación)</option>
-                </select>
-              </div>
-
-              <div>
-                <label class="block text-[11px] font-semibold text-stone-300 mb-1">Enfoque / Restricción de Zonas</label>
-                <select id="obsZoneFocus" onchange="refreshWeeklyPreview()" class="w-full rounded-lg bg-stone-950 border border-stone-700 px-2.5 py-1.5 text-xs text-white">
-                  <option value="normal" selected>Progresión normal del plan</option>
-                  <option value="no_z3_vo2">Evitar Zona 3 • Enfocar Zona 2 y Zona 4/5 (VO2 máx)</option>
-                  <option value="base_z2">Priorizar base aeróbica en Zona 2</option>
-                  <option value="low_load">Bajar intensidad / malestar leve o fatiga</option>
                 </select>
               </div>
 
@@ -687,19 +730,19 @@
                   <option value="knee_pain">Dolor o molestia en rodilla / articulación (bajar fuerte o parar)</option>
                   <option value="mild_illness">Algo resfriado / malestar leve (no parar del todo, cuidar pulso)</option>
                   <option value="sore_legs">Piernas cargadas / fatiga muscular</option>
-                  <option value="indoor">Más rodillo / poco tiempo exterior</option>
+                  <option value="indoor_sim">Más rodillo / simulador esta semana</option>
                 </select>
               </div>
 
-              <div class="sm:col-span-2">
+              <div>
                 <label class="block text-[11px] font-semibold text-stone-300 mb-1">Tiempo entre semana (min, opcional)</label>
-                <input id="obsWeekdayMin" type="number" min="20" max="240" step="5" placeholder="Ej: 60" oninput="refreshWeeklyPreview()" class="w-full rounded-lg bg-stone-950 border border-stone-700 px-2.5 py-1.5 text-xs text-white mono" />
+                <input id="obsWeekdayMin" type="number" min="20" max="300" step="5" placeholder="Ej: 60" oninput="refreshWeeklyPreview()" class="w-full rounded-lg bg-stone-950 border border-stone-700 px-2.5 py-1.5 text-xs text-white mono" />
               </div>
             </div>
 
             <div>
-              <label class="block text-[11px] font-semibold text-stone-300 mb-1">Escribe con tus palabras qué quieres que tenga en cuenta:</label>
-              <textarea id="obsFreeText" rows="2" oninput="refreshWeeklyPreview()" placeholder="Ej: Quiero que el sábado sea más largo que el domingo, o tengo dolor en la rodilla..." class="w-full rounded-lg bg-stone-950 border border-stone-700 p-2.5 text-xs text-white focus:border-amber-500 focus:outline-none"></textarea>
+              <label class="block text-[11px] font-semibold text-stone-300 mb-1">Escribe con tus palabras qué quieres que tenga en cuenta o añade otro tipo de entreno:</label>
+              <textarea id="obsFreeText" rows="2" oninput="refreshWeeklyPreview()" placeholder="Ej: Quiero modelo polarizado, sábado más largo que el domingo, o añadir series de cadencia..." class="w-full rounded-lg bg-stone-950 border border-stone-700 p-2.5 text-xs text-white focus:border-amber-500 focus:outline-none"></textarea>
             </div>
 
             <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
@@ -793,7 +836,7 @@
   </nav>
 
   <script>
-    const STORAGE_KEY = 'trenin_plan_v423_database';
+    const STORAGE_KEY = 'trenin_plan_v424_database';
 
     const state = {
       hasSavedProfile: false,
@@ -859,6 +902,17 @@
       obsHasAdjustments: false
     };
 
+    const trainingTypeDescriptions = {
+      default: 'Mantiene el ciclo y progresión programados para la semana.',
+      endurance_base: 'Resistencia aeróbica (base): salidas largas y constantes a intensidad baja/moderada para construir fondo y eficiencia metabólica.',
+      pyramidal: 'Modelo piramidal: concentra la mayor parte del volumen en intensidad baja, una fracción moderada en media y una parte menor en alta intensidad.',
+      polarized: 'Modelo polarizado: prioriza mayoritariamente la intensidad baja y combina sesiones de alta intensidad, reduciendo zonas intermedias.',
+      strength_threshold: 'Fuerza y umbral: trabajo con cadencias bajas o intervalos sostenidos cerca del umbral para ganar potencia y tolerancia al esfuerzo sostenido.',
+      hiit_sprint_fartlek: 'HIIT, sprints y Fartlek: intervalos cortos de máxima intensidad con recuperación, aceleraciones explosivas o cambios de ritmo libres según terreno o sensación.',
+      sweet_spot: 'Sweet Spot / Tempo controlado: bloques estables justo por debajo del umbral funcional para mejorar rendimiento útil con fatiga moderada.',
+      custom: 'Describe tu tipo o enfoque deseado en el campo de texto libre para considerarlo en la semana.'
+    };
+
     const glossaryItems = [
       { term: 'Cadencia (rpm)', def: 'Revoluciones por minuto a las que giran las bielas. Pedaleos ágiles (85–100 rpm) suelen descargar presión articular en rutas largas; cadencias bajas (68–75 rpm) trabajan más fuerza muscular en subida si se controlan bien.' },
       { term: 'FTP (Functional Threshold Power)', def: 'Potencia media máxima en vatios (W) que puedes sostener de forma estable durante aproximadamente una hora. Sirve como ancla para calcular zonas de potencia y carga de entrenamiento.' },
@@ -916,6 +970,14 @@
         { name: 'SRAM Apex / Apex AXS (12v)', type: 'single' }
       ]
     };
+
+    function updateTrainingTypeHint() {
+      const sel = document.getElementById('obsTrainingType');
+      const hint = document.getElementById('obsTrainingTypeHint');
+      if (sel && hint) {
+        hint.textContent = trainingTypeDescriptions[sel.value] || trainingTypeDescriptions.default;
+      }
+    }
 
     function openGlossaryModal() {
       document.getElementById('glossaryContent').innerHTML = glossaryItems.map(item => `
@@ -992,6 +1054,7 @@
       let loaded = null;
       try {
         const raw = localStorage.getItem(STORAGE_KEY)
+          || localStorage.getItem('trenin_plan_v423_database')
           || localStorage.getItem('trenin_plan_v422_database')
           || localStorage.getItem('trenin_plan_v421_database')
           || localStorage.getItem('trenin_plan_v42_database')
@@ -1070,7 +1133,7 @@
       const badge = document.getElementById('saveStatusBadge');
       if (!badge) return;
       badge.innerHTML = '<i class="fa-solid fa-check mr-1"></i>Guardado';
-      setTimeout(() => { badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.3 Listo'; }, 1400);
+      setTimeout(() => { badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.4 Listo'; }, 1400);
     }
 
     function autoSaveInputs() {
@@ -1320,17 +1383,17 @@
         fewerBikeDay = true;
         notes.push('Reducir un día de entrenamiento para recuperar');
       }
-      if (/(evita.*zona 3|no trabajar en zona 3|sin zona 3|evitar z3|no z3)/.test(txt)) {
+      if (/(evita.*zona 3|no trabajar en zona 3|sin zona 3|evitar z3|no z3|polariz)/.test(txt)) {
         avoidZone3 = true;
-        notes.push('Evitar bloques en Zona 3');
+        notes.push('Reducir/evitar bloques en Zona 3');
       }
-      if (/(vo2|z2 y z4|zona 2 y 4|zona 2 y zona 4|dos y cuatro|2 y 4)/.test(txt)) {
+      if (/(vo2|z2 y z4|zona 2 y 4|zona 2 y zona 4|dos y cuatro|2 y 4|hiit|sprint|fartlek)/.test(txt)) {
         focusVo2 = true;
-        notes.push('Priorizar Zona 2 y Zona 4/5 para VO2 máx');
+        notes.push('Priorizar intensidad alta / intervalos');
       }
-      if (/(zona 2|base aer[oó]bica|fondo suave)/.test(txt) && !focusVo2) {
+      if (/(zona 2|base aer[oó]bica|fondo suave|piramid)/.test(txt) && !focusVo2) {
         focusZ2 = true;
-        notes.push('Énfasis en Zona 2');
+        notes.push('Énfasis en base aeróbica / estructura');
       }
       if (/(dolor.*rodilla|rodilla|articulaci[oó]n|molestia.*rodilla|tend[oó]n)/.test(txt)) {
         jointPain = true;
@@ -1367,13 +1430,16 @@
       const z2 = state.zones[1];
 
       const wCfg = state.weekConfigs[`W${weekNum}`] || {};
+      const tType = wCfg.trainingType || 'default';
       const parsedFree = parseFreeTextObservations(wCfg.freeText || '');
 
-      const avoidZ3 = Boolean(wCfg.zoneFocus === 'no_z3_vo2' || parsedFree.avoidZone3);
-      const focusVo2 = Boolean(wCfg.zoneFocus === 'no_z3_vo2' || state.goal.type === 'vo2max' || parsedFree.focusVo2);
-      const focusZ2 = Boolean(wCfg.zoneFocus === 'base_z2' || state.goal.type === 'base' || parsedFree.focusZ2);
+      const avoidZ3 = Boolean(tType === 'polarized' || parsedFree.avoidZone3);
+      const focusVo2 = Boolean(tType === 'hiit_sprint_fartlek' || tType === 'polarized' || state.goal.type === 'vo2max' || parsedFree.focusVo2);
+      const focusZ2 = Boolean(tType === 'endurance_base' || tType === 'pyramidal' || state.goal.type === 'base' || parsedFree.focusZ2);
+      const focusThreshold = Boolean(tType === 'strength_threshold' || tType === 'sweet_spot');
       const jointPain = Boolean(wCfg.healthStatus === 'knee_pain' || parsedFree.jointPain);
-      const softMode = Boolean(jointPain || wCfg.zoneFocus === 'low_load' || wCfg.healthStatus === 'mild_illness' || wCfg.healthStatus === 'sore_legs' || parsedFree.lowerLoad);
+      const isIndoorSim = Boolean(wCfg.healthStatus === 'indoor_sim');
+      const softMode = Boolean(jointPain || wCfg.healthStatus === 'mild_illness' || wCfg.healthStatus === 'sore_legs' || parsedFree.lowerLoad);
 
       let weekdayCap = wCfg.customWeekdayMin || parsedFree.customWeekdayMin || state.goal.weekdayMin;
       let satCap = state.goal.saturdayMin || state.goal.weekendMin || 150;
@@ -1443,6 +1509,9 @@
       if (jointPain) {
         phaseLabel = `SEMANA ${weekNum} (${dateRangeStr}): PROTECCIÓN ARTICULAR / RODILLA`;
         phaseDesc = 'Carga reducida y cadencia ágil sin forzar: si el dolor aparece o aumenta al pedalear, detén la sesión o descansa.';
+      } else if (tType !== 'default') {
+        phaseLabel = `SEMANA ${weekNum} (${dateRangeStr}): ${tType.toUpperCase()}`;
+        phaseDesc = trainingTypeDescriptions[tType] || phaseDesc;
       } else if (focusVo2 && !softMode) {
         phaseLabel = `SEMANA ${weekNum} (${dateRangeStr}): ENFOQUE VO2 MÁX (Z2 + Z4/Z5)`;
         phaseDesc = avoidZ3
@@ -1451,6 +1520,10 @@
       } else if (softMode) {
         phaseLabel = `SEMANA ${weekNum} (${dateRangeStr}): ADAPTACIÓN PRUDENTE`;
         phaseDesc = 'Volumen e intensidad moderados para cuidar la salud, evitar picos excesivos y mantener la continuidad.';
+      }
+
+      if (isIndoorSim) {
+        phaseDesc += ' • Modo simulador/rodillo: esfuerzo constante y ventilación/hidratación activas.';
       }
 
       state.currentWeekTheme = { badge: phaseLabel, desc: phaseDesc };
@@ -1475,15 +1548,27 @@
           cadWorkMin: 90, cadWorkMax: 100,
           details: '15m suave · 3m fuerte + 3m suave · 20m a tope constante · 15m enfriar.'
         };
-      } else if (focusVo2) {
-        const repsV = weekdayCap >= 75 ? 5 : 4;
-        const fit = fitIntervalsToAvailableTime(weekdayCap, 15, 10, 3, 3, repsV);
+      } else if (tType === 'hiit_sprint_fartlek' || focusVo2) {
+        const hiitReps = weekdayCap <= 35 ? 6 : (weekdayCap <= 60 ? 8 : 10);
+        const hiitBlockMin = Math.max(5, hiitReps);
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 15, 8, hiitBlockMin, 2, 1);
         tueConfig = {
-          title: `VO2 máx: ${fit.reps} × ${fit.workMin}m en Z4/Z5`,
-          subtitle: `Semana ${weekNum} • Potencia aeróbica máxima`,
+          title: tType === 'hiit_sprint_fartlek'
+            ? `HIIT / Fartlek (${hiitReps} × 30s fuerte + 30s suave)`
+            : `VO2 máx: ${fit.reps} × ${fit.workMin}m en Z4/Z5`,
+          subtitle: `Semana ${weekNum} • Potencia aeróbica y cambios de ritmo`,
           zone: 5, ...fit,
-          cadWorkMin: 92, cadWorkMax: 105,
-          details: `15m progresivos en Z2 · ${fit.reps} bloques de ${fit.workMin}m exigentes (Z4 alta/Z5) con ${fit.restMin}m suaves para bajar pulso · 10m enfriar.`
+          cadWorkMin: 92, cadWorkMax: 108,
+          details: `Calentamiento progresivo · ${hiitReps} repeticiones o cambios de ritmo de alta exigencia con recuperación suave · enfriar.`
+        };
+      } else if (focusThreshold) {
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 15, 10, 8, 4, 3);
+        tueConfig = {
+          title: tType === 'sweet_spot' ? `Sweet Spot (${fit.reps} × ${fit.workMin}m)` : `Umbral / Cadencia (${fit.reps} × ${fit.workMin}m)`,
+          subtitle: `Semana ${weekNum} • Tolerancia al esfuerzo sostenido`,
+          zone: 4, ...fit,
+          cadWorkMin: 82, cadWorkMax: 94,
+          details: 'Bloques sostenidos con control de esfuerzo y recuperación limpia entre repeticiones.'
         };
       } else if (isMtb && cycleIndex === 1) {
         const fit = fitIntervalsToAvailableTime(weekdayCap, 15, 10, 2, 3, 5);
@@ -1535,7 +1620,7 @@
       }
 
       let thuConfig;
-      if (softMode || focusZ2) {
+      if (softMode || focusZ2 || tType === 'endurance_base') {
         const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 10, Math.max(15, weekdayCap - 24), 4, 1);
         thuConfig = {
           title: jointPain ? 'Soltura Suave sin Carga en Rodilla' : 'Rodaje Aeróbico Base en Zona 2',
@@ -1896,15 +1981,14 @@
       const rulesBanner = document.getElementById('weekRulesBanner');
       if (wCfg && (wCfg.hasAdjustments || wCfg.freeText)) {
         const parts = [];
+        if (wCfg.trainingType && wCfg.trainingType !== 'default') parts.push(`tipo: ${wCfg.trainingType}`);
         if (wCfg.bikeDaysDelta === 'plus1') parts.push('+1 día de bici');
         if (wCfg.bikeDaysDelta === 'minus1') parts.push('-1 día de bici');
-        if (wCfg.zoneFocus === 'no_z3_vo2') parts.push('sin Zona 3 / enfoque Z2 + Z4-Z5 (VO2 máx)');
-        if (wCfg.zoneFocus === 'base_z2') parts.push('prioridad Zona 2');
-        if (wCfg.zoneFocus === 'low_load') parts.push('carga prudente');
         if (wCfg.weekendPreference === 'sat_longer') parts.push('sábado más largo que domingo');
         if (wCfg.weekendPreference === 'sun_longer') parts.push('domingo más largo que sábado');
         if (wCfg.customWeekdayMin) parts.push(`entre semana ~${wCfg.customWeekdayMin} min`);
         if (wCfg.healthStatus === 'knee_pain') parts.push('dolor/molestia en rodilla: carga reducida y precaución');
+        else if (wCfg.healthStatus === 'indoor_sim') parts.push('enfoque rodillo / simulador');
         else if (wCfg.healthStatus && wCfg.healthStatus !== 'ok') parts.push(`estado: ${wCfg.healthStatus}`);
         if (wCfg.freeText) parts.push(`"${wCfg.freeText}"`);
         rulesBanner.classList.remove('hidden');
@@ -2040,7 +2124,6 @@
       const targetWk = Math.min(state.totalWeeks, state.currentWeek + 1);
       state.weekConfigs[`W${targetWk}`] = nextCfg;
 
-      // Si eligió sábado o domingo más largo, sincronizar también los tiempos base para que coincidan
       const parsedFree = parseFreeTextObservations(nextCfg.freeText || '');
       const wantsSatLonger = Boolean(nextCfg.weekendPreference === 'sat_longer' || parsedFree.satLonger);
       const wantsSunLonger = Boolean(nextCfg.weekendPreference === 'sun_longer' || parsedFree.sunLonger);
@@ -2165,7 +2248,8 @@
 
       let obsResumen = 'Sin ajustes adicionales solicitados para la siguiente semana.';
       if (nextWeekCfg && (nextWeekCfg.hasAdjustments || nextWeekCfg.freeText)) {
-        obsResumen = `Ajustes aplicados para la Semana ${weekNum + 1}: ${parsedNextFree.notes.length ? parsedNextFree.notes.join(' / ') + '. ' : ''}${nextWeekCfg.freeText ? `"${nextWeekCfg.freeText}"` : ''}`;
+        const typeLbl = (nextWeekCfg.trainingType && nextWeekCfg.trainingType !== 'default') ? `Tipo: ${nextWeekCfg.trainingType}. ` : '';
+        obsResumen = `Ajustes aplicados para la Semana ${weekNum + 1}: ${typeLbl}${parsedNextFree.notes.length ? parsedNextFree.notes.join(' / ') + '. ' : ''}${nextWeekCfg.freeText ? `"${nextWeekCfg.freeText}"` : ''}`;
       }
 
       return [
@@ -2191,13 +2275,13 @@
 
     function collectCurrentNextWeekFormConfig() {
       if (!state.obsHasAdjustments) {
-        return { hasAdjustments: false, bikeDaysDelta: 'keep', zoneFocus: 'normal', weekendPreference: 'normal', customWeekdayMin: null, healthStatus: 'ok', freeText: '' };
+        return { hasAdjustments: false, trainingType: 'default', bikeDaysDelta: 'keep', weekendPreference: 'normal', customWeekdayMin: null, healthStatus: 'ok', freeText: '' };
       }
       const rawMin = parseInt(document.getElementById('obsWeekdayMin').value, 10);
       return {
         hasAdjustments: true,
+        trainingType: document.getElementById('obsTrainingType').value,
         bikeDaysDelta: document.getElementById('obsBikeDaysDelta').value,
-        zoneFocus: document.getElementById('obsZoneFocus').value,
         weekendPreference: document.getElementById('obsWeekendPreference').value,
         customWeekdayMin: (!isNaN(rawMin) && rawMin >= 20 && rawMin <= 300) ? rawMin : null,
         healthStatus: document.getElementById('obsHealthStatus').value,
@@ -2225,10 +2309,11 @@
         `Cierre de la <strong>Semana ${state.currentWeek} (${dateRangeStr})</strong>. Sesiones de bici completadas/conciliadas en esta semana: <strong>${bikeCount} de ${plannedBikeCount}</strong>.`;
 
       setNextWeekObservationsChoice(false);
+      document.getElementById('obsTrainingType').value = 'default';
+      updateTrainingTypeHint();
       document.getElementById('obsFreeText').value = '';
       document.getElementById('obsWeekdayMin').value = '';
       document.getElementById('obsBikeDaysDelta').value = 'keep';
-      document.getElementById('obsZoneFocus').value = 'normal';
       document.getElementById('obsWeekendPreference').value = 'normal';
       document.getElementById('obsHealthStatus').value = 'ok';
       const badge = document.getElementById('obsSubmittedBadge');
@@ -2605,26 +2690,29 @@
     function pauseLiveRideTimer() { clearInterval(rideTimerInterval); rideTimerInterval = null; }
 
     window.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('inEventDate').value = new Date(Date.now() + 56*86400000).toISOString().split('T')[0];
-      renderGoalGuidanceBox();
-      loadStateFromLocal((hadData) => {
-        readInputsAndComputeMetrics();
-        if (!state.planStartDate) {
-          const pastMonday = new Date();
-          pastMonday.setDate(pastMonday.getDate() - 7);
-          const day = pastMonday.getDay();
-          const diff = pastMonday.getDate() - day + (day === 0 ? -6 : 1);
-          const monday = new Date(pastMonday.setDate(diff));
-          state.planStartDate = monday.toISOString();
-        }
-        calculateAllowedWeekByCalendar();
-        populateWeekSelector();
-        buildWeekSchedule(state.currentWeek);
-        renderPlanUI();
-        renderSyncUI();
-        if (hadData && state.lastActiveTab) switchTab(state.lastActiveTab);
-        if (state.intervalsAuth.athleteId && state.intervalsAuth.apiKey) syncAllFromIntervalsQuietly(false);
-      });
+      try {
+        document.getElementById('inEventDate').value = new Date(Date.now() + 56*86400000).toISOString().split('T')[0];
+        renderGoalGuidanceBox();
+        updateTrainingTypeHint();
+        loadStateFromLocal((hadData) => {
+          readInputsAndComputeMetrics();
+          if (!state.planStartDate) {
+            const pastMonday = new Date();
+            pastMonday.setDate(pastMonday.getDate() - 7);
+            const day = pastMonday.getDay();
+            const diff = pastMonday.getDate() - day + (day === 0 ? -6 : 1);
+            const monday = new Date(pastMonday.setDate(diff));
+            state.planStartDate = monday.toISOString();
+          }
+          calculateAllowedWeekByCalendar();
+          populateWeekSelector();
+          buildWeekSchedule(state.currentWeek);
+          renderPlanUI();
+          renderSyncUI();
+          if (hadData && state.lastActiveTab) switchTab(state.lastActiveTab);
+          if (state.intervalsAuth.athleteId && state.intervalsAuth.apiKey) syncAllFromIntervalsQuietly(false);
+        });
+      } catch (e) {}
     });
   </script>
 </body>
