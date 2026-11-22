@@ -55,7 +55,7 @@
           <div class="flex items-center gap-2">
             <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white">trenin<span class="text-amber-500">_plan</span></h1>
             <span id="saveStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">
-              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2 Listo
+              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.1 Listo
             </span>
           </div>
           <p class="text-[11px] text-stone-400">Coach Pro • <span class="text-amber-400 font-semibold">Pulso</span> • <span class="text-orange-400 font-semibold">FTP</span> • <span class="text-amber-200 font-semibold">Cadencia</span></p>
@@ -759,7 +759,7 @@
   </nav>
 
   <script>
-    const STORAGE_KEY = 'trenin_plan_v42_database';
+    const STORAGE_KEY = 'trenin_plan_v421_database';
 
     const state = {
       hasSavedProfile: false,
@@ -955,7 +955,9 @@
     function loadStateFromLocal(callback) {
       let loaded = null;
       try {
-        const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('trenin_plan_v41_database');
+        const raw = localStorage.getItem(STORAGE_KEY)
+          || localStorage.getItem('trenin_plan_v42_database')
+          || localStorage.getItem('trenin_plan_v41_database');
         if (raw) loaded = JSON.parse(raw);
       } catch (e) {}
 
@@ -1024,7 +1026,7 @@
       const badge = document.getElementById('saveStatusBadge');
       if (!badge) return;
       badge.innerHTML = '<i class="fa-solid fa-check mr-1"></i>Guardado';
-      setTimeout(() => { badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2 Listo'; }, 1400);
+      setTimeout(() => { badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.1 Listo'; }, 1400);
     }
 
     function autoSaveInputs() {
@@ -1578,7 +1580,12 @@
       matchIntervalsActivitiesToCurrentWeek();
     }
 
-    // Conciliación flexible por semana: reconoce salidas reprogramadas dentro de la misma semana
+    function getActivityUniqueKey(act) {
+      if (act && act.id !== undefined && act.id !== null) return `id_${String(act.id)}`;
+      return `dt_${act.start_date_local || ''}_${act.moving_time || 0}_${act.name || ''}`;
+    }
+
+    // Conciliación estricta 1 a 1 por semana: cada actividad real solo cubre una sesión planificada
     function matchIntervalsActivitiesToCurrentWeek() {
       if (!state.intervalsActivities || state.intervalsActivities.length === 0) return;
 
@@ -1600,17 +1607,17 @@
         delete state.completedLogs[`W${state.currentWeek}_D${idx}`];
       });
 
-      const usedActIds = new Set();
+      const usedActKeys = new Set();
 
-      // 1. Primero emparejar coincidencias exactas por día de la semana dentro de la semana
+      // 1. Asignar primero las actividades que caen exactamente en el día planificado (1 actividad -> 1 sesión)
       bikeIndices.forEach(({ d, idx }) => {
         const exact = weekActivities.find(act => {
-          const key = act.id || act.start_date_local;
-          if (usedActIds.has(key)) return false;
+          const key = getActivityUniqueKey(act);
+          if (usedActKeys.has(key)) return false;
           return new Date(act.start_date_local).getDay() === d.jsDay;
         });
         if (exact) {
-          usedActIds.add(exact.id || exact.start_date_local);
+          usedActKeys.add(getActivityUniqueKey(exact));
           state.completedLogs[`W${state.currentWeek}_D${idx}`] = {
             status: 'full',
             source: 'intervals',
@@ -1627,12 +1634,12 @@
         }
       });
 
-      // 2. Para sesiones de bici aún pendientes en la semana, asignar salidas realizadas otro día de la misma semana
+      // 2. Solo con las actividades NO usadas todavía en esta semana, cubrir sesiones faltantes (ej. jueves hecho el viernes)
       bikeIndices.forEach(({ d, idx }) => {
         const logKey = `W${state.currentWeek}_D${idx}`;
         if (state.completedLogs[logKey]) return;
 
-        const remaining = weekActivities.filter(act => !usedActIds.has(act.id || act.start_date_local));
+        const remaining = weekActivities.filter(act => !usedActKeys.has(getActivityUniqueKey(act)));
         if (remaining.length === 0) return;
 
         remaining.sort((a, b) => {
@@ -1642,7 +1649,7 @@
         });
 
         const picked = remaining[0];
-        usedActIds.add(picked.id || picked.start_date_local);
+        usedActKeys.add(getActivityUniqueKey(picked));
         const realDateObj = new Date(picked.start_date_local);
         const realDayName = state.plan.find(p => p.jsDay === realDateObj.getDay())?.day || realDateObj.toLocaleDateString('es-ES', { weekday: 'long' });
 
@@ -1699,7 +1706,7 @@
             document.getElementById('inMaxHR').value = maxH;
           }
           state.intervalsAuth.lastSyncDate = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
-          state.intervalsAuth.lastSyncSummary = `Sintonía perfecta: ${state.intervalsActivities.length} actividades leídas de Intervals.icu (con conciliación semanal de días reprogramados).`;
+          state.intervalsAuth.lastSyncSummary = `Sintonía perfecta: ${state.intervalsActivities.length} actividades leídas de Intervals.icu (conciliación 1 a 1 por sesión).`;
         }
         if (!state.planStartDate) {
           const pastMonday = new Date();
@@ -1737,7 +1744,7 @@
             <span class="text-amber-400 mono">${Math.round(a.moving_time/60)}m | ${Math.round(a.average_heartrate||0)}ppm</span>
           </div>
         `).join('');
-        document.getElementById('intervalsAiVerdict').textContent = '¡Listo! Las salidas reales ya están enlazadas a esta semana, incluyendo las que moviste de día dentro de la misma semana.';
+        document.getElementById('intervalsAiVerdict').textContent = '¡Listo! Las salidas reales ya están enlazadas 1 a 1 a esta semana, reconociendo reprogramaciones sin duplicar entrenos no realizados.';
       } catch (err) { alert(err.message); }
       finally { btn.innerHTML = 'Sincronizar Mis Entrenamientos Ahora'; btn.disabled = false; }
     }
@@ -1934,8 +1941,8 @@
       const fuerzaTexto = strengthStatus === 'all'
         ? `Completaste el trabajo de fuerza planificado (${plannedStrengthSlots.length} sesiones), lo que ayuda a estabilizar rodillas, cadera y postura sobre la bici.`
         : (strengthStatus === 'partial'
-          ? `Hiciste fuerza a medias (1 sesión). Sostener al menos un estímulo semanal de fuerza ayuda a que la musculatura no ceda cuando sube la fatiga.`
-          : `No realizaste fortalecimiento esta semana. Ojo con descuidar el core y la musculatura estabilizadora, sobre todo si entrenas en montaña o acumulas horas.`);
+          ? 'Hiciste fuerza a medias (1 sesión). Sostener al menos un estímulo semanal de fuerza ayuda a que la musculatura no ceda cuando sube la fatiga.'
+          : 'No realizaste fortalecimiento esta semana. Ojo con descuidar el core y la musculatura estabilizadora, sobre todo si entrenas en montaña o acumulas horas.');
 
       const descansoTexto = restStatus === 'good'
         ? 'Tu descanso fue sólido, permitiendo asimilar los estímulos.'
@@ -1951,7 +1958,7 @@
       }
       if (rescheduledList.length > 0) {
         const det = rescheduledList.map(x => `${x.planDay} pasado al ${x.log.actualDay || x.log.actDate}`).join(', ');
-        positivos.push(`Flexibilidad inteligente: reprogramaste y ejecutaste dentro de la semana (${det}) sin perder el estímulo.`);
+        positivos.push(`Reprogramación coherente: moviste y completaste dentro de la semana (${det}), cubriendo esa sesión específica sin duplicar días no rodados.`);
       }
       if (avgCAD >= 82 && avgCAD <= 98) {
         positivos.push(`Cadencia media equilibrada (${avgCAD} rpm), favoreciendo fluidez de pedaleo.`);
@@ -1964,7 +1971,7 @@
         negativos.push(strengthStatus === 'none' ? 'Ausencia total de trabajo de fuerza en la semana.' : 'Trabajo de fuerza incompleto.');
       }
       if (missedBikeDays.length > 0) {
-        negativos.push(`Quedaron pendientes o sin registro en Intervals: ${missedBikeDays.join(', ')}.`);
+        negativos.push(`No se completaron ni registraron en Intervals las sesiones de: ${missedBikeDays.join(', ')}.`);
       }
       if (restStatus !== 'good') {
         negativos.push(restStatus === 'exhausted' ? 'Sensación de agotamiento al cerrar la semana.' : 'Fatiga moderada o descanso por debajo de lo ideal.');
@@ -1990,19 +1997,19 @@
       return [
         `INFORME DE COACH — SEMANA ${weekNum} (${getWeekDateRangeStr(weekNum)})`,
         '',
-        `1. CUMPLIMIENTO Y VOLUMEN REAL`,
+        '1. CUMPLIMIENTO Y VOLUMEN REAL',
         `• ${cumplimientoEstado}`,
         `• Tiempo total rodado: ${totalMinutes} min | Carga acumulada (TSS/Load): ${totalLoad} pts | Pulso medio: ${avgHR > 0 ? avgHR + ' ppm' : 'sin dato HR'} | Cadencia media: ${avgCAD > 0 ? avgCAD + ' rpm' : 'sin dato CAD'}.`,
         `• Fuerza: ${fuerzaTexto}`,
         `• Descanso: ${descansoTexto}`,
         '',
-        `2. LO POSITIVO`,
+        '2. LO POSITIVO',
         ...positivos.map(p => `• ${p}`),
         '',
-        `3. PUNTOS A CORREGIR (LO NEGATIVO)`,
+        '3. PUNTOS A CORREGIR (LO NEGATIVO)',
         ...negativos.map(n => `• ${n}`),
         '',
-        `4. CÓMO TRABAJAR Y MEJORAR LA PRÓXIMA SEMANA`,
+        '4. CÓMO TRABAJAR Y MEJORAR LA PRÓXIMA SEMANA',
         `• ${recomendacionCoach}`,
         `• ${obsResumen}`
       ].join('\n');
@@ -2063,13 +2070,14 @@
       const nextCfg = collectCurrentNextWeekFormConfig();
 
       let bikeCount = 0;
+      const plannedBikeCount = state.plan.filter(d => d.type === 'bike').length;
       for (let i = 0; i < state.plan.length; i++) {
         if (state.completedLogs[`W${state.currentWeek}_D${i}`]) bikeCount++;
       }
 
       const detailedReport = buildDetailedWeeklyBalanceReport(state.currentWeek, strengthStatus, restStatus, nextCfg);
 
-      if (restStatus === 'good' && strengthStatus === 'all' && bikeCount >= 3) {
+      if (restStatus === 'good' && strengthStatus === 'all' && bikeCount >= Math.max(1, plannedBikeCount - 1)) {
         state.weeklyProgressionFactor = Math.min(1.30, +(state.weeklyProgressionFactor + 0.05).toFixed(2));
       } else if (restStatus === 'exhausted' || strengthStatus === 'none' || bikeCount <= 1 || nextCfg.healthStatus === 'mild_illness') {
         state.weeklyProgressionFactor = Math.max(0.85, +(state.weeklyProgressionFactor - 0.05).toFixed(2));
@@ -2307,7 +2315,7 @@
       const hasPM = state.bike.hasPM;
       const mainTarget = hasPM ? `${t.wWorkPctText} cadence=${t.cadWorkMin}-${t.cadWorkMax}` : `${t.hrWorkPct} cadence=${t.cadWorkMin}-${t.cadWorkMax}`;
 
-      let txt = `Warmup\n`;
+      let txt = 'Warmup\n';
       txt += `- Calentar (Agua ${w.nutrition.mlEvery15}ml c/15m) ${w.warmMin}m 60% HR cadence=${t.cadWarmMin}-${t.cadWarmMax}\n\n`;
 
       if (w.reps > 1) {
@@ -2315,11 +2323,11 @@
         txt += `- Bloque Z${w.zone} ${w.workMin}m ${mainTarget}\n`;
         txt += `- Recuperar (Comer/Beber) ${w.restMin}m 60% HR cadence=${t.cadRestMin}-${t.cadRestMax}\n\n`;
       } else {
-        txt += `Main set\n`;
+        txt += 'Main set\n';
         txt += `- Bloque Z${w.zone} (Agua ${w.nutrition.mlEvery15}ml c/15m) ${w.workMin}m ${mainTarget}\n\n`;
       }
 
-      txt += `Cooldown\n`;
+      txt += 'Cooldown\n';
       txt += `- Soltar piernas ${w.coolMin}m 55% HR cadence=80-90\n`;
       return txt;
     }
