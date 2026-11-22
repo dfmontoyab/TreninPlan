@@ -13,7 +13,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
-    /* Respaldo visual nativo por si falla el CDN con datos móviles */
     * { box-sizing: border-box; }
     body {
       margin: 0;
@@ -56,7 +55,7 @@
           <div class="flex items-center gap-2">
             <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white">trenin<span class="text-amber-500">_plan</span></h1>
             <span id="saveStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">
-              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.1 Listo
+              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2 Listo
             </span>
           </div>
           <p class="text-[11px] text-stone-400">Coach Pro • <span class="text-amber-400 font-semibold">Pulso</span> • <span class="text-orange-400 font-semibold">FTP</span> • <span class="text-amber-200 font-semibold">Cadencia</span></p>
@@ -64,6 +63,10 @@
       </div>
 
       <div class="flex items-center gap-1.5">
+        <button onclick="openGlossaryModal()" title="Glosario de ciclismo y fisiología" class="px-2.5 py-1.5 rounded-lg bg-stone-800 hover:bg-stone-700 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-book-open"></i>
+          <span class="hidden sm:inline">Glosario</span>
+        </button>
         <button onclick="openIntervalsSyncModal()" class="px-2.5 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-200 text-xs font-bold flex items-center gap-1.5 transition">
           <i class="fa-solid fa-rotate"></i>
           <span>Intervals.icu</span>
@@ -259,7 +262,7 @@
         <div class="flex items-center justify-between border-b border-stone-800 pb-3 mb-4">
           <div>
             <span class="text-xs font-bold uppercase tracking-wider text-amber-500">Paso 3 de 3</span>
-            <h2 class="text-lg sm:text-xl font-bold text-white">Disponibilidad y Objetivo</h2>
+            <h2 class="text-lg sm:text-xl font-bold text-white">Disponibilidad, Objetivo y Enfoque Fisiológico</h2>
           </div>
           <i class="fa-solid fa-clock text-2xl text-amber-500"></i>
         </div>
@@ -300,10 +303,13 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
-            <label class="block text-xs font-semibold text-stone-300 mb-1">Meta Principal</label>
-            <select id="inGoalType" onchange="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white">
+            <label class="block text-xs font-semibold text-stone-300 mb-1">Objetivo Principal a Fortalecer</label>
+            <select id="inGoalType" onchange="renderGoalGuidanceBox(); autoSaveInputs();" class="w-full rounded-xl bg-stone-950 border border-amber-500/50 px-3 py-2 text-sm text-white font-semibold">
+              <option value="vo2max">Subir el VO2 máx (Techo aeróbico)</option>
+              <option value="threshold">Mejorar Umbral / FTP (Ritmo sostenido)</option>
+              <option value="base">Base Aeróbica y Resistencia</option>
+              <option value="climbing">Subir Mejor en Montaña / Escalada</option>
               <option value="granfondo" selected>Gran Fondo / Competencia</option>
-              <option value="climbing">Subir Mejor en Montaña</option>
               <option value="structured">Salud y Orden</option>
             </select>
           </div>
@@ -327,6 +333,8 @@
             </select>
           </div>
         </div>
+
+        <div id="goalGuidanceBox" class="mt-4 p-3.5 rounded-xl bg-stone-900/90 border border-amber-500/30 text-xs text-stone-200 leading-relaxed"></div>
 
         <div class="mt-4">
           <label class="block text-xs font-semibold text-stone-300 mb-1">Clima</label>
@@ -369,6 +377,13 @@
             <i class="fa-solid fa-flag-checkered"></i> Terminar Semana y Ver Balance
           </button>
         </div>
+      </div>
+
+      <div id="weekRulesBanner" class="hidden glass rounded-2xl p-3.5 border border-orange-500/40 bg-orange-950/20 text-xs text-orange-200 space-y-1">
+        <div class="font-extrabold uppercase tracking-wider text-[10px] text-orange-300">
+          <i class="fa-solid fa-sliders mr-1"></i>Ajustes Aplicados en Esta Semana
+        </div>
+        <p id="weekRulesSummaryText" class="text-stone-200"></p>
       </div>
 
       <div id="intervalsAdaptationBanner" class="hidden glass rounded-2xl p-4 border border-amber-500/40 bg-amber-950/20 space-y-1.5">
@@ -424,6 +439,23 @@
     </section>
 
   </main>
+
+  <!-- MODAL GLOSARIO -->
+  <div id="glossaryModal" class="fixed inset-0 z-50 hidden bg-stone-950/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass rounded-2xl max-w-2xl w-full p-5 border border-amber-500/50 space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-stone-800 pb-3">
+        <div>
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-400">Consulta Permanente</span>
+          <h3 class="text-base font-extrabold text-white">Glosario de Entrenamiento y Fisiología</h3>
+        </div>
+        <button onclick="closeGlossaryModal()" class="text-stone-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <div id="glossaryContent" class="space-y-2.5 text-xs text-stone-200 leading-relaxed"></div>
+      <div class="flex justify-end pt-2 border-t border-stone-800">
+        <button onclick="closeGlossaryModal()" class="px-4 py-2 rounded-xl bg-amber-500 text-stone-950 font-extrabold text-xs">Cerrar Glosario</button>
+      </div>
+    </div>
+  </div>
 
   <!-- MODAL INTERVALS -->
   <div id="intervalsSyncModal" class="fixed inset-0 z-50 hidden bg-stone-950/85 backdrop-blur-sm flex items-center justify-center p-4">
@@ -549,9 +581,9 @@
     </div>
   </div>
 
-  <!-- MODAL BALANCE SEMANAL -->
+  <!-- MODAL BALANCE SEMANAL Y OBSERVACIONES GUIADAS -->
   <div id="weeklyReviewModal" class="fixed inset-0 z-50 hidden bg-stone-950/90 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="glass rounded-2xl max-w-xl w-full p-6 border border-amber-500/50 space-y-5 max-h-[92vh] overflow-y-auto">
+    <div class="glass rounded-2xl max-w-2xl w-full p-6 border border-amber-500/50 space-y-5 max-h-[92vh] overflow-y-auto">
       <div class="flex items-center justify-between border-b border-stone-800 pb-3">
         <div>
           <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-400">Cierre de Ciclo Pro</span>
@@ -560,7 +592,7 @@
         <button onclick="closeWeeklyReviewModal()" class="text-stone-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
 
-      <div class="space-y-3">
+      <div class="space-y-4">
         <p class="text-xs text-stone-300" id="wrIntroText">
           Evaluemos cómo cerraste la semana para que el Coach adapte científicamente la siguiente:
         </p>
@@ -568,7 +600,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div class="p-3 rounded-xl bg-stone-900 border border-stone-800">
             <label class="block text-xs font-bold text-purple-300 mb-1">¿Hiciste los entrenamientos de Fuerza?</label>
-            <select id="wrStrengthStatus" class="w-full rounded-lg bg-stone-950 border border-stone-700 px-2.5 py-2 text-xs text-white">
+            <select id="wrStrengthStatus" onchange="refreshWeeklyPreview()" class="w-full rounded-lg bg-stone-950 border border-stone-700 px-2.5 py-2 text-xs text-white">
               <option value="all">Sí, completé ambas sesiones</option>
               <option value="partial">Hice solo una sesión</option>
               <option value="none">No pude hacer fuerza esta semana</option>
@@ -577,7 +609,7 @@
 
           <div class="p-3 rounded-xl bg-stone-900 border border-stone-800">
             <label class="block text-xs font-bold text-orange-300 mb-1">¿Cómo sentiste el descanso global?</label>
-            <select id="wrRestStatus" class="w-full rounded-lg bg-stone-950 border border-stone-700 px-2.5 py-2 text-xs text-white">
+            <select id="wrRestStatus" onchange="refreshWeeklyPreview()" class="w-full rounded-lg bg-stone-950 border border-stone-700 px-2.5 py-2 text-xs text-white">
               <option value="good">Descansé bien y dormí completo</option>
               <option value="tired">Acumulé algo de fatiga o insomnio</option>
               <option value="exhausted">Llegué agotado al fin de semana</option>
@@ -585,9 +617,69 @@
           </div>
         </div>
 
+        <!-- Pregunta guiada para la próxima semana -->
+        <div class="p-4 rounded-xl bg-stone-900/90 border border-amber-500/40 space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <label class="text-xs font-extrabold text-amber-300">
+              ¿Quisieras que tuviera en cuenta algo para programarte la próxima semana?
+            </label>
+            <div class="flex gap-2">
+              <button type="button" id="btnObsNo" onclick="setNextWeekObservationsChoice(false)" class="px-3 py-1 rounded-lg bg-stone-800 text-stone-300 text-xs font-bold border border-stone-700">No</button>
+              <button type="button" id="btnObsYes" onclick="setNextWeekObservationsChoice(true)" class="px-3 py-1 rounded-lg bg-amber-500/20 text-amber-300 text-xs font-extrabold border border-amber-500/50">Sí, ajustar</button>
+            </div>
+          </div>
+
+          <div id="nextWeekObservationsGuide" class="hidden space-y-3 pt-2 border-t border-stone-800">
+            <p class="text-[11px] text-stone-400">
+              Como entrenador, estas variables alteran cómo configuro tu semana: días disponibles, distribución de zonas (p. ej. evitar Zona 3 y enfocar Zona 2 + Zona 4/5 para VO2 máx), tiempo disponible o estado físico. Marca lo que aplique y detállalo:
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <div>
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">Ajuste de días de bici</label>
+                <select id="obsBikeDaysDelta" onchange="refreshWeeklyPreview()" class="w-full rounded-lg bg-stone-950 border border-stone-700 px-2.5 py-1.5 text-xs text-white">
+                  <option value="keep" selected>Mantener días actuales</option>
+                  <option value="plus1">+1 día de entrenamiento extra</option>
+                  <option value="minus1">-1 día de entrenamiento (más recuperación)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">Enfoque / Restricción de Zonas</label>
+                <select id="obsZoneFocus" onchange="refreshWeeklyPreview()" class="w-full rounded-lg bg-stone-950 border border-stone-700 px-2.5 py-1.5 text-xs text-white">
+                  <option value="normal" selected>Progresión normal del plan</option>
+                  <option value="no_z3_vo2">Evitar Zona 3 • Enfocar Zona 2 y Zona 4/5 (VO2 máx)</option>
+                  <option value="base_z2">Priorizar base aeróbica en Zona 2</option>
+                  <option value="low_load">Bajar intensidad / malestar leve o fatiga</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">Tiempo entre semana (min)</label>
+                <input id="obsWeekdayMin" type="number" min="20" max="240" step="5" placeholder="Ej: 60" oninput="refreshWeeklyPreview()" class="w-full rounded-lg bg-stone-950 border border-stone-700 px-2.5 py-1.5 text-xs text-white mono" />
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">Estado físico / Logística</label>
+                <select id="obsHealthStatus" onchange="refreshWeeklyPreview()" class="w-full rounded-lg bg-stone-950 border border-stone-700 px-2.5 py-1.5 text-xs text-white">
+                  <option value="ok" selected>Bien, listo para entrenar</option>
+                  <option value="mild_illness">Algo resfriado / malestar leve (no parar del todo, cuidar pulso)</option>
+                  <option value="sore_legs">Piernas cargadas / molestia muscular</option>
+                  <option value="indoor">Más rodillo / poco tiempo exterior</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-stone-300 mb-1">Escribe con tus palabras qué quieres que tenga en cuenta:</label>
+              <textarea id="obsFreeText" rows="2" oninput="refreshWeeklyPreview()" placeholder="Ej: La próxima semana quisiera un día más, evitar zona 3 y enfocar zona 2 y 4 para mejorar VO2 máx..." class="w-full rounded-lg bg-stone-950 border border-stone-700 p-2.5 text-xs text-white focus:border-amber-500 focus:outline-none"></textarea>
+            </div>
+          </div>
+        </div>
+
         <div class="p-4 rounded-xl bg-amber-950/20 border border-amber-500/40 space-y-2">
           <div class="text-xs font-bold text-amber-200"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Resumen y Adaptación Automática</div>
-          <p class="text-xs text-stone-300" id="wrPreviewAdaptation">
+          <p class="text-xs text-stone-300 whitespace-pre-line" id="wrPreviewAdaptation">
             Calculando balance basado en tus salidas reales de Intervals.icu...
           </p>
         </div>
@@ -596,7 +688,7 @@
       <div class="flex justify-end gap-2 pt-2 border-t border-stone-800">
         <button onclick="closeWeeklyReviewModal()" class="px-4 py-2 rounded-xl bg-stone-800 text-stone-300 text-xs font-bold">Cancelar</button>
         <button onclick="processWeeklyBalanceAndUnlockNext()" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 text-xs font-extrabold shadow-lg">
-          Guardar Balance, Enviar Consejo y Desbloquear Siguiente Semana
+          Guardar Balance, Ver Informe Completo y Pasar de Semana
         </button>
       </div>
     </div>
@@ -667,7 +759,7 @@
   </nav>
 
   <script>
-    const STORAGE_KEY = 'trenin_plan_v41_database';
+    const STORAGE_KEY = 'trenin_plan_v42_database';
 
     const state = {
       hasSavedProfile: false,
@@ -707,6 +799,7 @@
         strengthMode: 'gym',
         climate: 'warm'
       },
+      weekConfigs: {},
       intervalsAuth: {
         athleteId: '',
         apiKey: '',
@@ -726,7 +819,28 @@
       plan: [],
       selectedDayForFeedback: 0,
       selectedDayForIntervalsExport: 0,
-      lastFeedbackReport: ''
+      lastFeedbackReport: '',
+      obsHasAdjustments: false
+    };
+
+    const glossaryItems = [
+      { term: 'Cadencia (rpm)', def: 'Revoluciones por minuto a las que giran las bielas. Pedaleos ágiles (85–100 rpm) suelen descargar presión articular en rutas largas; cadencias bajas (68–75 rpm) trabajan más fuerza muscular en subida si se controlan bien.' },
+      { term: 'FTP (Functional Threshold Power)', def: 'Potencia media máxima en vatios (W) que puedes sostener de forma estable durante aproximadamente una hora. Sirve como ancla para calcular zonas de potencia y carga de entrenamiento.' },
+      { term: 'VO2 máx', def: 'Volumen máximo de oxígeno que tu organismo puede captar, transportar y utilizar durante un esfuerzo intenso. Mejora con intervalos de alta intensidad bien dosificados (por ejemplo, bloques en Z4/Z5 o repeticiones cortas/medias) combinados con base aeróbica y recuperación adecuada.' },
+      { term: 'Umbrales Aeróbico (VT1 / LT1) y Anaeróbico (VT2 / LT2 / FTP)', def: 'El umbral aeróbico marca el paso de un esfuerzo fácil y conversacional (base) a un ritmo más firme sostenido. El umbral anaeróbico marca el límite donde el lactato empieza a acumularse más rápido de lo que el cuerpo logra aclararlo.' },
+      { term: 'Zonas de Entrenamiento (1 a 5)', def: 'Rangos de pulso o potencia para dosificar el estímulo: Z1 recuperación/suave, Z2 base aeróbica, Z3 ritmo medio/tempo, Z4 umbral/fuerte y Z5 esfuerzo aeróbico alto/VO2 máx.' },
+      { term: 'Carga de Entrenamiento (TSS, CTL, ATL y TSB)', def: 'TSS mide el estrés de una sesión según duración e intensidad. CTL ("fitness") refleja la carga crónica acumulada (semanas), ATL ("fatiga") refleja la carga reciente (días), y TSB ("forma") es el balance entre carga crónica y fatiga.' },
+      { term: 'HIIT (High-Intensity Interval Training)', def: 'Alternancia de esfuerzos cortos o medios de alta exigencia con recuperaciones controladas para estimular el sistema cardiovascular, la tolerancia al cambio de ritmo y el VO2 máx sin acumular la fatiga de un esfuerzo continuo máximo.' },
+      { term: 'Entrenamiento Cruzado y Fuerza', def: 'Trabajo de fuerza (piernas, core, estabilidad postural) o disciplinas complementarias que mejoran la eficiencia, protegen tendones y articulaciones y sostienen la postura sobre la bici.' }
+    ];
+
+    const goalGuidanceMap = {
+      vo2max: '<strong>Cómo trabajamos VO2 máx:</strong> Priorizamos estímulos de alta intensidad (repeticiones controladas en Zona 4/5 o intervalos dinámicos) bien separados por días de base en Zona 2 y recuperación real, evitando saturar la Zona 3 intermedia si buscas maximizar el techo aeróbico.',
+      threshold: '<strong>Cómo trabajamos Umbral / FTP:</strong> Combinamos bloques sostenidos cerca del umbral (Zona 4) y ritmo firme con progresiones semanales y semanas de asimilación para elevar tu capacidad de sostener vatios/pulso altos.',
+      base: '<strong>Cómo trabajamos Base Aeróbica:</strong> Damos protagonismo a los rodajes estables en Zona 2 y fondos progresivos para consolidar mitocondrias, eficiencia metabólica y tolerancia al volumen.',
+      climbing: '<strong>Cómo trabajamos Escalada / Montaña:</strong> Integramos control de cadencia en pendientes, repeticiones de subida sostenida y relación esfuerzo-recuperación adaptada a tu terreno.',
+      granfondo: '<strong>Cómo trabajamos Gran Fondo:</strong> Equilibramos fondos aeróbicos largos, nutrición en ruta, fuerza y bloques de ritmo/calidad para llegar con resistencia y solvencia a la distancia objetivo.',
+      structured: '<strong>Cómo trabajamos Salud y Orden:</strong> Buscamos constancia sostenible, buena recuperación, fuerza preventiva y variedad de estímulos sin picos de estrés innecesarios.'
     };
 
     const groupsetsCatalog = {
@@ -767,6 +881,26 @@
       ]
     };
 
+    function openGlossaryModal() {
+      document.getElementById('glossaryContent').innerHTML = glossaryItems.map(item => `
+        <div class="p-3 rounded-xl bg-stone-900/90 border border-stone-800">
+          <div class="font-extrabold text-amber-300 text-xs">${item.term}</div>
+          <p class="text-xs text-stone-200 mt-1">${item.def}</p>
+        </div>
+      `).join('');
+      document.getElementById('glossaryModal').classList.remove('hidden');
+    }
+
+    function closeGlossaryModal() {
+      document.getElementById('glossaryModal').classList.add('hidden');
+    }
+
+    function renderGoalGuidanceBox() {
+      const gType = document.getElementById('inGoalType').value;
+      const box = document.getElementById('goalGuidanceBox');
+      if (box) box.innerHTML = goalGuidanceMap[gType] || goalGuidanceMap.granfondo;
+    }
+
     function updateGroupsetOptions() {
       const typeSel = document.getElementById('inBikeType');
       const groupSel = document.getElementById('inGroupset');
@@ -775,7 +909,7 @@
 
       const bikeType = typeSel.value;
       state.bike.type = bikeType;
-      
+
       if (!bikeType) {
         groupSel.innerHTML = '<option value="" disabled selected>-- Primero selecciona el tipo de bici --</option>';
         return;
@@ -800,6 +934,7 @@
         rider: state.rider,
         bike: state.bike,
         goal: state.goal,
+        weekConfigs: state.weekConfigs,
         intervalsAuth: state.intervalsAuth,
         intervalsActivities: state.intervalsActivities,
         planStartDate: state.planStartDate,
@@ -820,7 +955,7 @@
     function loadStateFromLocal(callback) {
       let loaded = null;
       try {
-        const raw = localStorage.getItem(STORAGE_KEY);
+        const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('trenin_plan_v41_database');
         if (raw) loaded = JSON.parse(raw);
       } catch (e) {}
 
@@ -838,6 +973,7 @@
       if (data.rider) Object.assign(state.rider, data.rider);
       if (data.bike) Object.assign(state.bike, data.bike);
       if (data.goal) Object.assign(state.goal, data.goal);
+      if (data.weekConfigs) state.weekConfigs = data.weekConfigs;
       if (data.intervalsAuth) Object.assign(state.intervalsAuth, data.intervalsAuth);
       if (Array.isArray(data.intervalsActivities)) state.intervalsActivities = data.intervalsActivities;
       if (data.planStartDate) state.planStartDate = data.planStartDate;
@@ -871,6 +1007,7 @@
       document.getElementById('chkCAD').checked = Boolean(state.bike.hasCAD);
 
       document.getElementById('inGoalType').value = state.goal.type || 'granfondo';
+      renderGoalGuidanceBox();
       if (state.goal.eventDate) document.getElementById('inEventDate').value = state.goal.eventDate;
       document.getElementById('inTerrain').value = state.goal.terrain || 'mountain';
       document.getElementById('inWeekdayMin').value = String(state.goal.weekdayMin || 60);
@@ -887,7 +1024,7 @@
       const badge = document.getElementById('saveStatusBadge');
       if (!badge) return;
       badge.innerHTML = '<i class="fa-solid fa-check mr-1"></i>Guardado';
-      setTimeout(() => { badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.1 Listo'; }, 1400);
+      setTimeout(() => { badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2 Listo'; }, 1400);
     }
 
     function autoSaveInputs() {
@@ -992,11 +1129,11 @@
       const ftp = state.rider.ftpCalculated;
 
       state.zones = [
-        { z: 1, name: 'Ritmo 1: Suave', feel: 'Conversación fluida sin fatiga.', color: 'border-stone-500/50 bg-stone-900/70 text-stone-200', hrMin: Math.round(maxHR * 0.55), hrMax: Math.round(maxHR * 0.65), wMin: Math.round(ftp * 0.45), wMax: Math.round(ftp * 0.55), cadMin: 85, cadMax: 95 },
-        { z: 2, name: 'Ritmo 2: Fondo', feel: 'Frases completas. Quema grasa y da base aeróbica.', color: 'border-sky-500/50 bg-sky-950/30 text-sky-200', hrMin: Math.round(maxHR * 0.66), hrMax: Math.round(maxHR * 0.76), wMin: Math.round(ftp * 0.56), wMax: Math.round(ftp * 0.75), cadMin: 85, cadMax: 95 },
-        { z: 3, name: 'Ritmo 3: Paso Firme', feel: 'Frases cortas. Sube a buen ritmo sin reventarte.', color: 'border-emerald-500/50 bg-emerald-950/30 text-emerald-200', hrMin: Math.round(maxHR * 0.77), hrMax: Math.round(maxHR * 0.84), wMin: Math.round(ftp * 0.76), wMax: Math.round(ftp * 0.90), cadMin: 80, cadMax: 90 },
-        { z: 4, name: 'Ritmo 4: Fuerte (FTP)', feel: 'Ardor controlado. Tu umbral funcional de potencia.', color: 'border-amber-500/50 bg-amber-950/30 text-amber-200', hrMin: Math.round(maxHR * 0.85), hrMax: Math.round(maxHR * 0.91), wMin: Math.round(ftp * 0.91), wMax: Math.round(ftp * 1.05), cadMin: 82, cadMax: 95 },
-        { z: 5, name: 'Ritmo 5: VO2máx', feel: 'Esfuerzo máximo (tanque de oxígeno pulmonar).', color: 'border-rose-500/50 bg-rose-950/30 text-rose-200', hrMin: Math.round(maxHR * 0.92), hrMax: Math.round(maxHR * 0.98), wMin: Math.round(ftp * 1.06), wMax: Math.round(ftp * 1.20), cadMin: 90, cadMax: 105 }
+        { z: 1, name: 'Ritmo 1: Suave', feel: 'Conversación fluida sin fatiga.', color: 'border-stone-500/50 bg-stone-900/70 text-stone-200', hrMin: Math.round(maxHR * 0.55), hrMax: Math.round(maxHR * 0.65), wMin: Math.round(ftp * 0.45), wMax: Math.round(ftp * 0.55), cadMin: 85, cadMax: 95, hrPctText: '60% HR', pwrPct: 0.52, pwrPctText: '52% FTP' },
+        { z: 2, name: 'Ritmo 2: Fondo', feel: 'Frases completas. Quema grasa y da base aeróbica.', color: 'border-sky-500/50 bg-sky-950/30 text-sky-200', hrMin: Math.round(maxHR * 0.66), hrMax: Math.round(maxHR * 0.76), wMin: Math.round(ftp * 0.56), wMax: Math.round(ftp * 0.75), cadMin: 85, cadMax: 95, hrPctText: '72% HR', pwrPct: 0.66, pwrPctText: '66% FTP' },
+        { z: 3, name: 'Ritmo 3: Paso Firme', feel: 'Frases cortas. Sube a buen ritmo sin reventarte.', color: 'border-emerald-500/50 bg-emerald-950/30 text-emerald-200', hrMin: Math.round(maxHR * 0.77), hrMax: Math.round(maxHR * 0.84), wMin: Math.round(ftp * 0.76), wMax: Math.round(ftp * 0.90), cadMin: 80, cadMax: 90, hrPctText: '81% HR', pwrPct: 0.83, pwrPctText: '83% FTP' },
+        { z: 4, name: 'Ritmo 4: Fuerte (FTP)', feel: 'Ardor controlado. Tu umbral funcional de potencia.', color: 'border-amber-500/50 bg-amber-950/30 text-amber-200', hrMin: Math.round(maxHR * 0.85), hrMax: Math.round(maxHR * 0.91), wMin: Math.round(ftp * 0.91), wMax: Math.round(ftp * 1.05), cadMin: 82, cadMax: 95, hrPctText: '88% HR', pwrPct: 0.98, pwrPctText: '98% FTP' },
+        { z: 5, name: 'Ritmo 5: VO2máx', feel: 'Esfuerzo máximo (tanque de oxígeno pulmonar).', color: 'border-rose-500/50 bg-rose-950/30 text-rose-200', hrMin: Math.round(maxHR * 0.92), hrMax: Math.round(maxHR * 0.98), wMin: Math.round(ftp * 1.06), wMax: Math.round(ftp * 1.20), cadMin: 90, cadMax: 105, hrPctText: '95% HR', pwrPct: 1.12, pwrPctText: '112% FTP' }
       ];
     }
 
@@ -1005,11 +1142,11 @@
       const climateBonus = state.goal.climate === 'warm' ? 180 : (state.goal.climate === 'temperate' ? 80 : 0);
 
       if (workoutType === 'rest') {
-        return { mlPerHour: 0, mlEvery15: 0, totalMl: Math.round(weight * 35), before: 'Hidratación normal y proteína de calidad.', during: 'Agua moderada.', after: 'Descanso total y buena cena.' };
+        return { mlPerHour: 0, mlEvery15: 0, totalMl: Math.round(weight * 35), carbsPerHour: 0, before: 'Hidratación normal y proteína de calidad.', during: 'Agua moderada.', after: 'Descanso total y buena cena.' };
       }
       if (workoutType === 'strength') {
         const mlH = 500;
-        return { mlPerHour: mlH, mlEvery15: 125, totalMl: Math.round((durationMin/60)*mlH), before: 'Banano o tostada con maní.', during: '125 ml de agua cada 15 min.', after: 'Proteína post-ejercicio para reparar tejido muscular.' };
+        return { mlPerHour: mlH, mlEvery15: 125, totalMl: Math.round((durationMin/60)*mlH), carbsPerHour: 20, before: 'Banano o tostada con maní.', during: '125 ml de agua cada 15 min.', after: 'Proteína post-ejercicio para reparar tejido muscular.' };
       }
 
       const mlPerHour = Math.round(580 + climateBonus + (weight - 70) * 4);
@@ -1022,9 +1159,9 @@
         mlEvery15,
         totalMl,
         carbsPerHour: carbs,
-        before: `1.5 horas antes: Avena o pan con mermelada y café + 350 ml de agua.`,
+        before: '1.5 horas antes: Avena o pan con mermelada y café + 350 ml de agua.',
         during: `Agua: Toma ${mlEvery15} ml cada 15 min (Total: ${totalMl} ml). Alimento: ${carbs}g de carbohidratos/hora (gel, bocadillo o banano cada 40 min).`,
-        after: `Al llegar: 500 ml de agua con sales + carbohidrato con proteína en los primeros 30 minutos.`
+        after: 'Al llegar: 500 ml de agua con sales + carbohidrato con proteína en los primeros 30 minutos.'
       };
     }
 
@@ -1045,6 +1182,17 @@
       return `${start.toLocaleDateString('es-ES', options)} al ${end.toLocaleDateString('es-ES', options)}`;
     }
 
+    function getWeekWindow(weekNum) {
+      const base = state.planStartDate ? new Date(state.planStartDate) : new Date();
+      const start = new Date(base);
+      start.setDate(start.getDate() + (weekNum - 1) * 7);
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(start);
+      end.setDate(end.getDate() + 7);
+      end.setHours(23, 59, 59, 999);
+      return { start, end };
+    }
+
     function calculateAllowedWeekByCalendar() {
       if (!state.planStartDate) return 2;
       const start = new Date(state.planStartDate);
@@ -1054,7 +1202,7 @@
       const diffTime = now - start;
       const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
       const calendarWeek = Math.floor(diffDays / 7) + 1;
-      
+
       const allowed = Math.max(state.maxUnlockedWeek, Math.min(state.totalWeeks, calendarWeek));
       state.maxUnlockedWeek = allowed;
       return allowed;
@@ -1102,86 +1250,181 @@
       return { reps, warmMin: warmMin + Math.floor(leftover / 2), coolMin: coolMin + (leftover - Math.floor(leftover / 2)), workMin, restMin };
     }
 
-    // =========================================================================
-    // MOTOR DE VARIEDAD DE ENTRENAMIENTOS (PIRÁMIDES, ESCALAS, TEMPO, 30/30, 2M)
-    // =========================================================================
+    function parseFreeTextObservations(rawText) {
+      const txt = (rawText || '').toLowerCase();
+      const notes = [];
+      let extraBikeDay = false;
+      let fewerBikeDay = false;
+      let avoidZone3 = false;
+      let focusVo2 = false;
+      let focusZ2 = false;
+      let lowerLoad = false;
+      let customWeekdayMin = null;
+
+      if (/(un d[ií]a m[aá]s|d[ií]a extra|agregar un d[ií]a|sumar un d[ií]a)/.test(txt)) {
+        extraBikeDay = true;
+        notes.push('Añadir un día de entrenamiento adicional');
+      }
+      if (/(un d[ií]a menos|quitar un d[ií]a|menos d[ií]as)/.test(txt)) {
+        fewerBikeDay = true;
+        notes.push('Reducir un día de entrenamiento para recuperar');
+      }
+      if (/(evita.*zona 3|no trabajar en zona 3|sin zona 3|evitar z3|no z3)/.test(txt)) {
+        avoidZone3 = true;
+        notes.push('Evitar bloques en Zona 3');
+      }
+      if (/(vo2|z2 y z4|zona 2 y 4|zona 2 y zona 4|dos y cuatro|2 y 4)/.test(txt)) {
+        focusVo2 = true;
+        notes.push('Priorizar Zona 2 y Zona 4/5 para VO2 máx');
+      }
+      if (/(zona 2|base aer[oó]bica|fondo suave)/.test(txt) && !focusVo2) {
+        focusZ2 = true;
+        notes.push('Énfasis en Zona 2');
+      }
+      if (/(enfermo|resfriado|gripa|malestar|cansado|fatiga|bajar carga|menos tiempo|reducir tiempo)/.test(txt)) {
+        lowerLoad = true;
+        notes.push('Precaución por estado físico/fatiga o ajuste de tiempo');
+      }
+
+      const minMatch = txt.match(/(\d{2,3})\s*(min|minutos)/);
+      if (minMatch) {
+        const val = parseInt(minMatch[1], 10);
+        if (val >= 20 && val <= 240) {
+          customWeekdayMin = val;
+          notes.push(`Ajuste de duración a ~${val} min`);
+        }
+      }
+
+      return { extraBikeDay, fewerBikeDay, avoidZone3, focusVo2, focusZ2, lowerLoad, customWeekdayMin, notes };
+    }
+
     function buildWeekSchedule(weekNum) {
       const z1 = state.zones[0];
       const z2 = state.zones[1];
 
-      const isFtpTestWeek = (weekNum > 1 && (weekNum % 8 === 0 || state.effectiveTrainingWeeksCount >= 8));
+      const wCfg = state.weekConfigs[`W${weekNum}`] || {};
+      const parsedFree = parseFreeTextObservations(wCfg.freeText || '');
+
+      const avoidZ3 = Boolean(wCfg.zoneFocus === 'no_z3_vo2' || parsedFree.avoidZone3);
+      const focusVo2 = Boolean(wCfg.zoneFocus === 'no_z3_vo2' || state.goal.type === 'vo2max' || parsedFree.focusVo2);
+      const focusZ2 = Boolean(wCfg.zoneFocus === 'base_z2' || state.goal.type === 'base' || parsedFree.focusZ2);
+      const softMode = Boolean(wCfg.zoneFocus === 'low_load' || wCfg.healthStatus === 'mild_illness' || wCfg.healthStatus === 'sore_legs' || parsedFree.lowerLoad);
+
+      let weekdayCap = wCfg.customWeekdayMin || parsedFree.customWeekdayMin || state.goal.weekdayMin;
+      let weekendCap = state.goal.weekendMin;
+      if (softMode) {
+        weekdayCap = Math.max(30, Math.round(weekdayCap * 0.8));
+        weekendCap = Math.max(90, Math.round(weekendCap * 0.82));
+      }
+
+      const isFtpTestWeek = !avoidZ3 && !softMode && (weekNum > 1 && (weekNum % 8 === 0 || state.effectiveTrainingWeeksCount >= 8));
       const cycleIndex = (weekNum - 1) % 4;
       const blockNumber = Math.floor((weekNum - 1) / 4);
       const isTaper = (weekNum === state.totalWeeks);
 
       let fitnessMult = state.weeklyProgressionFactor * (1 + (blockNumber * 0.08));
-      if (cycleIndex === 3) fitnessMult *= 0.80;
+      if (cycleIndex === 3 || softMode) fitnessMult *= 0.80;
       if (isTaper) fitnessMult *= 0.65;
 
-      const weekdayCap = state.goal.weekdayMin;
-      const weekendCap = state.goal.weekendMin;
       const isGym = state.goal.strengthMode === 'gym';
       const dateRangeStr = getWeekDateRangeStr(weekNum);
       const isMtb = state.bike.type === 'mtb';
 
-      state.currentWeekTheme = isTaper
-        ? { badge: `SEMANA ${weekNum} (${dateRangeStr}): AFINACIÓN`, desc: 'Descarga de piernas para llegar fresco a tu objetivo.' }
+      let phaseLabel = isTaper
+        ? `SEMANA ${weekNum} (${dateRangeStr}): AFINACIÓN`
         : (isFtpTestWeek
-          ? { badge: `SEMANA ${weekNum} (${dateRangeStr}): TEST DE FTP`, desc: 'Evaluación de tu umbral funcional para recalcular zonas.' }
+          ? `SEMANA ${weekNum} (${dateRangeStr}): TEST DE FTP`
           : [
-              { badge: `SEMANA ${weekNum} (${dateRangeStr}): TEMPO Y CHISPA`, desc: 'Ritmo sostenido en Z3 y repeticiones HIIT 30/30.' },
-              { badge: `SEMANA ${weekNum} (${dateRangeStr}): ESCALAS Y SUBIDAS 2M`, desc: 'Progresión escalonada y repeticiones de 2 min a tope sostenible.' },
-              { badge: `SEMANA ${weekNum} (${dateRangeStr}): PIRÁMIDE Y UMBRAL`, desc: 'Bloques piramidales y ritmo firme sostenido.' },
-              { badge: `SEMANA ${weekNum} (${dateRangeStr}): DESCARGA`, desc: 'Recuperación activa y asimilación de cargas.' }
+              `SEMANA ${weekNum} (${dateRangeStr}): TEMPO Y CHISPA`,
+              `SEMANA ${weekNum} (${dateRangeStr}): ESCALAS Y SUBIDAS 2M`,
+              `SEMANA ${weekNum} (${dateRangeStr}): PIRÁMIDE Y UMBRAL`,
+              `SEMANA ${weekNum} (${dateRangeStr}): DESCARGA`
             ][cycleIndex]);
 
-      // Martes: varía entre HIIT 30/30, Subidas de 2 min, Pirámide o Escala
+      let phaseDesc = isTaper
+        ? 'Descarga de piernas para llegar fresco a tu objetivo.'
+        : (isFtpTestWeek
+          ? 'Evaluación de tu umbral funcional para recalcular zonas.'
+          : [
+              'Ritmo sostenido y repeticiones HIIT para ganar chispa.',
+              'Progresión escalonada y esfuerzos de alta exigencia.',
+              'Bloques estructurados con control de esfuerzo y recuperación.',
+              'Recuperación activa y asimilación de cargas.'
+            ][cycleIndex]);
+
+      if (focusVo2 && !softMode) {
+        phaseLabel = `SEMANA ${weekNum} (${dateRangeStr}): ENFOQUE VO2 MÁX (Z2 + Z4/Z5)`;
+        phaseDesc = avoidZ3
+          ? 'Configurada sin Zona 3: base limpia en Zona 2 e intervalos de alta intensidad en Zona 4/5 para elevar el VO2 máx.'
+          : 'Prioridad en estímulos de VO2 máx (Zona 4/5) respaldados por base aeróbica en Zona 2.';
+      } else if (softMode) {
+        phaseLabel = `SEMANA ${weekNum} (${dateRangeStr}): ADAPTACIÓN PRUDENTE`;
+        phaseDesc = 'Volumen e intensidad moderados para cuidar la salud, evitar picos excesivos y mantener la continuidad.';
+      }
+
+      state.currentWeekTheme = { badge: phaseLabel, desc: phaseDesc };
+
       let tueConfig;
-      if (isFtpTestWeek) {
+      if (softMode) {
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 12, 10, 5, 4, 2);
         tueConfig = {
-          title: `Test de FTP de 20 Minutos`,
+          title: 'Activación Controlada en Zona 2',
+          subtitle: `Semana ${weekNum} • Ritmo cómodo sin forzar`,
+          zone: 2, ...fit,
+          cadWorkMin: 86, cadWorkMax: 96,
+          details: 'Mantén el pulso controlado y la respiración cómoda; si hay malestar, prioriza sensaciones suaves.'
+        };
+      } else if (isFtpTestWeek) {
+        tueConfig = {
+          title: 'Test de FTP de 20 Minutos',
           subtitle: `Semana ${weekNum} • Evaluación de umbral`,
           zone: 4, warmMin: 15, reps: 1, workMin: 20, restMin: 0, coolMin: 15,
           cadWorkMin: 90, cadWorkMax: 100,
           details: '15m suave · 3m fuerte + 3m suave · 20m a tope constante · 15m enfriar.'
         };
+      } else if (focusVo2) {
+        const repsV = weekdayCap >= 75 ? 5 : 4;
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 15, 10, 3, 3, repsV);
+        tueConfig = {
+          title: `VO2 máx: ${fit.reps} × ${fit.workMin}m en Z4/Z5`,
+          subtitle: `Semana ${weekNum} • Potencia aeróbica máxima`,
+          zone: 5, ...fit,
+          cadWorkMin: 92, cadWorkMax: 105,
+          details: `15m progresivos en Z2 · ${fit.reps} bloques de ${fit.workMin}m exigentes (Z4 alta/Z5) con ${fit.restMin}m suaves para bajar pulso · 10m enfriar.`
+        };
       } else if (isMtb && cycleIndex === 1) {
-        // 5 subidas de 2 min a tope sostenible (sendero o ascenso controlado de ~2 min)
         const fit = fitIntervalsToAvailableTime(weekdayCap, 15, 10, 2, 3, 5);
         tueConfig = {
-          title: `5 Subidas de 2 Min a Tope Sostenible`,
+          title: '5 Subidas de 2 Min a Tope Sostenible',
           subtitle: `Semana ${weekNum} • Montaña / Sendero ancho sin obstáculos`,
           zone: 5, ...fit,
           cadWorkMin: 78, cadWorkMax: 88,
           details: '15m suave para calentar · 5 subidas de 2m a tope sostenible (baja despacio entre cada una para recuperar) · 10m suave para soltar.'
         };
       } else if (cycleIndex === 0) {
-        // HIIT 30/30: 15m suave · 5 x (30s a tope + 30s suave) · enfriar (escalado al tiempo disponible)
         const hiitReps = weekdayCap <= 35 ? 5 : (weekdayCap <= 60 ? 8 : 10);
-        const hiitBlockMin = Math.max(5, Math.round((hiitReps * 1) / 1));
+        const hiitBlockMin = Math.max(5, hiitReps);
         const fit = fitIntervalsToAvailableTime(weekdayCap, 15, 8, hiitBlockMin, 2, 1);
         tueConfig = {
           title: `HIIT 30/30 (${hiitReps} × 30s a tope + 30s suave)`,
           subtitle: `Semana ${weekNum} • Gana chispa por sensaciones`,
           zone: 5, ...fit,
           cadWorkMin: 95, cadWorkMax: 110,
-          details: `15m suave · ${hiitReps} x (30s a tope por sensaciones, el pulso no llega a subir del todo + 30s suave) · enfriar. Ganas chispa y agilidad.`
+          details: `15m suave · ${hiitReps} x (30s a tope por sensaciones + 30s suave) · enfriar. Ganas chispa y agilidad.`
         };
       } else if (cycleIndex === 1) {
-        // Escala ascendente: ej. 3m + 5m + 7m en Z3/Z4 con descansos
         const fit = fitIntervalsToAvailableTime(weekdayCap, 12, 8, 6, 3, 3);
         tueConfig = {
-          title: `Escala de Ritmo (Escalonado 3m → 5m → 7m)`,
+          title: 'Escala de Ritmo (Escalonado 3m → 5m → 7m)',
           subtitle: `Semana ${weekNum} • Intensidad creciente escalonada`,
           zone: 4, ...fit,
           cadWorkMin: 84, cadWorkMax: 94,
-          details: 'Calentamiento · Escala progresiva subiendo exigencia en cada escalón (recuperando suave entre tramos) · enfriar.'
+          details: 'Calentamiento · Escala progresiva subiendo exigencia en cada escalón · enfriar.'
         };
       } else if (cycleIndex === 2) {
-        // Pirámide: sube y baja la duración/esfuerzo
         const fit = fitIntervalsToAvailableTime(weekdayCap, 12, 8, 5, 3, 4);
         tueConfig = {
-          title: `Pirámide de Esfuerzo (2m - 4m - 6m - 4m - 2m)`,
+          title: 'Pirámide de Esfuerzo (2m - 4m - 6m - 4m - 2m)',
           subtitle: `Semana ${weekNum} • Pirámide con recuperación intermedia`,
           zone: 4, ...fit,
           cadWorkMin: 86, cadWorkMax: 96,
@@ -1190,17 +1433,34 @@
       } else {
         const fit = fitIntervalsToAvailableTime(weekdayCap, 12, 10, 4, 4, 3);
         tueConfig = {
-          title: `Activación Suave y Soltura`,
+          title: 'Activación Suave y Soltura',
           subtitle: `Semana ${weekNum} (Descarga)`,
-          zone: 3, ...fit,
+          zone: 2, ...fit,
           cadWorkMin: 90, cadWorkMax: 98,
           details: 'Recuperación activa sin sobrecarga.'
         };
       }
 
-      // Jueves: Z3 Tempo (ej. 15m suave · 2 o 3 x (10m Z3 + 5m suave) · enfriar) o variante de 45m/1h10
       let thuConfig;
-      if (cycleIndex === 0) {
+      if (softMode || focusZ2) {
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 10, Math.max(20, weekdayCap - 24), 4, 1);
+        thuConfig = {
+          title: 'Rodaje Aeróbico Base en Zona 2',
+          subtitle: `Semana ${weekNum} • Eficiencia y control`,
+          zone: 2, ...fit,
+          cadWorkMin: 88, cadWorkMax: 96,
+          details: 'Pedaleo continuo y fluido en Zona 2, manteniendo conversación cómoda.'
+        };
+      } else if (avoidZ3 && focusVo2) {
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 15, 10, 4, 3, 4);
+        thuConfig = {
+          title: `Bloques Fuertes en Zona 4 (${fit.reps} × ${fit.workMin}m)`,
+          subtitle: `Semana ${weekNum} • Umbral / VO2 sin Zona 3`,
+          zone: 4, ...fit,
+          cadWorkMin: 88, cadWorkMax: 98,
+          details: `Calienta bien en Z2, haz ${fit.reps} repeticiones firmes en Z4 con ${fit.restMin}m suaves en Z1/Z2, evitando rodar prolongadamente en Z3.`
+        };
+      } else if (cycleIndex === 0) {
         const repsT = weekdayCap <= 45 ? 2 : (weekdayCap >= 70 ? 3 : 2);
         const workT = weekdayCap <= 45 ? 5 : (weekdayCap >= 70 ? 10 : 8);
         const restT = weekdayCap >= 70 ? 5 : 4;
@@ -1215,7 +1475,7 @@
       } else if (cycleIndex === 1) {
         const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 8, 8, 4, 3);
         thuConfig = {
-          title: `Torque en Subida (68-75 rpm)`,
+          title: 'Torque en Subida (68-75 rpm)',
           subtitle: `Semana ${weekNum} • Fuerza muscular en cadencia baja`,
           zone: 3, ...fit,
           cadWorkMin: 68, cadWorkMax: 75,
@@ -1235,7 +1495,7 @@
       } else {
         const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 10, 8, 4, 2);
         thuConfig = {
-          title: `Rodaje Redondo de Descarga`,
+          title: 'Rodaje Redondo de Descarga',
           subtitle: `Semana ${weekNum} (Descarga)`,
           zone: 2, ...fit,
           cadWorkMin: 88, cadWorkMax: 96,
@@ -1243,19 +1503,60 @@
         };
       }
 
-      const satTarget = Math.min(weekendCap, Math.max(weekdayCap, Math.round(weekendCap * (cycleIndex === 3 ? 0.45 : 0.58))));
-      const sunScale = cycleIndex === 0 ? 0.88 : (cycleIndex === 1 ? 0.95 : (cycleIndex === 2 ? 1.0 : 0.72));
-      const sunTarget = Math.max(75, Math.min(weekendCap, Math.round(weekendCap * sunScale)));
+      const satTarget = Math.min(weekendCap, Math.max(weekdayCap, Math.round(weekendCap * (cycleIndex === 3 || softMode ? 0.45 : 0.58))));
+      const sunScale = softMode ? 0.65 : (cycleIndex === 0 ? 0.88 : (cycleIndex === 1 ? 0.95 : (cycleIndex === 2 ? 1.0 : 0.72)));
+      const sunTarget = Math.max(60, Math.min(weekendCap, Math.round(weekendCap * sunScale)));
       const sunWorkEach = Math.max(20, Math.floor((sunTarget - 30) / 2));
+      const sunZone = (cycleIndex === 2 && !avoidZ3 && !softMode) ? 3 : 2;
+
+      const wantExtraDay = Boolean(wCfg.bikeDaysDelta === 'plus1' || parsedFree.extraBikeDay);
+      const wantFewerDay = Boolean(wCfg.bikeDaysDelta === 'minus1' || parsedFree.fewerBikeDay);
+
+      const fridayCard = wantExtraDay
+        ? {
+            day: 'Viernes', shortDay: 'VIE', jsDay: 5, type: 'bike',
+            title: focusVo2 ? 'Rodaje Base Z2 + 4 × 30s Cadencia Viva' : 'Rodaje Aeróbico Adicional en Zona 2',
+            subtitle: `Semana ${weekNum} • Día extra solicitado`,
+            zone: 2, warmMin: 10, workMin: Math.max(25, weekdayCap - 20), restMin: 0, coolMin: 10, reps: 1,
+            cadWorkMin: 90, cadWorkMax: 100, cadWarmMin: 85, cadWarmMax: 95, cadRestMin: 85, cadRestMax: 95,
+            details: 'Sesión añadida a tu pedido para sumar volumen aeróbico sin quemar piernas antes del fin de semana.'
+          }
+        : {
+            day: 'Viernes', shortDay: 'VIE', jsDay: 5, type: 'strength',
+            title: 'Fortalecimiento: Espalda y Brazos',
+            subtitle: 'Postura y estabilidad',
+            durationMin: 45, zone: 1,
+            exercises: ['Remo con banda/mancuerna: 3x12', 'Flexiones: 3x12', 'Bird-dog: 3x12'],
+            nutrition: buildNutritionProtocol(45, 1, 'strength')
+          };
+
+      const saturdayCard = wantFewerDay
+        ? {
+            day: 'Sábado', shortDay: 'SÁB', jsDay: 6, type: 'rest',
+            title: 'Descanso / Recuperación Activa',
+            subtitle: 'Día extra de descarga',
+            durationMin: 0, zone: 1,
+            details: 'Descanso programado según tu ajuste semanal para llegar fresco.',
+            nutrition: buildNutritionProtocol(0, 1, 'rest')
+          }
+        : {
+            day: 'Sábado', shortDay: 'SÁB', jsDay: 6, type: 'bike',
+            title: 'Rodaje Aeróbico Ágil',
+            subtitle: 'Cadencia fluida',
+            zone: 2, warmMin: 10, workMin: Math.max(20, satTarget - 20), restMin: 0, coolMin: 10, reps: 1,
+            cadWorkMin: 88, cadWorkMax: 96, cadWarmMin: 85, cadWarmMax: 92, cadRestMin: 85, cadRestMax: 90,
+            details: 'Pedaleo rápido y constante en Z2.',
+            nutrition: buildNutritionProtocol(satTarget, 2, 'bike')
+          };
 
       state.plan = [
         { day: 'Lunes', shortDay: 'LUN', jsDay: 1, type: 'rest', title: 'Descanso Total', subtitle: 'Asimilación y recuperación', durationMin: 0, zone: 1, details: 'Día libre de cargas.', nutrition: buildNutritionProtocol(0, 1, 'rest') },
         { day: 'Martes', shortDay: 'MAR', jsDay: 2, type: 'bike', ...tueConfig, cadWarmMin: 85, cadWarmMax: 95, cadRestMin: 80, cadRestMax: 90 },
         { day: 'Miércoles', shortDay: 'MIÉ', jsDay: 3, type: 'strength', title: 'Fortalecimiento: Piernas y Core', subtitle: isGym ? 'Gimnasio / Pesas' : 'En Casa', durationMin: 45, zone: 2, exercises: ['Sentadilla búlgara: 4x10', 'Peso muerto: 3x12', 'Plancha: 3x45s'], nutrition: buildNutritionProtocol(45, 2, 'strength') },
         { day: 'Jueves', shortDay: 'JUE', jsDay: 4, type: 'bike', ...thuConfig, cadWarmMin: 85, cadWarmMax: 95, cadRestMin: 85, cadRestMax: 95 },
-        { day: 'Viernes', shortDay: 'VIE', jsDay: 5, type: 'strength', title: 'Fortalecimiento: Espalda y Brazos', subtitle: 'Postura y estabilidad', durationMin: 45, zone: 1, exercises: ['Remo con banda/mancuerna: 3x12', 'Flexiones: 3x12', 'Bird-dog: 3x12'], nutrition: buildNutritionProtocol(45, 1, 'strength') },
-        { day: 'Sábado', shortDay: 'SÁB', jsDay: 6, type: 'bike', title: 'Rodaje Aeróbico Ágil', subtitle: 'Cadencia fluida', zone: 2, warmMin: 10, workMin: satTarget - 20, restMin: 0, coolMin: 10, reps: 1, cadWorkMin: 88, cadWorkMax: 96, cadWarmMin: 85, cadWarmMax: 92, cadRestMin: 85, cadRestMax: 90, details: 'Pedaleo rápido y constante en Z2.', nutrition: buildNutritionProtocol(satTarget, 2, 'bike') },
-        { day: 'Domingo', shortDay: 'DOM', jsDay: 0, type: 'bike', title: 'Salida Larga de Fondo', subtitle: 'Resistencia aeróbica', zone: cycleIndex === 2 ? 3 : 2, warmMin: 15, workMin: sunWorkEach, restMin: 10, coolMin: 15, reps: 2, cadWorkMin: 82, cadWorkMax: 92, cadWarmMin: 85, cadWarmMax: 95, cadRestMin: 80, cadRestMax: 90, details: 'Fondo de fin de semana con hidratación constante.', nutrition: buildNutritionProtocol(sunTarget, cycleIndex === 2 ? 3 : 2, 'bike') }
+        fridayCard,
+        saturdayCard,
+        { day: 'Domingo', shortDay: 'DOM', jsDay: 0, type: 'bike', title: 'Salida Larga de Fondo', subtitle: 'Resistencia aeróbica', zone: sunZone, warmMin: 15, workMin: sunWorkEach, restMin: 10, coolMin: 15, reps: 2, cadWorkMin: 82, cadWorkMax: 92, cadWarmMin: 85, cadWarmMax: 95, cadRestMin: 80, cadRestMax: 90, details: 'Fondo de fin de semana con hidratación constante.', nutrition: buildNutritionProtocol(sunTarget, sunZone, 'bike') }
       ];
 
       const ftp = state.rider.ftpCalculated;
@@ -1273,45 +1574,92 @@
           item.nutrition = buildNutritionProtocol(item.durationMin, item.zone, 'bike');
         }
       });
+
       matchIntervalsActivitiesToCurrentWeek();
     }
 
+    // Conciliación flexible por semana: reconoce salidas reprogramadas dentro de la misma semana
     function matchIntervalsActivitiesToCurrentWeek() {
       if (!state.intervalsActivities || state.intervalsActivities.length === 0) return;
 
-      const planStartDate = state.planStartDate ? new Date(state.planStartDate) : new Date();
-      const weekStart = new Date(planStartDate);
-      weekStart.setDate(weekStart.getDate() + (state.currentWeek - 1) * 7);
-      weekStart.setHours(0,0,0,0);
-      const weekEnd = new Date(weekStart);
-      weekEnd.setDate(weekEnd.getDate() + 7);
-      weekEnd.setHours(23,59,59,999);
+      const { start: weekStart, end: weekEnd } = getWeekWindow(state.currentWeek);
 
-      state.plan.forEach((dayItem, idx) => {
-        if (dayItem.type !== 'bike') return;
-        const logKey = `W${state.currentWeek}_D${idx}`;
-
-        const matchingAct = state.intervalsActivities.find(act => {
-          if (!act || !act.start_date_local || act.moving_time < 300) return false;
+      const weekActivities = state.intervalsActivities
+        .filter(act => {
+          if (!act || !act.start_date_local || (act.moving_time || 0) < 300) return false;
           const actDate = new Date(act.start_date_local);
-          return actDate >= weekStart && actDate <= weekEnd && actDate.getDay() === dayItem.jsDay;
-        });
+          return actDate >= weekStart && actDate <= weekEnd;
+        })
+        .sort((a, b) => new Date(a.start_date_local) - new Date(b.start_date_local));
 
-        if (matchingAct) {
-          state.completedLogs[logKey] = {
+      const bikeIndices = state.plan
+        .map((d, idx) => ({ d, idx }))
+        .filter(x => x.d.type === 'bike');
+
+      bikeIndices.forEach(({ idx }) => {
+        delete state.completedLogs[`W${state.currentWeek}_D${idx}`];
+      });
+
+      const usedActIds = new Set();
+
+      // 1. Primero emparejar coincidencias exactas por día de la semana dentro de la semana
+      bikeIndices.forEach(({ d, idx }) => {
+        const exact = weekActivities.find(act => {
+          const key = act.id || act.start_date_local;
+          if (usedActIds.has(key)) return false;
+          return new Date(act.start_date_local).getDay() === d.jsDay;
+        });
+        if (exact) {
+          usedActIds.add(exact.id || exact.start_date_local);
+          state.completedLogs[`W${state.currentWeek}_D${idx}`] = {
             status: 'full',
             source: 'intervals',
-            actName: matchingAct.name || `Salida ${dayItem.day}`,
-            actDate: (matchingAct.start_date_local || '').split('T')[0],
-            durationMin: Math.round((matchingAct.moving_time || 0) / 60),
-            realHR: matchingAct.average_heartrate ? Math.round(matchingAct.average_heartrate) : 0,
-            maxHR: matchingAct.max_heartrate ? Math.round(matchingAct.max_heartrate) : 0,
-            realCAD: matchingAct.average_cadence ? Math.round(matchingAct.average_cadence) : 0,
-            load: matchingAct.icu_training_load ? Math.round(matchingAct.icu_training_load) : 0
+            rescheduled: false,
+            scheduledDay: d.day,
+            actName: exact.name || `Salida ${d.day}`,
+            actDate: (exact.start_date_local || '').split('T')[0],
+            durationMin: Math.round((exact.moving_time || 0) / 60),
+            realHR: exact.average_heartrate ? Math.round(exact.average_heartrate) : 0,
+            maxHR: exact.max_heartrate ? Math.round(exact.max_heartrate) : 0,
+            realCAD: exact.average_cadence ? Math.round(exact.average_cadence) : 0,
+            load: exact.icu_training_load ? Math.round(exact.icu_training_load) : 0
           };
-        } else {
-          delete state.completedLogs[logKey];
         }
+      });
+
+      // 2. Para sesiones de bici aún pendientes en la semana, asignar salidas realizadas otro día de la misma semana
+      bikeIndices.forEach(({ d, idx }) => {
+        const logKey = `W${state.currentWeek}_D${idx}`;
+        if (state.completedLogs[logKey]) return;
+
+        const remaining = weekActivities.filter(act => !usedActIds.has(act.id || act.start_date_local));
+        if (remaining.length === 0) return;
+
+        remaining.sort((a, b) => {
+          const diffA = Math.abs(Math.round((a.moving_time || 0) / 60) - d.durationMin);
+          const diffB = Math.abs(Math.round((b.moving_time || 0) / 60) - d.durationMin);
+          return diffA - diffB;
+        });
+
+        const picked = remaining[0];
+        usedActIds.add(picked.id || picked.start_date_local);
+        const realDateObj = new Date(picked.start_date_local);
+        const realDayName = state.plan.find(p => p.jsDay === realDateObj.getDay())?.day || realDateObj.toLocaleDateString('es-ES', { weekday: 'long' });
+
+        state.completedLogs[logKey] = {
+          status: 'full',
+          source: 'intervals',
+          rescheduled: true,
+          scheduledDay: d.day,
+          actualDay: realDayName,
+          actName: picked.name || `Salida reprogramada (${realDayName})`,
+          actDate: (picked.start_date_local || '').split('T')[0],
+          durationMin: Math.round((picked.moving_time || 0) / 60),
+          realHR: picked.average_heartrate ? Math.round(picked.average_heartrate) : 0,
+          maxHR: picked.max_heartrate ? Math.round(picked.max_heartrate) : 0,
+          realCAD: picked.average_cadence ? Math.round(picked.average_cadence) : 0,
+          load: picked.icu_training_load ? Math.round(picked.icu_training_load) : 0
+        };
       });
     }
 
@@ -1351,7 +1699,7 @@
             document.getElementById('inMaxHR').value = maxH;
           }
           state.intervalsAuth.lastSyncDate = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
-          state.intervalsAuth.lastSyncSummary = `Sintonía perfecta: ${state.intervalsActivities.length} actividades leídas de Intervals.icu.`;
+          state.intervalsAuth.lastSyncSummary = `Sintonía perfecta: ${state.intervalsActivities.length} actividades leídas de Intervals.icu (con conciliación semanal de días reprogramados).`;
         }
         if (!state.planStartDate) {
           const pastMonday = new Date();
@@ -1389,7 +1737,7 @@
             <span class="text-amber-400 mono">${Math.round(a.moving_time/60)}m | ${Math.round(a.average_heartrate||0)}ppm</span>
           </div>
         `).join('');
-        document.getElementById('intervalsAiVerdict').textContent = '¡Listo! Las salidas reales ya están enlazadas estrictamente al calendario de esta semana.';
+        document.getElementById('intervalsAiVerdict').textContent = '¡Listo! Las salidas reales ya están enlazadas a esta semana, incluyendo las que moviste de día dentro de la misma semana.';
       } catch (err) { alert(err.message); }
       finally { btn.innerHTML = 'Sincronizar Mis Entrenamientos Ahora'; btn.disabled = false; }
     }
@@ -1403,6 +1751,24 @@
       document.getElementById('planHeaderTitle').textContent = `Plan de ${state.rider.name || 'Ciclista'} — Semana ${state.currentWeek} de ${state.totalWeeks}`;
       document.getElementById('planSubSummary').textContent = `Límites: FC Máx ${state.rider.maxHR} ppm • FTP ref: ${state.rider.ftpCalculated} W`;
       document.getElementById('zonesRefMeta').textContent = `FC Máx ${state.rider.maxHR} ppm`;
+
+      const wCfg = state.weekConfigs[`W${state.currentWeek}`];
+      const rulesBanner = document.getElementById('weekRulesBanner');
+      if (wCfg && (wCfg.hasAdjustments || wCfg.freeText)) {
+        const parts = [];
+        if (wCfg.bikeDaysDelta === 'plus1') parts.push('+1 día de bici');
+        if (wCfg.bikeDaysDelta === 'minus1') parts.push('-1 día de bici');
+        if (wCfg.zoneFocus === 'no_z3_vo2') parts.push('sin Zona 3 / enfoque Z2 + Z4-Z5 (VO2 máx)');
+        if (wCfg.zoneFocus === 'base_z2') parts.push('prioridad Zona 2');
+        if (wCfg.zoneFocus === 'low_load') parts.push('carga prudente');
+        if (wCfg.customWeekdayMin) parts.push(`entre semana ~${wCfg.customWeekdayMin} min`);
+        if (wCfg.healthStatus && wCfg.healthStatus !== 'ok') parts.push(`estado: ${wCfg.healthStatus}`);
+        if (wCfg.freeText) parts.push(`"${wCfg.freeText}"`);
+        rulesBanner.classList.remove('hidden');
+        document.getElementById('weekRulesSummaryText').textContent = parts.join(' • ');
+      } else {
+        rulesBanner.classList.add('hidden');
+      }
 
       const adaptBanner = document.getElementById('intervalsAdaptationBanner');
       if (state.intervalsAuth.lastSyncSummary) {
@@ -1447,8 +1813,13 @@
         }
 
         const t = d.targets;
-        const structureText = d.reps > 1 ? `Calentamiento ${d.warmMin}m + <strong>${d.reps} × ${d.workMin}m</strong> (Rec. ${d.restMin}m) + Enfriamiento ${d.coolMin}m` : `Calentamiento ${d.warmMin}m + <strong>${d.workMin}m continuos</strong> + Enfriamiento ${d.coolMin}m`;
-        const syncedStrip = savedLog && savedLog.source === 'intervals' ? `<div class="p-2.5 rounded-xl bg-amber-950/40 border border-amber-500/50 text-xs text-amber-300 font-bold">✔ Sincronizado Intervals: ${savedLog.durationMin} min | Pulso: ${savedLog.realHR} ppm</div>` : '';
+        const structureText = d.reps > 1
+          ? `Calentamiento ${d.warmMin}m + <strong>${d.reps} × ${d.workMin}m</strong> (Rec. ${d.restMin}m) + Enfriamiento ${d.coolMin}m`
+          : `Calentamiento ${d.warmMin}m + <strong>${d.workMin}m continuos</strong> + Enfriamiento ${d.coolMin}m`;
+
+        const syncedStrip = savedLog && savedLog.source === 'intervals'
+          ? `<div class="p-2.5 rounded-xl bg-amber-950/40 border border-amber-500/50 text-xs text-amber-300 font-bold">✔ Sincronizado Intervals (${savedLog.rescheduled ? `hecho el ${savedLog.actualDay} • ` : ''}${savedLog.actDate}): ${savedLog.durationMin} min | Pulso: ${savedLog.realHR} ppm</div>`
+          : '';
 
         return `
           <div class="glass rounded-2xl p-4 border ${savedLog ? 'border-amber-400 ring-1 ring-amber-400/40' : 'border-emerald-500/35'} space-y-3">
@@ -1466,7 +1837,7 @@
             <div class="p-2.5 rounded-xl bg-stone-950/80 border border-stone-800 text-[11px] text-stone-300 space-y-0.5">
               <div><strong class="text-amber-300">Hidratación/Comida:</strong> ${d.nutrition.during}</div>
             </div>
-            
+
             <div class="pt-2 border-t border-stone-800 space-y-2">
               <div class="grid grid-cols-3 gap-1.5">
                 <button onclick="openIntervalsExport(${idx})" class="py-2 px-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-stone-950 font-extrabold text-[11px] flex items-center justify-center gap-1">
@@ -1502,19 +1873,183 @@
       `).join('');
     }
 
+    function setNextWeekObservationsChoice(hasAdjustments) {
+      state.obsHasAdjustments = Boolean(hasAdjustments);
+      const guide = document.getElementById('nextWeekObservationsGuide');
+      const btnYes = document.getElementById('btnObsYes');
+      const btnNo = document.getElementById('btnObsNo');
+
+      if (state.obsHasAdjustments) {
+        guide.classList.remove('hidden');
+        btnYes.className = 'px-3 py-1 rounded-lg bg-amber-500 text-stone-950 text-xs font-extrabold border border-amber-400';
+        btnNo.className = 'px-3 py-1 rounded-lg bg-stone-800 text-stone-300 text-xs font-bold border border-stone-700';
+      } else {
+        guide.classList.add('hidden');
+        btnNo.className = 'px-3 py-1 rounded-lg bg-amber-500 text-stone-950 text-xs font-extrabold border border-amber-400';
+        btnYes.className = 'px-3 py-1 rounded-lg bg-stone-800 text-stone-300 text-xs font-bold border border-stone-700';
+      }
+      refreshWeeklyPreview();
+    }
+
+    function buildDetailedWeeklyBalanceReport(weekNum, strengthStatus, restStatus, nextWeekCfg) {
+      const plannedBikeSlots = state.plan.filter(d => d.type === 'bike');
+      const plannedStrengthSlots = state.plan.filter(d => d.type === 'strength');
+
+      const completedBikeEntries = [];
+      const missedBikeDays = [];
+      let totalMinutes = 0;
+      let totalLoad = 0;
+      let hrSum = 0, hrCount = 0;
+      let cadSum = 0, cadCount = 0;
+
+      state.plan.forEach((d, idx) => {
+        if (d.type !== 'bike') return;
+        const log = state.completedLogs[`W${weekNum}_D${idx}`];
+        if (log) {
+          completedBikeEntries.push({ planDay: d, log });
+          totalMinutes += (log.durationMin || 0);
+          totalLoad += (log.load || Math.round((log.durationMin || 0) * 0.7));
+          if (log.realHR > 0) { hrSum += log.realHR; hrCount++; }
+          if (log.realCAD > 0) { cadSum += log.realCAD; cadCount++; }
+        } else {
+          missedBikeDays.push(d.day);
+        }
+      });
+
+      const plannedBikeCount = plannedBikeSlots.length;
+      const doneBikeCount = completedBikeEntries.length;
+      const avgHR = hrCount > 0 ? Math.round(hrSum / hrCount) : 0;
+      const avgCAD = cadCount > 0 ? Math.round(cadSum / cadCount) : 0;
+      const rescheduledList = completedBikeEntries.filter(x => x.log.rescheduled);
+
+      let cumplimientoEstado = '';
+      if (doneBikeCount === plannedBikeCount && plannedBikeCount > 0) {
+        cumplimientoEstado = `Cumplimiento total en bici (${doneBikeCount} de ${plannedBikeCount} sesiones completadas).`;
+      } else if (doneBikeCount > 0) {
+        cumplimientoEstado = `Cumplimiento parcial en bici (${doneBikeCount} de ${plannedBikeCount} sesiones completadas).`;
+      } else {
+        cumplimientoEstado = `Sin sesiones de bici registradas en Intervals.icu para esta semana (0 de ${plannedBikeCount}).`;
+      }
+
+      const fuerzaTexto = strengthStatus === 'all'
+        ? `Completaste el trabajo de fuerza planificado (${plannedStrengthSlots.length} sesiones), lo que ayuda a estabilizar rodillas, cadera y postura sobre la bici.`
+        : (strengthStatus === 'partial'
+          ? `Hiciste fuerza a medias (1 sesión). Sostener al menos un estímulo semanal de fuerza ayuda a que la musculatura no ceda cuando sube la fatiga.`
+          : `No realizaste fortalecimiento esta semana. Ojo con descuidar el core y la musculatura estabilizadora, sobre todo si entrenas en montaña o acumulas horas.`);
+
+      const descansoTexto = restStatus === 'good'
+        ? 'Tu descanso fue sólido, permitiendo asimilar los estímulos.'
+        : (restStatus === 'tired'
+          ? 'Reportaste fatiga moderada o sueño irregular; conviene vigilar que no se convierta en arrastre crónico.'
+          : 'Llegaste agotado al cierre de semana; es una señal clara de regular carga, dormir mejor y proteger la recuperación.');
+
+      const positivos = [];
+      const negativos = [];
+
+      if (doneBikeCount >= Math.max(1, plannedBikeCount - 1)) {
+        positivos.push(`Buena adherencia general en bicicleta (${doneBikeCount}/${plannedBikeCount}), sumando ${totalMinutes} min reales y ${totalLoad} de carga acumulada.`);
+      }
+      if (rescheduledList.length > 0) {
+        const det = rescheduledList.map(x => `${x.planDay} pasado al ${x.log.actualDay || x.log.actDate}`).join(', ');
+        positivos.push(`Flexibilidad inteligente: reprogramaste y ejecutaste dentro de la semana (${det}) sin perder el estímulo.`);
+      }
+      if (avgCAD >= 82 && avgCAD <= 98) {
+        positivos.push(`Cadencia media equilibrada (${avgCAD} rpm), favoreciendo fluidez de pedaleo.`);
+      } else if (avgCAD > 0 && avgCAD < 82) {
+        negativos.push(`Cadencia media algo baja (${avgCAD} rpm), lo que puede elevar el desgaste muscular y articular si se sostiene en esfuerzos largos.`);
+      }
+      if (strengthStatus === 'all') {
+        positivos.push('Cumplimiento íntegro del fortalecimiento complementario.');
+      } else {
+        negativos.push(strengthStatus === 'none' ? 'Ausencia total de trabajo de fuerza en la semana.' : 'Trabajo de fuerza incompleto.');
+      }
+      if (missedBikeDays.length > 0) {
+        negativos.push(`Quedaron pendientes o sin registro en Intervals: ${missedBikeDays.join(', ')}.`);
+      }
+      if (restStatus !== 'good') {
+        negativos.push(restStatus === 'exhausted' ? 'Sensación de agotamiento al cerrar la semana.' : 'Fatiga moderada o descanso por debajo de lo ideal.');
+      }
+      if (positivos.length === 0) {
+        positivos.push('Aun con una semana atípica o corta, registrar y revisar el balance te permite ajustar con criterio.');
+      }
+
+      let recomendacionCoach = '';
+      if (restStatus === 'exhausted' || doneBikeCount === 0) {
+        recomendacionCoach = 'Prioridad absoluta esta semana: baja el estrés acumulado, cuida sueño e hidratación, y entra progresivamente en las sesiones de calidad sin perseguir números forzados.';
+      } else if (state.goal.type === 'vo2max') {
+        recomendacionCoach = 'Para seguir subiendo tu VO2 máx, mantén los rodajes suaves realmente fáciles (sin quemar cartuchos en zonas intermedias) y ejecuta los bloques intensos con buena recuperación entre series.';
+      } else {
+        recomendacionCoach = 'Mantén el orden entre días exigentes y días suaves, revisa tus pulsaciones y cadencia tras cada salida en Intervals.icu y respeta las pausas de asimilación.';
+      }
+
+      let obsResumen = 'Sin ajustes adicionales solicitados para la siguiente semana.';
+      if (nextWeekCfg && (nextWeekCfg.hasAdjustments || nextWeekCfg.freeText)) {
+        obsResumen = `Ajustes tomados para la Semana ${weekNum + 1}: ${nextWeekCfg.freeText ? `"${nextWeekCfg.freeText}"` : 'parámetros guiados configurados.'}`;
+      }
+
+      return [
+        `INFORME DE COACH — SEMANA ${weekNum} (${getWeekDateRangeStr(weekNum)})`,
+        '',
+        `1. CUMPLIMIENTO Y VOLUMEN REAL`,
+        `• ${cumplimientoEstado}`,
+        `• Tiempo total rodado: ${totalMinutes} min | Carga acumulada (TSS/Load): ${totalLoad} pts | Pulso medio: ${avgHR > 0 ? avgHR + ' ppm' : 'sin dato HR'} | Cadencia media: ${avgCAD > 0 ? avgCAD + ' rpm' : 'sin dato CAD'}.`,
+        `• Fuerza: ${fuerzaTexto}`,
+        `• Descanso: ${descansoTexto}`,
+        '',
+        `2. LO POSITIVO`,
+        ...positivos.map(p => `• ${p}`),
+        '',
+        `3. PUNTOS A CORREGIR (LO NEGATIVO)`,
+        ...negativos.map(n => `• ${n}`),
+        '',
+        `4. CÓMO TRABAJAR Y MEJORAR LA PRÓXIMA SEMANA`,
+        `• ${recomendacionCoach}`,
+        `• ${obsResumen}`
+      ].join('\n');
+    }
+
+    function collectCurrentNextWeekFormConfig() {
+      if (!state.obsHasAdjustments) {
+        return { hasAdjustments: false, bikeDaysDelta: 'keep', zoneFocus: 'normal', customWeekdayMin: null, healthStatus: 'ok', freeText: '' };
+      }
+      const rawMin = parseInt(document.getElementById('obsWeekdayMin').value, 10);
+      return {
+        hasAdjustments: true,
+        bikeDaysDelta: document.getElementById('obsBikeDaysDelta').value,
+        zoneFocus: document.getElementById('obsZoneFocus').value,
+        customWeekdayMin: (!isNaN(rawMin) && rawMin >= 20 && rawMin <= 240) ? rawMin : null,
+        healthStatus: document.getElementById('obsHealthStatus').value,
+        freeText: (document.getElementById('obsFreeText').value || '').trim()
+      };
+    }
+
+    function refreshWeeklyPreview() {
+      const strengthStatus = document.getElementById('wrStrengthStatus').value;
+      const restStatus = document.getElementById('wrRestStatus').value;
+      const nextCfg = collectCurrentNextWeekFormConfig();
+      const preview = buildDetailedWeeklyBalanceReport(state.currentWeek, strengthStatus, restStatus, nextCfg);
+      document.getElementById('wrPreviewAdaptation').textContent = preview;
+    }
+
     function openWeeklyReviewModal() {
       let bikeCount = 0;
-      for (let i = 0; i < 7; i++) {
+      const plannedBikeCount = state.plan.filter(d => d.type === 'bike').length;
+      for (let i = 0; i < state.plan.length; i++) {
         if (state.completedLogs[`W${state.currentWeek}_D${i}`]) bikeCount++;
       }
 
       const dateRangeStr = getWeekDateRangeStr(state.currentWeek);
       document.getElementById('wrIntroText').innerHTML =
-        `Has completado la <strong>Semana ${state.currentWeek} (${dateRangeStr})</strong>. El sistema detectó <strong>${bikeCount} sesiones de bici sincronizadas</strong> en esta semana exacta. Completa el balance:`;
+        `Cierre de la <strong>Semana ${state.currentWeek} (${dateRangeStr})</strong>. Sesiones de bici completadas/conciliadas en esta semana: <strong>${bikeCount} de ${plannedBikeCount}</strong>.`;
 
-      document.getElementById('wrPreviewAdaptation').textContent =
-        `Al guardar este balance, el Coach evaluará tu consistencia y descanso para escalar o regular la exigencia de la Semana ${state.currentWeek + 1}.`;
+      setNextWeekObservationsChoice(false);
+      document.getElementById('obsFreeText').value = '';
+      document.getElementById('obsWeekdayMin').value = '';
+      document.getElementById('obsBikeDaysDelta').value = 'keep';
+      document.getElementById('obsZoneFocus').value = 'normal';
+      document.getElementById('obsHealthStatus').value = 'ok';
 
+      refreshWeeklyPreview();
       document.getElementById('weeklyReviewModal').classList.remove('hidden');
     }
 
@@ -1525,50 +2060,44 @@
     function processWeeklyBalanceAndUnlockNext() {
       const strengthStatus = document.getElementById('wrStrengthStatus').value;
       const restStatus = document.getElementById('wrRestStatus').value;
+      const nextCfg = collectCurrentNextWeekFormConfig();
 
       let bikeCount = 0;
-      let totalLoadSum = 0;
-      for (let i = 0; i < 7; i++) {
-        const log = state.completedLogs[`W${state.currentWeek}_D${i}`];
-        if (log) {
-          bikeCount++;
-          totalLoadSum += (log.load || 50);
-        }
+      for (let i = 0; i < state.plan.length; i++) {
+        if (state.completedLogs[`W${state.currentWeek}_D${i}`]) bikeCount++;
       }
 
-      let weekVerdict = `BALANCE TOTAL DE LA SEMANA ${state.currentWeek} (${getWeekDateRangeStr(state.currentWeek)}):\n`;
-      weekVerdict += `• Salidas de bicicleta completadas: ${bikeCount} de 4 programadas.\n`;
-      weekVerdict += `• Carga total de estrés acumulado: ${totalLoadSum} puntos TSS.\n`;
-      weekVerdict += `• Cumplimiento de fuerza: ${strengthStatus === 'all' ? 'Óptimo (ambas sesiones)' : (strengthStatus === 'partial' ? 'Parcial' : 'Incompleto')}.\n`;
-      weekVerdict += `• Calidad de descanso: ${restStatus === 'good' ? 'Excelente' : (restStatus === 'tired' ? 'Fatiga moderada' : 'Agotado')}.\n\n`;
+      const detailedReport = buildDetailedWeeklyBalanceReport(state.currentWeek, strengthStatus, restStatus, nextCfg);
 
       if (restStatus === 'good' && strengthStatus === 'all' && bikeCount >= 3) {
-        weekVerdict += `VEREDICTO PROFESIONAL: ¡Excelente semana! Tu motor aeróbico asimiló los estímulos sin sobrecarga. Para el próximo ciclo, el Nivel Adaptativo subirá ligeramente para seguir forjando progreso.`;
         state.weeklyProgressionFactor = Math.min(1.30, +(state.weeklyProgressionFactor + 0.05).toFixed(2));
-      } else if (restStatus === 'exhausted' || strengthStatus === 'none' || bikeCount <= 1) {
-        weekVerdict += `VEREDICTO PROFESIONAL: Semana de alta fatiga o baja adherencia. Para evitar el sobreentrenamiento y proteger tus articulaciones, la siguiente semana ajustará el volumen a la baja y priorizará la asimilación.`;
+      } else if (restStatus === 'exhausted' || strengthStatus === 'none' || bikeCount <= 1 || nextCfg.healthStatus === 'mild_illness') {
         state.weeklyProgressionFactor = Math.max(0.85, +(state.weeklyProgressionFactor - 0.05).toFixed(2));
       } else {
-        weekVerdict += `VEREDICTO PROFESIONAL: Semana estable. Mantuviste el bloque de entrenamiento dentro de parámetros saludables. Continuaremos con la progresión planificada.`;
         state.weeklyProgressionFactor = Math.min(1.25, +(state.weeklyProgressionFactor + 0.02).toFixed(2));
       }
 
-      state.weeklySummaries[`W${state.currentWeek}`] = weekVerdict;
+      state.weeklySummaries[`W${state.currentWeek}`] = detailedReport;
       state.effectiveTrainingWeeksCount++;
 
+      const finishedWeekNum = state.currentWeek;
       if (state.currentWeek < state.totalWeeks) {
         state.currentWeek += 1;
         state.maxUnlockedWeek = Math.max(state.maxUnlockedWeek, state.currentWeek);
+        if (nextCfg.hasAdjustments || nextCfg.freeText) {
+          state.weekConfigs[`W${state.currentWeek}`] = nextCfg;
+        }
       }
 
       closeWeeklyReviewModal();
+      readInputsAndComputeMetrics();
       populateWeekSelector();
       buildWeekSchedule(state.currentWeek);
       renderPlanUI();
       renderSyncUI();
       saveStateToLocal();
 
-      alert(`✅ ¡Balance de la Semana ${state.currentWeek - 1} procesado!\n\n${weekVerdict}\n\nLa Semana ${state.currentWeek} ya está desbloqueada y adaptada.`);
+      alert(`✅ ¡Balance de la Semana ${finishedWeekNum} guardado!\n\n${detailedReport}\n\nLa Semana ${state.currentWeek} ya está activa y configurada.`);
     }
 
     async function openSmartAdviceModal(dayIdx) {
@@ -1595,54 +2124,32 @@
         await syncAllFromIntervalsQuietly(false);
       }
 
-      let realData = state.completedLogs[logKey];
-      if ((!realData || realData.source !== 'intervals') && state.intervalsActivities.length > 0) {
-        const planStartDate = state.planStartDate ? new Date(state.planStartDate) : new Date();
-        const weekStart = new Date(planStartDate);
-        weekStart.setDate(weekStart.getDate() + (state.currentWeek - 1) * 7);
-        const weekEnd = new Date(weekStart);
-        weekEnd.setDate(weekEnd.getDate() + 7);
-
-        const matching = state.intervalsActivities.find(act => {
-          const actDate = new Date(act.start_date_local);
-          return actDate >= weekStart && actDate < weekEnd && actDate.getDay() === w.jsDay;
-        });
-
-        if (matching) {
-          realData = {
-            status: 'full',
-            source: 'intervals',
-            actName: matching.name || `Salida ${w.day}`,
-            actDate: (matching.start_date_local || '').split('T')[0],
-            durationMin: Math.round((matching.moving_time || 0) / 60),
-            realHR: matching.average_heartrate ? Math.round(matching.average_heartrate) : 0,
-            maxHR: matching.max_heartrate ? Math.round(matching.max_heartrate) : 0,
-            realCAD: matching.average_cadence ? Math.round(matching.average_cadence) : 0,
-            load: matching.icu_training_load ? Math.round(matching.icu_training_load) : 0
-          };
-        }
-      }
+      const realData = state.completedLogs[logKey];
 
       if (!realData) {
-        alert(`Aún no hay entrenamientos sincronizados desde Intervals.icu para el ${w.day} de la Semana ${state.currentWeek}.\n\nAsegúrate de haber subido la salida y toca "Sincronizar Intervals" arriba.`);
+        alert(`Aún no hay entrenamientos sincronizados desde Intervals.icu para el ${w.day} de la Semana ${state.currentWeek}.\n\nAsegúrate de haber subido la salida y toca "Intervals.icu" arriba.`);
         return;
       }
 
       document.getElementById('fbAutoStatsCard').classList.remove('hidden');
-      document.getElementById('fbActivityName').textContent = realData.actName;
+      document.getElementById('fbActivityName').textContent = realData.actName + (realData.rescheduled ? ` (reprogramado desde ${realData.scheduledDay})` : '');
       document.getElementById('fbActivityDate').textContent = realData.actDate;
       document.getElementById('fbStatDuration').textContent = `${realData.durationMin} min`;
       document.getElementById('fbStatHR').textContent = `${realData.realHR || '--'} ppm`;
       document.getElementById('fbStatCAD').textContent = `${realData.realCAD || '--'} rpm`;
 
       const t = w.targets;
-      let analysisLines = [];
+      const analysisLines = [];
+
+      if (realData.rescheduled) {
+        analysisLines.push(`• **Reprogramación en el Microciclo:** Esta sesión correspondía originalmente al **${realData.scheduledDay}** y la completaste el **${realData.actualDay || realData.actDate}**. Se contabiliza como cumplida dentro de la semana sin penalizar tu conteo semanal.`);
+      }
 
       const loadVal = realData.load || Math.round(realData.durationMin * 0.7);
       analysisLines.push(`• **Fatiga y Carga de Entrenamiento (Training Load):** Hoy acumulaste **${loadVal} puntos de estrés**. Es el volumen de fatiga que le inyectaste a tu organismo. Controlar esto evita que llegues fundido al fin de semana.`);
 
       if (w.zone >= 4) {
-        analysisLines.push(`• **Evaluación de Pulso y FTP (Umbral):** Tu objetivo era mantener el pulso entre **${t.hrWorkMin} y ${t.hrWorkMax} ppm** en los bloques fuertes. Tu promedio real fue de **${realData.realHR} ppm**.\n  ${realData.realHR <= t.hrWorkMax ? '¡Excelente ejecución! Te mantuviste dentro de la ventana de umbral sin disparar el ácido láctico prematuramente.' : 'Te pasaste del techo de pulso objetivo. Esto indica que la intensidad fue más alta de lo planeado (por calor o terreno); mañana regula más el esfuerzo.'}`);
+        analysisLines.push(`• **Evaluación de Pulso y FTP (Umbral):** Tu objetivo era mantener el pulso entre **${t.hrWorkMin} y ${t.hrWorkMax} ppm** en los bloques fuertes. Tu promedio real fue de **${realData.realHR} ppm**.\n  ${realData.realHR <= t.hrWorkMax ? '¡Excelente ejecución! Te mantuviste dentro de la ventana de umbral sin disparar el ácido láctico prematuramente.' : 'Te pasaste del techo de pulso objetivo. Esto indica que la intensidad fue más alta de lo planeado (por calor o terreno); en la próxima regula más el esfuerzo.'}`);
       } else {
         analysisLines.push(`• **Control Aeróbico (Zona ${w.zone}):** Buscábamos un fondo controlado (${t.hrWorkMin}-${t.hrWorkMax} ppm). Tu promedio real fue de **${realData.realHR} ppm**. ${realData.realHR <= t.hrWorkMax ? 'Lograste mantener el motor en modo aeróbico puro, ideal para la oxidación de grasas y base.' : 'El pulso se elevó por encima de la zona aeróbica; cuida no acelerar el paso en los repechos.'}`);
       }
@@ -1657,7 +2164,7 @@
 
       analysisLines.push(`• **Protocolo Nutricional:** Para esta sesión debías consumir **${w.nutrition.totalMl} ml** de líquido y **${w.nutrition.carbsPerHour}g** de carbohidratos por hora.`);
 
-      let nextAdvice = `• **Para mañana (${nextDay.day}):** Tienes "${nextDay.title}". Sigue las pautas de recuperación y pedalea con control.`;
+      const nextAdvice = `• **Para el siguiente día (${nextDay.day}):** Tienes "${nextDay.title}". Sigue las pautas de recuperación y pedalea con control.`;
 
       const report = `Hola ${state.rider.name || 'Ciclista'}, análisis profesional detallado de tu salida:\n\n` + analysisLines.join('\n\n') + `\n\n` + nextAdvice;
       state.lastFeedbackReport = report;
@@ -1673,7 +2180,7 @@
       state.completedLogs[`W${state.currentWeek}_D${idx}`] = { status: 'full', rpe, source: 'strength' };
       saveStateToLocal();
 
-      const report = `Hola ${state.rider.name || 'Ciclista'}, resumen de tu sesión de fuerza (${w.day}):\n\n• Cansancio muscular reportado: ${rpe}/10.\n• Estos ejercicios protegen tus rodillas y tu zona lumbar en los fondos largos.\n• Mañana en "${nextDay.title}" arranca suave para soltar los músculos.`;
+      const report = `Hola ${state.rider.name || 'Ciclista'}, resumen de tu sesión de fuerza (${w.day}):\n\n• Cansancio muscular reportado: ${rpe}/10.\n• Estos ejercicios protegen tus rodillas y tu zona lumbar en los fondos largos.\n• En "${nextDay.title}" arranca suave para soltar los músculos.`;
       state.lastFeedbackReport = report;
       document.getElementById('fbDiagnosisText').textContent = report;
     }
@@ -1700,7 +2207,6 @@
       return crc;
     }
 
-    // .FIT con recordatorios en el nombre del paso
     function downloadBinaryFIT(dayIdx) {
       const w = state.plan[dayIdx];
       const t = w.targets;
@@ -1725,7 +2231,7 @@
         });
         if (w.reps > 1 && r < loops - 1) {
           steps.push({
-            name: `Rec Come/Beber`,
+            name: 'Rec Come/Beber',
             durSec: w.restMin * 60,
             hrLow: t.hrRestMin + 100, hrHigh: t.hrRestMax + 100,
             wLow: t.wRestMin + 1000, wHigh: t.wRestMax + 1000
@@ -1734,7 +2240,7 @@
       }
 
       steps.push({
-        name: `Enfriar`,
+        name: 'Enfriar',
         durSec: w.coolMin * 60,
         hrLow: t.hrRestMin + 100, hrHigh: t.hrRestMax + 100,
         wLow: t.wRestMin + 1000, wHigh: t.wRestMax + 1000
@@ -1795,7 +2301,6 @@
       a.download = `trenin_S${state.currentWeek}_${w.shortDay}.zwo`; a.click();
     }
 
-    // Sintaxis válida para Intervals.icu sin líneas TEXTEVENT sueltas que rompan bloques
     function buildIntervalsWorkoutSyntax(dayIdx) {
       const w = state.plan[dayIdx];
       const t = w.targets;
@@ -1862,7 +2367,7 @@
     function closeBackupModal() { document.getElementById('backupModal').classList.add('hidden'); }
     function exportProfileBackup() {
       const blob = new Blob([localStorage.getItem(STORAGE_KEY)], { type: 'application/json' });
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `trenin_plan_Backup.json`; a.click();
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'trenin_plan_Backup.json'; a.click();
     }
     function importProfileBackup(ev) {
       const file = ev.target.files[0];
@@ -1905,6 +2410,7 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       document.getElementById('inEventDate').value = new Date(Date.now() + 56*86400000).toISOString().split('T')[0];
+      renderGoalGuidanceBox();
       loadStateFromLocal((hadData) => {
         readInputsAndComputeMetrics();
         if (!state.planStartDate) {
