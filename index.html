@@ -55,7 +55,7 @@
           <div class="flex items-center gap-2">
             <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white">trenin<span class="text-amber-500">_plan</span></h1>
             <span id="saveStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">
-              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.1 Listo
+              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.2 Listo
             </span>
           </div>
           <p class="text-[11px] text-stone-400">Coach Pro • <span class="text-amber-400 font-semibold">Pulso</span> • <span class="text-orange-400 font-semibold">FTP</span> • <span class="text-amber-200 font-semibold">Cadencia</span></p>
@@ -759,7 +759,7 @@
   </nav>
 
   <script>
-    const STORAGE_KEY = 'trenin_plan_v421_database';
+    const STORAGE_KEY = 'trenin_plan_v422_database';
 
     const state = {
       hasSavedProfile: false,
@@ -956,6 +956,7 @@
       let loaded = null;
       try {
         const raw = localStorage.getItem(STORAGE_KEY)
+          || localStorage.getItem('trenin_plan_v421_database')
           || localStorage.getItem('trenin_plan_v42_database')
           || localStorage.getItem('trenin_plan_v41_database');
         if (raw) loaded = JSON.parse(raw);
@@ -1026,7 +1027,7 @@
       const badge = document.getElementById('saveStatusBadge');
       if (!badge) return;
       badge.innerHTML = '<i class="fa-solid fa-check mr-1"></i>Guardado';
-      setTimeout(() => { badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.1 Listo'; }, 1400);
+      setTimeout(() => { badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.2 Listo'; }, 1400);
     }
 
     function autoSaveInputs() {
@@ -1585,7 +1586,23 @@
       return `dt_${act.start_date_local || ''}_${act.moving_time || 0}_${act.name || ''}`;
     }
 
-    // Conciliación estricta 1 a 1 por semana: cada actividad real solo cubre una sesión planificada
+    function isNextDayAfterPlan(planJsDay, actDateObj) {
+      const nextJsDay = (planJsDay + 1) % 7;
+      return actDateObj.getDay() === nextJsDay;
+    }
+
+    function isDurationCompatibleWithSession(actMin, plannedMin) {
+      if (!plannedMin || plannedMin <= 0) return true;
+      const ratio = actMin / plannedMin;
+      const diffMin = Math.abs(actMin - plannedMin);
+      // Evita que un entreno corto (~60 min) cubra una tirada larga de >120 min (ej. domingo)
+      if (plannedMin >= 110 && actMin < plannedMin * 0.65) return false;
+      return diffMin <= 45 || (ratio >= 0.65 && ratio <= 1.45);
+    }
+
+    // Conciliación estricta:
+    // 1) Coincidencia exacta por día de la semana dentro de la semana activa (1 a 1)
+    // 2) Solo permite cubrir una sesión faltante si la actividad ocurrió exactamente 1 día después (+1 día) y su duración es compatible
     function matchIntervalsActivitiesToCurrentWeek() {
       if (!state.intervalsActivities || state.intervalsActivities.length === 0) return;
 
@@ -1609,7 +1626,7 @@
 
       const usedActKeys = new Set();
 
-      // 1. Asignar primero las actividades que caen exactamente en el día planificado (1 actividad -> 1 sesión)
+      // Paso 1: Asignar primero salidas en su día exacto
       bikeIndices.forEach(({ d, idx }) => {
         const exact = weekActivities.find(act => {
           const key = getActivityUniqueKey(act);
@@ -1634,21 +1651,28 @@
         }
       });
 
-      // 2. Solo con las actividades NO usadas todavía en esta semana, cubrir sesiones faltantes (ej. jueves hecho el viernes)
+      // Paso 2: Solo con salidas no usadas, cubrir una sesión faltante si fue hecha exactamente al día siguiente (+1 día) y coincide en duración
       bikeIndices.forEach(({ d, idx }) => {
         const logKey = `W${state.currentWeek}_D${idx}`;
         if (state.completedLogs[logKey]) return;
 
-        const remaining = weekActivities.filter(act => !usedActKeys.has(getActivityUniqueKey(act)));
-        if (remaining.length === 0) return;
+        const candidates = weekActivities.filter(act => {
+          const key = getActivityUniqueKey(act);
+          if (usedActKeys.has(key)) return false;
+          const actDateObj = new Date(act.start_date_local);
+          const actMin = Math.round((act.moving_time || 0) / 60);
+          return isNextDayAfterPlan(d.jsDay, actDateObj) && isDurationCompatibleWithSession(actMin, d.durationMin);
+        });
 
-        remaining.sort((a, b) => {
+        if (candidates.length === 0) return;
+
+        candidates.sort((a, b) => {
           const diffA = Math.abs(Math.round((a.moving_time || 0) / 60) - d.durationMin);
           const diffB = Math.abs(Math.round((b.moving_time || 0) / 60) - d.durationMin);
           return diffA - diffB;
         });
 
-        const picked = remaining[0];
+        const picked = candidates[0];
         usedActKeys.add(getActivityUniqueKey(picked));
         const realDateObj = new Date(picked.start_date_local);
         const realDayName = state.plan.find(p => p.jsDay === realDateObj.getDay())?.day || realDateObj.toLocaleDateString('es-ES', { weekday: 'long' });
@@ -1706,7 +1730,7 @@
             document.getElementById('inMaxHR').value = maxH;
           }
           state.intervalsAuth.lastSyncDate = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
-          state.intervalsAuth.lastSyncSummary = `Sintonía perfecta: ${state.intervalsActivities.length} actividades leídas de Intervals.icu (conciliación 1 a 1 por sesión).`;
+          state.intervalsAuth.lastSyncSummary = `Sintonía activa: ${state.intervalsActivities.length} actividades de Intervals.icu conciliadas (regla 1 a 1 y máximo +1 día compatible).`;
         }
         if (!state.planStartDate) {
           const pastMonday = new Date();
@@ -1744,7 +1768,7 @@
             <span class="text-amber-400 mono">${Math.round(a.moving_time/60)}m | ${Math.round(a.average_heartrate||0)}ppm</span>
           </div>
         `).join('');
-        document.getElementById('intervalsAiVerdict').textContent = '¡Listo! Las salidas reales ya están enlazadas 1 a 1 a esta semana, reconociendo reprogramaciones sin duplicar entrenos no realizados.';
+        document.getElementById('intervalsAiVerdict').textContent = '¡Listo! Cada salida cubre como máximo una sesión: solo se permite moverla 1 día después si coincide en duración, sin cubrir días no rodados.';
       } catch (err) { alert(err.message); }
       finally { btn.innerHTML = 'Sincronizar Mis Entrenamientos Ahora'; btn.disabled = false; }
     }
@@ -1958,7 +1982,7 @@
       }
       if (rescheduledList.length > 0) {
         const det = rescheduledList.map(x => `${x.planDay} pasado al ${x.log.actualDay || x.log.actDate}`).join(', ');
-        positivos.push(`Reprogramación coherente: moviste y completaste dentro de la semana (${det}), cubriendo esa sesión específica sin duplicar días no rodados.`);
+        positivos.push(`Reprogramación coherente: moviste y completaste al día siguiente (${det}), cubriendo esa sesión específica sin duplicar días no rodados.`);
       }
       if (avgCAD >= 82 && avgCAD <= 98) {
         positivos.push(`Cadencia media equilibrada (${avgCAD} rpm), favoreciendo fluidez de pedaleo.`);
@@ -2150,7 +2174,7 @@
       const analysisLines = [];
 
       if (realData.rescheduled) {
-        analysisLines.push(`• **Reprogramación en el Microciclo:** Esta sesión correspondía originalmente al **${realData.scheduledDay}** y la completaste el **${realData.actualDay || realData.actDate}**. Se contabiliza como cumplida dentro de la semana sin penalizar tu conteo semanal.`);
+        analysisLines.push(`• **Reprogramación en el Microciclo:** Esta sesión correspondía originalmente al **${realData.scheduledDay}** y la completaste al día siguiente (**${realData.actualDay || realData.actDate}**). Se contabiliza como cumplida dentro de la semana sin duplicar días no rodados.`);
       }
 
       const loadVal = realData.load || Math.round(realData.durationMin * 0.7);
