@@ -55,7 +55,7 @@
           <div class="flex items-center gap-2">
             <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white">trenin<span class="text-amber-500">_plan</span></h1>
             <span id="saveStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">
-              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.2 Listo
+              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.3 Listo
             </span>
           </div>
           <p class="text-[11px] text-stone-400">Coach Pro • <span class="text-amber-400 font-semibold">Pulso</span> • <span class="text-orange-400 font-semibold">FTP</span> • <span class="text-amber-200 font-semibold">Cadencia</span></p>
@@ -269,7 +269,7 @@
 
         <div class="p-4 rounded-2xl bg-amber-950/20 border border-amber-500/40 mb-5">
           <h3 class="text-xs font-extrabold uppercase tracking-wider text-amber-300 mb-3">Tiempo Libre para Entrenar</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
               <label class="block text-xs font-bold text-white mb-1">Entre Semana (Mar a Vie)</label>
               <select id="inWeekdayMin" onchange="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-amber-500/50 px-3 py-2.5 text-sm text-amber-300 font-bold">
@@ -282,12 +282,29 @@
               </select>
             </div>
             <div>
-              <label class="block text-xs font-bold text-white mb-1">Fondo de Fin de Semana</label>
-              <select id="inWeekendMin" onchange="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-amber-500/50 px-3 py-2.5 text-sm text-amber-300 font-bold">
+              <label class="block text-xs font-bold text-white mb-1">Tiempo del Sábado</label>
+              <select id="inSaturdayMin" onchange="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-amber-500/50 px-3 py-2.5 text-sm text-amber-300 font-bold">
+                <option value="90">1 h 30 min (90 min)</option>
                 <option value="120">2 horas (120 min)</option>
-                <option value="150" selected>2 horas y media (150 min)</option>
+                <option value="150" selected>2 h 30 min (150 min)</option>
                 <option value="180">3 horas (180 min)</option>
+                <option value="210">3 h 30 min (210 min)</option>
                 <option value="240">4 horas (240 min)</option>
+                <option value="270">4 h 30 min (270 min)</option>
+                <option value="300">5 horas (300 min)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-white mb-1">Tiempo del Domingo</label>
+              <select id="inSundayMin" onchange="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-amber-500/50 px-3 py-2.5 text-sm text-amber-300 font-bold">
+                <option value="90">1 h 30 min (90 min)</option>
+                <option value="120">2 horas (120 min)</option>
+                <option value="150" selected>2 h 30 min (150 min)</option>
+                <option value="180">3 horas (180 min)</option>
+                <option value="210">3 h 30 min (210 min)</option>
+                <option value="240">4 horas (240 min)</option>
+                <option value="270">4 h 30 min (270 min)</option>
+                <option value="300">5 horas (300 min)</option>
               </select>
             </div>
             <div>
@@ -631,7 +648,7 @@
 
           <div id="nextWeekObservationsGuide" class="hidden space-y-3 pt-2 border-t border-stone-800">
             <p class="text-[11px] text-stone-400">
-              Como entrenador, estas variables alteran cómo configuro tu semana: días disponibles, distribución de zonas (p. ej. evitar Zona 3 y enfocar Zona 2 + Zona 4/5 para VO2 máx), tiempo disponible o estado físico. Marca lo que aplique y detállalo:
+              Indica qué quieres que ajuste en el cálculo de la próxima semana (días, distribución de zonas, preferencia entre sábado y domingo, tiempo o dolor/malestar) y presiona <strong>Enviar ajustes de próxima semana</strong> para fijarlos:
             </p>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
@@ -655,24 +672,41 @@
               </div>
 
               <div>
-                <label class="block text-[11px] font-semibold text-stone-300 mb-1">Tiempo entre semana (min)</label>
-                <input id="obsWeekdayMin" type="number" min="20" max="240" step="5" placeholder="Ej: 60" oninput="refreshWeeklyPreview()" class="w-full rounded-lg bg-stone-950 border border-stone-700 px-2.5 py-1.5 text-xs text-white mono" />
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">Distribución Fin de Semana</label>
+                <select id="obsWeekendPreference" onchange="refreshWeeklyPreview()" class="w-full rounded-lg bg-stone-950 border border-stone-700 px-2.5 py-1.5 text-xs text-white">
+                  <option value="normal" selected>Según tiempos configurados</option>
+                  <option value="sat_longer">Sábado más largo que el Domingo</option>
+                  <option value="sun_longer">Domingo más largo que el Sábado</option>
+                </select>
               </div>
 
               <div>
-                <label class="block text-[11px] font-semibold text-stone-300 mb-1">Estado físico / Logística</label>
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">Estado físico / Dolor o Molestia</label>
                 <select id="obsHealthStatus" onchange="refreshWeeklyPreview()" class="w-full rounded-lg bg-stone-950 border border-stone-700 px-2.5 py-1.5 text-xs text-white">
                   <option value="ok" selected>Bien, listo para entrenar</option>
+                  <option value="knee_pain">Dolor o molestia en rodilla / articulación (bajar fuerte o parar)</option>
                   <option value="mild_illness">Algo resfriado / malestar leve (no parar del todo, cuidar pulso)</option>
-                  <option value="sore_legs">Piernas cargadas / molestia muscular</option>
+                  <option value="sore_legs">Piernas cargadas / fatiga muscular</option>
                   <option value="indoor">Más rodillo / poco tiempo exterior</option>
                 </select>
+              </div>
+
+              <div class="sm:col-span-2">
+                <label class="block text-[11px] font-semibold text-stone-300 mb-1">Tiempo entre semana (min, opcional)</label>
+                <input id="obsWeekdayMin" type="number" min="20" max="240" step="5" placeholder="Ej: 60" oninput="refreshWeeklyPreview()" class="w-full rounded-lg bg-stone-950 border border-stone-700 px-2.5 py-1.5 text-xs text-white mono" />
               </div>
             </div>
 
             <div>
               <label class="block text-[11px] font-semibold text-stone-300 mb-1">Escribe con tus palabras qué quieres que tenga en cuenta:</label>
-              <textarea id="obsFreeText" rows="2" oninput="refreshWeeklyPreview()" placeholder="Ej: La próxima semana quisiera un día más, evitar zona 3 y enfocar zona 2 y 4 para mejorar VO2 máx..." class="w-full rounded-lg bg-stone-950 border border-stone-700 p-2.5 text-xs text-white focus:border-amber-500 focus:outline-none"></textarea>
+              <textarea id="obsFreeText" rows="2" oninput="refreshWeeklyPreview()" placeholder="Ej: Quiero que el sábado sea más largo que el domingo, o tengo dolor en la rodilla..." class="w-full rounded-lg bg-stone-950 border border-stone-700 p-2.5 text-xs text-white focus:border-amber-500 focus:outline-none"></textarea>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+              <span id="obsSubmittedBadge" class="text-[11px] text-stone-400">Aún sin enviar a la próxima semana.</span>
+              <button type="button" onclick="submitNextWeekObservations()" class="px-4 py-2 rounded-xl bg-orange-500 hover:bg-orange-400 text-stone-950 font-extrabold text-xs flex items-center gap-1.5 shadow">
+                <i class="fa-solid fa-paper-plane"></i> Enviar ajustes de próxima semana
+              </button>
             </div>
           </div>
         </div>
@@ -759,7 +793,7 @@
   </nav>
 
   <script>
-    const STORAGE_KEY = 'trenin_plan_v422_database';
+    const STORAGE_KEY = 'trenin_plan_v423_database';
 
     const state = {
       hasSavedProfile: false,
@@ -794,6 +828,8 @@
         eventDate: '',
         terrain: 'mountain',
         weekdayMin: 60,
+        saturdayMin: 150,
+        sundayMin: 150,
         weekendMin: 150,
         bikeDays: 4,
         strengthMode: 'gym',
@@ -956,6 +992,7 @@
       let loaded = null;
       try {
         const raw = localStorage.getItem(STORAGE_KEY)
+          || localStorage.getItem('trenin_plan_v422_database')
           || localStorage.getItem('trenin_plan_v421_database')
           || localStorage.getItem('trenin_plan_v42_database')
           || localStorage.getItem('trenin_plan_v41_database');
@@ -1014,7 +1051,13 @@
       if (state.goal.eventDate) document.getElementById('inEventDate').value = state.goal.eventDate;
       document.getElementById('inTerrain').value = state.goal.terrain || 'mountain';
       document.getElementById('inWeekdayMin').value = String(state.goal.weekdayMin || 60);
-      document.getElementById('inWeekendMin').value = String(state.goal.weekendMin || 150);
+
+      const fallbackWknd = state.goal.weekendMin || 150;
+      const satVal = state.goal.saturdayMin || fallbackWknd;
+      const sunVal = state.goal.sundayMin || fallbackWknd;
+      document.getElementById('inSaturdayMin').value = String(Math.max(90, Math.min(300, satVal)));
+      document.getElementById('inSundayMin').value = String(Math.max(90, Math.min(300, sunVal)));
+
       document.getElementById('inBikeDays').value = String(state.goal.bikeDays || 4);
       document.getElementById('inStrengthMode').value = state.goal.strengthMode || 'gym';
       document.getElementById('inClimate').value = state.goal.climate || 'warm';
@@ -1027,7 +1070,7 @@
       const badge = document.getElementById('saveStatusBadge');
       if (!badge) return;
       badge.innerHTML = '<i class="fa-solid fa-check mr-1"></i>Guardado';
-      setTimeout(() => { badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.2 Listo'; }, 1400);
+      setTimeout(() => { badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.3 Listo'; }, 1400);
     }
 
     function autoSaveInputs() {
@@ -1115,7 +1158,9 @@
       state.goal.eventDate = document.getElementById('inEventDate').value;
       state.goal.terrain = document.getElementById('inTerrain').value;
       state.goal.weekdayMin = parseInt(document.getElementById('inWeekdayMin').value) || 60;
-      state.goal.weekendMin = parseInt(document.getElementById('inWeekendMin').value) || 150;
+      state.goal.saturdayMin = parseInt(document.getElementById('inSaturdayMin').value) || 150;
+      state.goal.sundayMin = parseInt(document.getElementById('inSundayMin').value) || 150;
+      state.goal.weekendMin = Math.max(state.goal.saturdayMin, state.goal.sundayMin);
       state.goal.bikeDays = parseInt(document.getElementById('inBikeDays').value) || 4;
       state.goal.strengthMode = document.getElementById('inStrengthMode').value;
       state.goal.climate = document.getElementById('inClimate').value;
@@ -1262,6 +1307,9 @@
       let focusVo2 = false;
       let focusZ2 = false;
       let lowerLoad = false;
+      let jointPain = false;
+      let satLonger = false;
+      let sunLonger = false;
       let customWeekdayMin = null;
 
       if (/(un d[ií]a m[aá]s|d[ií]a extra|agregar un d[ií]a|sumar un d[ií]a)/.test(txt)) {
@@ -1284,6 +1332,19 @@
         focusZ2 = true;
         notes.push('Énfasis en Zona 2');
       }
+      if (/(dolor.*rodilla|rodilla|articulaci[oó]n|molestia.*rodilla|tend[oó]n)/.test(txt)) {
+        jointPain = true;
+        lowerLoad = true;
+        notes.push('Molestia/dolor en rodilla: rebaja fuerte de carga y precaución articular');
+      }
+      if (/(s[aá]bado.*m[aá]s largo|s[aá]bado m[aá]s largo que el domingo|mas largo el sabado|m[aá]s largo el s[aá]bado)/.test(txt)) {
+        satLonger = true;
+        notes.push('Sábado más largo que el domingo');
+      }
+      if (/(domingo.*m[aá]s largo|domingo m[aá]s largo que el s[aá]bado|mas largo el domingo|m[aá]s largo el domingo)/.test(txt)) {
+        sunLonger = true;
+        notes.push('Domingo más largo que el sábado');
+      }
       if (/(enfermo|resfriado|gripa|malestar|cansado|fatiga|bajar carga|menos tiempo|reducir tiempo)/.test(txt)) {
         lowerLoad = true;
         notes.push('Precaución por estado físico/fatiga o ajuste de tiempo');
@@ -1292,13 +1353,13 @@
       const minMatch = txt.match(/(\d{2,3})\s*(min|minutos)/);
       if (minMatch) {
         const val = parseInt(minMatch[1], 10);
-        if (val >= 20 && val <= 240) {
+        if (val >= 20 && val <= 300) {
           customWeekdayMin = val;
           notes.push(`Ajuste de duración a ~${val} min`);
         }
       }
 
-      return { extraBikeDay, fewerBikeDay, avoidZone3, focusVo2, focusZ2, lowerLoad, customWeekdayMin, notes };
+      return { extraBikeDay, fewerBikeDay, avoidZone3, focusVo2, focusZ2, lowerLoad, jointPain, satLonger, sunLonger, customWeekdayMin, notes };
     }
 
     function buildWeekSchedule(weekNum) {
@@ -1311,13 +1372,36 @@
       const avoidZ3 = Boolean(wCfg.zoneFocus === 'no_z3_vo2' || parsedFree.avoidZone3);
       const focusVo2 = Boolean(wCfg.zoneFocus === 'no_z3_vo2' || state.goal.type === 'vo2max' || parsedFree.focusVo2);
       const focusZ2 = Boolean(wCfg.zoneFocus === 'base_z2' || state.goal.type === 'base' || parsedFree.focusZ2);
-      const softMode = Boolean(wCfg.zoneFocus === 'low_load' || wCfg.healthStatus === 'mild_illness' || wCfg.healthStatus === 'sore_legs' || parsedFree.lowerLoad);
+      const jointPain = Boolean(wCfg.healthStatus === 'knee_pain' || parsedFree.jointPain);
+      const softMode = Boolean(jointPain || wCfg.zoneFocus === 'low_load' || wCfg.healthStatus === 'mild_illness' || wCfg.healthStatus === 'sore_legs' || parsedFree.lowerLoad);
 
       let weekdayCap = wCfg.customWeekdayMin || parsedFree.customWeekdayMin || state.goal.weekdayMin;
-      let weekendCap = state.goal.weekendMin;
-      if (softMode) {
+      let satCap = state.goal.saturdayMin || state.goal.weekendMin || 150;
+      let sunCap = state.goal.sundayMin || state.goal.weekendMin || 150;
+
+      const wantsSatLonger = Boolean(wCfg.weekendPreference === 'sat_longer' || parsedFree.satLonger);
+      const wantsSunLonger = Boolean(wCfg.weekendPreference === 'sun_longer' || parsedFree.sunLonger);
+
+      if (wantsSatLonger && satCap <= sunCap) {
+        const maxWknd = Math.min(300, Math.max(satCap, sunCap));
+        satCap = maxWknd;
+        sunCap = Math.max(90, Math.min(sunCap, Math.round(maxWknd * 0.72)));
+        if (sunCap >= satCap) sunCap = Math.max(90, satCap - 30);
+      } else if (wantsSunLonger && sunCap <= satCap) {
+        const maxWknd = Math.min(300, Math.max(satCap, sunCap));
+        sunCap = maxWknd;
+        satCap = Math.max(90, Math.min(satCap, Math.round(maxWknd * 0.72)));
+        if (satCap >= sunCap) satCap = Math.max(90, sunCap - 30);
+      }
+
+      if (jointPain) {
+        weekdayCap = Math.max(30, Math.round(weekdayCap * 0.7));
+        satCap = Math.max(60, Math.round(satCap * 0.7));
+        sunCap = Math.max(60, Math.round(sunCap * 0.7));
+      } else if (softMode) {
         weekdayCap = Math.max(30, Math.round(weekdayCap * 0.8));
-        weekendCap = Math.max(90, Math.round(weekendCap * 0.82));
+        satCap = Math.max(75, Math.round(satCap * 0.82));
+        sunCap = Math.max(75, Math.round(sunCap * 0.82));
       }
 
       const isFtpTestWeek = !avoidZ3 && !softMode && (weekNum > 1 && (weekNum % 8 === 0 || state.effectiveTrainingWeeksCount >= 8));
@@ -1327,6 +1411,7 @@
 
       let fitnessMult = state.weeklyProgressionFactor * (1 + (blockNumber * 0.08));
       if (cycleIndex === 3 || softMode) fitnessMult *= 0.80;
+      if (jointPain) fitnessMult *= 0.70;
       if (isTaper) fitnessMult *= 0.65;
 
       const isGym = state.goal.strengthMode === 'gym';
@@ -1355,7 +1440,10 @@
               'Recuperación activa y asimilación de cargas.'
             ][cycleIndex]);
 
-      if (focusVo2 && !softMode) {
+      if (jointPain) {
+        phaseLabel = `SEMANA ${weekNum} (${dateRangeStr}): PROTECCIÓN ARTICULAR / RODILLA`;
+        phaseDesc = 'Carga reducida y cadencia ágil sin forzar: si el dolor aparece o aumenta al pedalear, detén la sesión o descansa.';
+      } else if (focusVo2 && !softMode) {
         phaseLabel = `SEMANA ${weekNum} (${dateRangeStr}): ENFOQUE VO2 MÁX (Z2 + Z4/Z5)`;
         phaseDesc = avoidZ3
           ? 'Configurada sin Zona 3: base limpia en Zona 2 e intervalos de alta intensidad en Zona 4/5 para elevar el VO2 máx.'
@@ -1371,11 +1459,13 @@
       if (softMode) {
         const fit = fitIntervalsToAvailableTime(weekdayCap, 12, 10, 5, 4, 2);
         tueConfig = {
-          title: 'Activación Controlada en Zona 2',
+          title: jointPain ? 'Rodaje Suave de Protección Articular' : 'Activación Controlada en Zona 2',
           subtitle: `Semana ${weekNum} • Ritmo cómodo sin forzar`,
-          zone: 2, ...fit,
-          cadWorkMin: 86, cadWorkMax: 96,
-          details: 'Mantén el pulso controlado y la respiración cómoda; si hay malestar, prioriza sensaciones suaves.'
+          zone: jointPain ? 1 : 2, ...fit,
+          cadWorkMin: 90, cadWorkMax: 100,
+          details: jointPain
+            ? 'Pedalea suave y ágil con poca resistencia; si sientes dolor en la rodilla, para y consulta.'
+            : 'Mantén el pulso controlado y la respiración cómoda; si hay malestar, prioriza sensaciones suaves.'
         };
       } else if (isFtpTestWeek) {
         tueConfig = {
@@ -1446,13 +1536,15 @@
 
       let thuConfig;
       if (softMode || focusZ2) {
-        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 10, Math.max(20, weekdayCap - 24), 4, 1);
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 10, 10, Math.max(15, weekdayCap - 24), 4, 1);
         thuConfig = {
-          title: 'Rodaje Aeróbico Base en Zona 2',
+          title: jointPain ? 'Soltura Suave sin Carga en Rodilla' : 'Rodaje Aeróbico Base en Zona 2',
           subtitle: `Semana ${weekNum} • Eficiencia y control`,
-          zone: 2, ...fit,
-          cadWorkMin: 88, cadWorkMax: 96,
-          details: 'Pedaleo continuo y fluido en Zona 2, manteniendo conversación cómoda.'
+          zone: jointPain ? 1 : 2, ...fit,
+          cadWorkMin: 90, cadWorkMax: 98,
+          details: jointPain
+            ? 'Evita desarrollos duros y pendientes exigentes; detente si hay molestia articular.'
+            : 'Pedaleo continuo y fluido en Zona 2, manteniendo conversación cómoda.'
         };
       } else if (avoidZ3 && focusVo2) {
         const fit = fitIntervalsToAvailableTime(weekdayCap, 15, 10, 4, 3, 4);
@@ -1506,11 +1598,11 @@
         };
       }
 
-      const satTarget = Math.min(weekendCap, Math.max(weekdayCap, Math.round(weekendCap * (cycleIndex === 3 || softMode ? 0.45 : 0.58))));
-      const sunScale = softMode ? 0.65 : (cycleIndex === 0 ? 0.88 : (cycleIndex === 1 ? 0.95 : (cycleIndex === 2 ? 1.0 : 0.72)));
-      const sunTarget = Math.max(60, Math.min(weekendCap, Math.round(weekendCap * sunScale)));
-      const sunWorkEach = Math.max(20, Math.floor((sunTarget - 30) / 2));
-      const sunZone = (cycleIndex === 2 && !avoidZ3 && !softMode) ? 3 : 2;
+      const satTarget = Math.max(30, satCap);
+      const sunTarget = Math.max(30, sunCap);
+      const sunWorkEach = Math.max(15, Math.floor((sunTarget - 30) / 2));
+      const sunZone = (cycleIndex === 2 && !avoidZ3 && !softMode) ? 3 : (jointPain ? 1 : 2);
+      const satZone = jointPain ? 1 : 2;
 
       const wantExtraDay = Boolean(wCfg.bikeDaysDelta === 'plus1' || parsedFree.extraBikeDay);
       const wantFewerDay = Boolean(wCfg.bikeDaysDelta === 'minus1' || parsedFree.fewerBikeDay);
@@ -1518,18 +1610,20 @@
       const fridayCard = wantExtraDay
         ? {
             day: 'Viernes', shortDay: 'VIE', jsDay: 5, type: 'bike',
-            title: focusVo2 ? 'Rodaje Base Z2 + 4 × 30s Cadencia Viva' : 'Rodaje Aeróbico Adicional en Zona 2',
+            title: focusVo2 && !softMode ? 'Rodaje Base Z2 + 4 × 30s Cadencia Viva' : 'Rodaje Aeróbico Adicional Suave',
             subtitle: `Semana ${weekNum} • Día extra solicitado`,
-            zone: 2, warmMin: 10, workMin: Math.max(25, weekdayCap - 20), restMin: 0, coolMin: 10, reps: 1,
+            zone: jointPain ? 1 : 2, warmMin: 10, workMin: Math.max(20, weekdayCap - 20), restMin: 0, coolMin: 10, reps: 1,
             cadWorkMin: 90, cadWorkMax: 100, cadWarmMin: 85, cadWarmMax: 95, cadRestMin: 85, cadRestMax: 95,
-            details: 'Sesión añadida a tu pedido para sumar volumen aeróbico sin quemar piernas antes del fin de semana.'
+            details: 'Sesión añadida a tu pedido con control de carga y cadencia.'
           }
         : {
             day: 'Viernes', shortDay: 'VIE', jsDay: 5, type: 'strength',
             title: 'Fortalecimiento: Espalda y Brazos',
             subtitle: 'Postura y estabilidad',
             durationMin: 45, zone: 1,
-            exercises: ['Remo con banda/mancuerna: 3x12', 'Flexiones: 3x12', 'Bird-dog: 3x12'],
+            exercises: jointPain
+              ? ['Movilidad de cadera y tobillo sin dolor: 3x10', 'Remo controlado: 3x12', 'Plancha frontal: 3x30s']
+              : ['Remo con banda/mancuerna: 3x12', 'Flexiones: 3x12', 'Bird-dog: 3x12'],
             nutrition: buildNutritionProtocol(45, 1, 'strength')
           };
 
@@ -1544,22 +1638,43 @@
           }
         : {
             day: 'Sábado', shortDay: 'SÁB', jsDay: 6, type: 'bike',
-            title: 'Rodaje Aeróbico Ágil',
-            subtitle: 'Cadencia fluida',
-            zone: 2, warmMin: 10, workMin: Math.max(20, satTarget - 20), restMin: 0, coolMin: 10, reps: 1,
+            title: satTarget > sunTarget ? 'Fondo Principal de Sábado' : 'Rodaje Aeróbico de Sábado',
+            subtitle: `Tiempo configurado: ${satTarget} min`,
+            zone: satZone, warmMin: 12, workMin: Math.max(20, satTarget - 24), restMin: 0, coolMin: 12, reps: 1,
             cadWorkMin: 88, cadWorkMax: 96, cadWarmMin: 85, cadWarmMax: 92, cadRestMin: 85, cadRestMax: 90,
-            details: 'Pedaleo rápido y constante en Z2.',
-            nutrition: buildNutritionProtocol(satTarget, 2, 'bike')
+            details: jointPain
+              ? 'Mantén cadencia fluida y cero dolor en la rodilla; si molesta, corta antes.'
+              : 'Rodaje continuo en el tiempo configurado para el sábado.',
+            nutrition: buildNutritionProtocol(satTarget, satZone, 'bike')
           };
 
       state.plan = [
         { day: 'Lunes', shortDay: 'LUN', jsDay: 1, type: 'rest', title: 'Descanso Total', subtitle: 'Asimilación y recuperación', durationMin: 0, zone: 1, details: 'Día libre de cargas.', nutrition: buildNutritionProtocol(0, 1, 'rest') },
         { day: 'Martes', shortDay: 'MAR', jsDay: 2, type: 'bike', ...tueConfig, cadWarmMin: 85, cadWarmMax: 95, cadRestMin: 80, cadRestMax: 90 },
-        { day: 'Miércoles', shortDay: 'MIÉ', jsDay: 3, type: 'strength', title: 'Fortalecimiento: Piernas y Core', subtitle: isGym ? 'Gimnasio / Pesas' : 'En Casa', durationMin: 45, zone: 2, exercises: ['Sentadilla búlgara: 4x10', 'Peso muerto: 3x12', 'Plancha: 3x45s'], nutrition: buildNutritionProtocol(45, 2, 'strength') },
+        {
+          day: 'Miércoles', shortDay: 'MIÉ', jsDay: 3, type: 'strength',
+          title: 'Fortalecimiento: Piernas y Core',
+          subtitle: isGym ? 'Gimnasio / Pesas' : 'En Casa',
+          durationMin: 45, zone: 2,
+          exercises: jointPain
+            ? ['Puente de glúteo sin carga excesiva: 3x12', 'Abducción de cadera: 3x12', 'Isométricos suaves sin dolor: 3x25s']
+            : ['Sentadilla búlgara: 4x10', 'Peso muerto: 3x12', 'Plancha: 3x45s'],
+          nutrition: buildNutritionProtocol(45, 2, 'strength')
+        },
         { day: 'Jueves', shortDay: 'JUE', jsDay: 4, type: 'bike', ...thuConfig, cadWarmMin: 85, cadWarmMax: 95, cadRestMin: 85, cadRestMax: 95 },
         fridayCard,
         saturdayCard,
-        { day: 'Domingo', shortDay: 'DOM', jsDay: 0, type: 'bike', title: 'Salida Larga de Fondo', subtitle: 'Resistencia aeróbica', zone: sunZone, warmMin: 15, workMin: sunWorkEach, restMin: 10, coolMin: 15, reps: 2, cadWorkMin: 82, cadWorkMax: 92, cadWarmMin: 85, cadWarmMax: 95, cadRestMin: 80, cadRestMax: 90, details: 'Fondo de fin de semana con hidratación constante.', nutrition: buildNutritionProtocol(sunTarget, sunZone, 'bike') }
+        {
+          day: 'Domingo', shortDay: 'DOM', jsDay: 0, type: 'bike',
+          title: sunTarget > satTarget ? 'Fondo Principal de Domingo' : 'Salida de Fondo de Domingo',
+          subtitle: `Tiempo configurado: ${sunTarget} min`,
+          zone: sunZone, warmMin: 15, workMin: sunWorkEach, restMin: 10, coolMin: 15, reps: 2,
+          cadWorkMin: 84, cadWorkMax: 94, cadWarmMin: 85, cadWarmMax: 95, cadRestMin: 80, cadRestMax: 90,
+          details: jointPain
+            ? 'Sesión prudente por molestia articular; detente si aparece dolor en la rodilla.'
+            : 'Fondo de domingo con hidratación y alimentación constante.',
+          nutrition: buildNutritionProtocol(sunTarget, sunZone, 'bike')
+        }
       ];
 
       const ftp = state.rider.ftpCalculated;
@@ -1595,14 +1710,10 @@
       if (!plannedMin || plannedMin <= 0) return true;
       const ratio = actMin / plannedMin;
       const diffMin = Math.abs(actMin - plannedMin);
-      // Evita que un entreno corto (~60 min) cubra una tirada larga de >120 min (ej. domingo)
       if (plannedMin >= 110 && actMin < plannedMin * 0.65) return false;
       return diffMin <= 45 || (ratio >= 0.65 && ratio <= 1.45);
     }
 
-    // Conciliación estricta:
-    // 1) Coincidencia exacta por día de la semana dentro de la semana activa (1 a 1)
-    // 2) Solo permite cubrir una sesión faltante si la actividad ocurrió exactamente 1 día después (+1 día) y su duración es compatible
     function matchIntervalsActivitiesToCurrentWeek() {
       if (!state.intervalsActivities || state.intervalsActivities.length === 0) return;
 
@@ -1626,7 +1737,6 @@
 
       const usedActKeys = new Set();
 
-      // Paso 1: Asignar primero salidas en su día exacto
       bikeIndices.forEach(({ d, idx }) => {
         const exact = weekActivities.find(act => {
           const key = getActivityUniqueKey(act);
@@ -1651,7 +1761,6 @@
         }
       });
 
-      // Paso 2: Solo con salidas no usadas, cubrir una sesión faltante si fue hecha exactamente al día siguiente (+1 día) y coincide en duración
       bikeIndices.forEach(({ d, idx }) => {
         const logKey = `W${state.currentWeek}_D${idx}`;
         if (state.completedLogs[logKey]) return;
@@ -1780,7 +1889,7 @@
       document.getElementById('fitnessLevelBadge').innerHTML = `<i class="fa-solid fa-arrow-trend-up mr-1"></i>Nivel: ${Math.round(state.weeklyProgressionFactor * 100)}%`;
 
       document.getElementById('planHeaderTitle').textContent = `Plan de ${state.rider.name || 'Ciclista'} — Semana ${state.currentWeek} de ${state.totalWeeks}`;
-      document.getElementById('planSubSummary').textContent = `Límites: FC Máx ${state.rider.maxHR} ppm • FTP ref: ${state.rider.ftpCalculated} W`;
+      document.getElementById('planSubSummary').textContent = `Límites: FC Máx ${state.rider.maxHR} ppm • FTP ref: ${state.rider.ftpCalculated} W • Sáb/Dom: ${state.goal.saturdayMin || 150}m / ${state.goal.sundayMin || 150}m`;
       document.getElementById('zonesRefMeta').textContent = `FC Máx ${state.rider.maxHR} ppm`;
 
       const wCfg = state.weekConfigs[`W${state.currentWeek}`];
@@ -1792,8 +1901,11 @@
         if (wCfg.zoneFocus === 'no_z3_vo2') parts.push('sin Zona 3 / enfoque Z2 + Z4-Z5 (VO2 máx)');
         if (wCfg.zoneFocus === 'base_z2') parts.push('prioridad Zona 2');
         if (wCfg.zoneFocus === 'low_load') parts.push('carga prudente');
+        if (wCfg.weekendPreference === 'sat_longer') parts.push('sábado más largo que domingo');
+        if (wCfg.weekendPreference === 'sun_longer') parts.push('domingo más largo que sábado');
         if (wCfg.customWeekdayMin) parts.push(`entre semana ~${wCfg.customWeekdayMin} min`);
-        if (wCfg.healthStatus && wCfg.healthStatus !== 'ok') parts.push(`estado: ${wCfg.healthStatus}`);
+        if (wCfg.healthStatus === 'knee_pain') parts.push('dolor/molestia en rodilla: carga reducida y precaución');
+        else if (wCfg.healthStatus && wCfg.healthStatus !== 'ok') parts.push(`estado: ${wCfg.healthStatus}`);
         if (wCfg.freeText) parts.push(`"${wCfg.freeText}"`);
         rulesBanner.classList.remove('hidden');
         document.getElementById('weekRulesSummaryText').textContent = parts.join(' • ');
@@ -1922,6 +2034,39 @@
       refreshWeeklyPreview();
     }
 
+    function submitNextWeekObservations() {
+      if (!state.obsHasAdjustments) setNextWeekObservationsChoice(true);
+      const nextCfg = collectCurrentNextWeekFormConfig();
+      const targetWk = Math.min(state.totalWeeks, state.currentWeek + 1);
+      state.weekConfigs[`W${targetWk}`] = nextCfg;
+
+      // Si eligió sábado o domingo más largo, sincronizar también los tiempos base para que coincidan
+      const parsedFree = parseFreeTextObservations(nextCfg.freeText || '');
+      const wantsSatLonger = Boolean(nextCfg.weekendPreference === 'sat_longer' || parsedFree.satLonger);
+      const wantsSunLonger = Boolean(nextCfg.weekendPreference === 'sun_longer' || parsedFree.sunLonger);
+      if (wantsSatLonger && state.goal.saturdayMin <= state.goal.sundayMin) {
+        const baseMax = Math.min(300, Math.max(state.goal.saturdayMin || 150, state.goal.sundayMin || 150, 180));
+        state.goal.saturdayMin = baseMax;
+        state.goal.sundayMin = Math.max(90, Math.round(baseMax * 0.7));
+        document.getElementById('inSaturdayMin').value = String(state.goal.saturdayMin);
+        document.getElementById('inSundayMin').value = String(state.goal.sundayMin);
+      } else if (wantsSunLonger && state.goal.sundayMin <= state.goal.saturdayMin) {
+        const baseMax = Math.min(300, Math.max(state.goal.saturdayMin || 150, state.goal.sundayMin || 150, 180));
+        state.goal.sundayMin = baseMax;
+        state.goal.saturdayMin = Math.max(90, Math.round(baseMax * 0.7));
+        document.getElementById('inSaturdayMin').value = String(state.goal.saturdayMin);
+        document.getElementById('inSundayMin').value = String(state.goal.sundayMin);
+      }
+
+      saveStateToLocal();
+      const badge = document.getElementById('obsSubmittedBadge');
+      if (badge) {
+        badge.className = 'text-[11px] text-emerald-300 font-bold';
+        badge.textContent = `✔ Ajustes enviados y listos para la Semana ${targetWk}.`;
+      }
+      refreshWeeklyPreview();
+    }
+
     function buildDetailedWeeklyBalanceReport(weekNum, strengthStatus, restStatus, nextWeekCfg) {
       const plannedBikeSlots = state.plan.filter(d => d.type === 'bike');
       const plannedStrengthSlots = state.plan.filter(d => d.type === 'strength');
@@ -2004,8 +2149,13 @@
         positivos.push('Aun con una semana atípica o corta, registrar y revisar el balance te permite ajustar con criterio.');
       }
 
+      const parsedNextFree = parseFreeTextObservations(nextWeekCfg?.freeText || '');
+      const hasKneeIssue = Boolean(nextWeekCfg?.healthStatus === 'knee_pain' || parsedNextFree.jointPain);
+
       let recomendacionCoach = '';
-      if (restStatus === 'exhausted' || doneBikeCount === 0) {
+      if (hasKneeIssue) {
+        recomendacionCoach = 'Ante molestia o dolor en la rodilla, prioriza proteger la articulación: reduce fuertemente la carga o pausa si hay dolor agudo, evita desarrollos pesados y no fuerces si molesta al pedalear.';
+      } else if (restStatus === 'exhausted' || doneBikeCount === 0) {
         recomendacionCoach = 'Prioridad absoluta esta semana: baja el estrés acumulado, cuida sueño e hidratación, y entra progresivamente en las sesiones de calidad sin perseguir números forzados.';
       } else if (state.goal.type === 'vo2max') {
         recomendacionCoach = 'Para seguir subiendo tu VO2 máx, mantén los rodajes suaves realmente fáciles (sin quemar cartuchos en zonas intermedias) y ejecuta los bloques intensos con buena recuperación entre series.';
@@ -2015,7 +2165,7 @@
 
       let obsResumen = 'Sin ajustes adicionales solicitados para la siguiente semana.';
       if (nextWeekCfg && (nextWeekCfg.hasAdjustments || nextWeekCfg.freeText)) {
-        obsResumen = `Ajustes tomados para la Semana ${weekNum + 1}: ${nextWeekCfg.freeText ? `"${nextWeekCfg.freeText}"` : 'parámetros guiados configurados.'}`;
+        obsResumen = `Ajustes aplicados para la Semana ${weekNum + 1}: ${parsedNextFree.notes.length ? parsedNextFree.notes.join(' / ') + '. ' : ''}${nextWeekCfg.freeText ? `"${nextWeekCfg.freeText}"` : ''}`;
       }
 
       return [
@@ -2041,14 +2191,15 @@
 
     function collectCurrentNextWeekFormConfig() {
       if (!state.obsHasAdjustments) {
-        return { hasAdjustments: false, bikeDaysDelta: 'keep', zoneFocus: 'normal', customWeekdayMin: null, healthStatus: 'ok', freeText: '' };
+        return { hasAdjustments: false, bikeDaysDelta: 'keep', zoneFocus: 'normal', weekendPreference: 'normal', customWeekdayMin: null, healthStatus: 'ok', freeText: '' };
       }
       const rawMin = parseInt(document.getElementById('obsWeekdayMin').value, 10);
       return {
         hasAdjustments: true,
         bikeDaysDelta: document.getElementById('obsBikeDaysDelta').value,
         zoneFocus: document.getElementById('obsZoneFocus').value,
-        customWeekdayMin: (!isNaN(rawMin) && rawMin >= 20 && rawMin <= 240) ? rawMin : null,
+        weekendPreference: document.getElementById('obsWeekendPreference').value,
+        customWeekdayMin: (!isNaN(rawMin) && rawMin >= 20 && rawMin <= 300) ? rawMin : null,
         healthStatus: document.getElementById('obsHealthStatus').value,
         freeText: (document.getElementById('obsFreeText').value || '').trim()
       };
@@ -2078,7 +2229,13 @@
       document.getElementById('obsWeekdayMin').value = '';
       document.getElementById('obsBikeDaysDelta').value = 'keep';
       document.getElementById('obsZoneFocus').value = 'normal';
+      document.getElementById('obsWeekendPreference').value = 'normal';
       document.getElementById('obsHealthStatus').value = 'ok';
+      const badge = document.getElementById('obsSubmittedBadge');
+      if (badge) {
+        badge.className = 'text-[11px] text-stone-400';
+        badge.textContent = 'Aún sin enviar a la próxima semana.';
+      }
 
       refreshWeeklyPreview();
       document.getElementById('weeklyReviewModal').classList.remove('hidden');
@@ -2091,7 +2248,10 @@
     function processWeeklyBalanceAndUnlockNext() {
       const strengthStatus = document.getElementById('wrStrengthStatus').value;
       const restStatus = document.getElementById('wrRestStatus').value;
-      const nextCfg = collectCurrentNextWeekFormConfig();
+      const nextWeekNum = Math.min(state.totalWeeks, state.currentWeek + 1);
+      const savedNextCfg = state.weekConfigs[`W${nextWeekNum}`];
+      const formNextCfg = collectCurrentNextWeekFormConfig();
+      const nextCfg = (formNextCfg.hasAdjustments || formNextCfg.freeText) ? formNextCfg : (savedNextCfg || formNextCfg);
 
       let bikeCount = 0;
       const plannedBikeCount = state.plan.filter(d => d.type === 'bike').length;
@@ -2100,8 +2260,12 @@
       }
 
       const detailedReport = buildDetailedWeeklyBalanceReport(state.currentWeek, strengthStatus, restStatus, nextCfg);
+      const parsedNextFree = parseFreeTextObservations(nextCfg.freeText || '');
+      const hasKneeIssue = Boolean(nextCfg.healthStatus === 'knee_pain' || parsedNextFree.jointPain);
 
-      if (restStatus === 'good' && strengthStatus === 'all' && bikeCount >= Math.max(1, plannedBikeCount - 1)) {
+      if (hasKneeIssue) {
+        state.weeklyProgressionFactor = Math.max(0.80, +(state.weeklyProgressionFactor - 0.10).toFixed(2));
+      } else if (restStatus === 'good' && strengthStatus === 'all' && bikeCount >= Math.max(1, plannedBikeCount - 1)) {
         state.weeklyProgressionFactor = Math.min(1.30, +(state.weeklyProgressionFactor + 0.05).toFixed(2));
       } else if (restStatus === 'exhausted' || strengthStatus === 'none' || bikeCount <= 1 || nextCfg.healthStatus === 'mild_illness') {
         state.weeklyProgressionFactor = Math.max(0.85, +(state.weeklyProgressionFactor - 0.05).toFixed(2));
