@@ -93,7 +93,7 @@
           <div class="flex items-center gap-2">
             <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white">trenin<span class="text-amber-500">_plan</span></h1>
             <span id="saveStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">
-              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.4 Listo
+              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.5 Listo
             </span>
           </div>
           <p class="text-[11px] text-stone-400">Coach Pro • <span class="text-amber-400 font-semibold">Pulso</span> • <span class="text-orange-400 font-semibold">FTP</span> • <span class="text-amber-200 font-semibold">Cadencia</span></p>
@@ -145,7 +145,7 @@
           </div>
           <div>
             <label class="block text-xs font-semibold text-stone-300 mb-1">Edad (años)</label>
-            <input id="inAge" type="number" value="42" min="14" max="85" oninput="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white mono focus:border-amber-500 focus:outline-none" />
+            <input id="inAge" type="number" value="40" min="14" max="85" oninput="autoSaveInputs()" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-sm text-white mono focus:border-amber-500 focus:outline-none" />
           </div>
           <div>
             <label class="block text-xs font-semibold text-stone-300 mb-1">Peso (kg)</label>
@@ -170,7 +170,7 @@
             <label class="block text-xs font-bold text-amber-300 mb-1">
               <i class="fa-solid fa-heart-pulse mr-1"></i>Pulsaciones Máximas (FC Máx)
             </label>
-            <input id="inMaxHR" type="number" value="182" min="0" max="220" oninput="autoSaveInputs()" class="w-full rounded-lg bg-stone-950 border border-amber-500/40 px-3 py-1.5 text-sm text-white mono" />
+            <input id="inMaxHR" type="number" value="0" min="0" max="220" oninput="autoSaveInputs()" class="w-full rounded-lg bg-stone-950 border border-amber-500/40 px-3 py-1.5 text-sm text-white mono" />
             <p class="text-[11px] text-stone-400 mt-1">Pon 0 para calcular automático por edad.</p>
           </div>
 
@@ -178,7 +178,7 @@
             <label class="block text-xs font-bold text-amber-300 mb-1">
               <i class="fa-solid fa-bed mr-1"></i>Pulsaciones en Reposo
             </label>
-            <input id="inRestHR" type="number" value="56" min="35" max="100" oninput="autoSaveInputs()" class="w-full rounded-lg bg-stone-950 border border-amber-500/40 px-3 py-1.5 text-sm text-white mono" />
+            <input id="inRestHR" type="number" value="58" min="35" max="100" oninput="autoSaveInputs()" class="w-full rounded-lg bg-stone-950 border border-amber-500/40 px-3 py-1.5 text-sm text-white mono" />
             <p class="text-[11px] text-stone-400 mt-1">Latidos al despertar tranquilamente.</p>
           </div>
 
@@ -836,7 +836,16 @@
   </nav>
 
   <script>
-    const STORAGE_KEY = 'trenin_plan_v424_database';
+    const STORAGE_KEY = 'trenin_plan_v425_database';
+
+    function getCurrentWeekMondayISO() {
+      const now = new Date();
+      const day = now.getDay();
+      const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+      const monday = new Date(now.getFullYear(), now.getMonth(), diff);
+      monday.setHours(0, 0, 0, 0);
+      return monday.toISOString();
+    }
 
     const state = {
       hasSavedProfile: false,
@@ -844,13 +853,13 @@
       rider: {
         name: '',
         email: '',
-        age: 42,
+        age: 40,
         weight: 72,
         height: 175,
         level: 'intermediate',
-        maxHR: 182,
-        restHR: 56,
-        lthr: 162,
+        maxHR: 180,
+        restHR: 58,
+        lthr: 160,
         ftp: 0,
         ftpCalculated: 205,
         ftpEstimated: true
@@ -888,9 +897,9 @@
       intervalsActivities: [],
       planStartDate: '',
       totalWeeks: 12,
-      currentWeek: 2,
-      maxUnlockedWeek: 2,
-      effectiveTrainingWeeksCount: 1,
+      currentWeek: 1,
+      maxUnlockedWeek: 1,
+      effectiveTrainingWeeksCount: 0,
       weeklyProgressionFactor: 1.0,
       completedLogs: {},
       weeklySummaries: {},
@@ -1050,19 +1059,15 @@
       } catch (e) {}
     }
 
+    // Carga exclusiva del perfil de este usuario sin arrastrar datos de otros usuarios
     function loadStateFromLocal(callback) {
       let loaded = null;
       try {
-        const raw = localStorage.getItem(STORAGE_KEY)
-          || localStorage.getItem('trenin_plan_v423_database')
-          || localStorage.getItem('trenin_plan_v422_database')
-          || localStorage.getItem('trenin_plan_v421_database')
-          || localStorage.getItem('trenin_plan_v42_database')
-          || localStorage.getItem('trenin_plan_v41_database');
+        const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) loaded = JSON.parse(raw);
       } catch (e) {}
 
-      if (loaded && loaded.rider) {
+      if (loaded && loaded.hasSavedProfile && loaded.rider) {
         applyLoadedDataToStateAndForm(loaded);
         callback(true);
         return;
@@ -1081,21 +1086,21 @@
       if (Array.isArray(data.intervalsActivities)) state.intervalsActivities = data.intervalsActivities;
       if (data.planStartDate) state.planStartDate = data.planStartDate;
       if (data.totalWeeks) state.totalWeeks = data.totalWeeks;
-      if (data.currentWeek) state.currentWeek = data.currentWeek;
-      if (data.maxUnlockedWeek) state.maxUnlockedWeek = data.maxUnlockedWeek;
-      if (data.effectiveTrainingWeeksCount) state.effectiveTrainingWeeksCount = data.effectiveTrainingWeeksCount;
+      state.currentWeek = Math.max(1, parseInt(data.currentWeek, 10) || 1);
+      state.maxUnlockedWeek = Math.max(state.currentWeek, parseInt(data.maxUnlockedWeek, 10) || 1);
+      state.effectiveTrainingWeeksCount = Math.max(0, parseInt(data.effectiveTrainingWeeksCount, 10) || 0);
       if (data.weeklyProgressionFactor) state.weeklyProgressionFactor = data.weeklyProgressionFactor;
       if (data.completedLogs) state.completedLogs = data.completedLogs;
       if (data.weeklySummaries) state.weeklySummaries = data.weeklySummaries;
 
       document.getElementById('inName').value = state.rider.name || '';
       document.getElementById('inEmail').value = state.rider.email || '';
-      document.getElementById('inAge').value = state.rider.age || 42;
+      document.getElementById('inAge').value = state.rider.age || 40;
       document.getElementById('inWeight').value = state.rider.weight || 72;
       document.getElementById('inHeight').value = state.rider.height || 175;
       document.getElementById('inLevel').value = state.rider.level || 'intermediate';
       document.getElementById('inMaxHR').value = state.rider.maxHR || 0;
-      document.getElementById('inRestHR').value = state.rider.restHR || 56;
+      document.getElementById('inRestHR').value = state.rider.restHR || 58;
       document.getElementById('inFTP').value = state.rider.ftpEstimated ? 0 : (state.rider.ftp || 0);
 
       if (state.bike.type) document.getElementById('inBikeType').value = state.bike.type;
@@ -1133,11 +1138,16 @@
       const badge = document.getElementById('saveStatusBadge');
       if (!badge) return;
       badge.innerHTML = '<i class="fa-solid fa-check mr-1"></i>Guardado';
-      setTimeout(() => { badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.4 Listo'; }, 1400);
+      setTimeout(() => { badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.5 Listo'; }, 1400);
     }
 
     function autoSaveInputs() {
+      if (!state.planStartDate) {
+        state.planStartDate = getCurrentWeekMondayISO();
+      }
       readInputsAndComputeMetrics();
+      calculateAllowedWeekByCalendar();
+      populateWeekSelector();
       buildWeekSchedule(state.currentWeek);
       renderPlanUI();
       renderSyncUI();
@@ -1147,12 +1157,9 @@
     function saveAndGeneratePlan() {
       state.lastActiveTab = 'plan';
       if (!state.planStartDate) {
-        const pastMonday = new Date();
-        pastMonday.setDate(pastMonday.getDate() - 7);
-        const day = pastMonday.getDay();
-        const diff = pastMonday.getDate() - day + (day === 0 ? -6 : 1);
-        const monday = new Date(pastMonday.setDate(diff));
-        state.planStartDate = monday.toISOString();
+        state.planStartDate = getCurrentWeekMondayISO();
+        state.currentWeek = 1;
+        state.maxUnlockedWeek = 1;
       }
       readInputsAndComputeMetrics();
       calculateAllowedWeekByCalendar();
@@ -1229,12 +1236,18 @@
       state.goal.climate = document.getElementById('inClimate').value;
 
       if (state.goal.eventDate) {
-        const diffMs = new Date(state.goal.eventDate) - new Date();
+        const startRef = state.planStartDate ? new Date(state.planStartDate) : new Date(getCurrentWeekMondayISO());
+        const diffMs = new Date(state.goal.eventDate) - startRef;
         const w = Math.ceil(diffMs / (1000 * 60 * 60 * 24 * 7));
         state.totalWeeks = Math.max(4, Math.min(36, w));
       } else {
         state.totalWeeks = 12;
       }
+
+      if (state.currentWeek > state.totalWeeks) {
+        state.currentWeek = state.totalWeeks;
+      }
+      state.maxUnlockedWeek = Math.max(state.maxUnlockedWeek, state.currentWeek);
 
       const maxHR = state.rider.maxHR;
       const ftp = state.rider.ftpCalculated;
@@ -1278,12 +1291,7 @@
 
     function getWeekDateRangeStr(weekNum) {
       if (!state.planStartDate) {
-        const pastMonday = new Date();
-        pastMonday.setDate(pastMonday.getDate() - 7);
-        const day = pastMonday.getDay();
-        const diff = pastMonday.getDate() - day + (day === 0 ? -6 : 1);
-        const monday = new Date(pastMonday.setDate(diff));
-        state.planStartDate = monday.toISOString();
+        state.planStartDate = getCurrentWeekMondayISO();
       }
       const start = new Date(state.planStartDate);
       start.setDate(start.getDate() + (weekNum - 1) * 7);
@@ -1294,7 +1302,7 @@
     }
 
     function getWeekWindow(weekNum) {
-      const base = state.planStartDate ? new Date(state.planStartDate) : new Date();
+      const base = state.planStartDate ? new Date(state.planStartDate) : new Date(getCurrentWeekMondayISO());
       const start = new Date(base);
       start.setDate(start.getDate() + (weekNum - 1) * 7);
       start.setHours(0, 0, 0, 0);
@@ -1305,14 +1313,14 @@
     }
 
     function calculateAllowedWeekByCalendar() {
-      if (!state.planStartDate) return 2;
+      if (!state.planStartDate) return 1;
       const start = new Date(state.planStartDate);
       start.setHours(0,0,0,0);
       const now = new Date();
       now.setHours(0,0,0,0);
       const diffTime = now - start;
       const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-      const calendarWeek = Math.floor(diffDays / 7) + 1;
+      const calendarWeek = Math.max(1, Math.floor(diffDays / 7) + 1);
 
       const allowed = Math.max(state.maxUnlockedWeek, Math.min(state.totalWeeks, calendarWeek));
       state.maxUnlockedWeek = allowed;
@@ -1927,12 +1935,7 @@
           state.intervalsAuth.lastSyncSummary = `Sintonía activa: ${state.intervalsActivities.length} actividades de Intervals.icu conciliadas (regla 1 a 1 y máximo +1 día compatible).`;
         }
         if (!state.planStartDate) {
-          const pastMonday = new Date();
-          pastMonday.setDate(pastMonday.getDate() - 7);
-          const day = pastMonday.getDay();
-          const diff = pastMonday.getDate() - day + (day === 0 ? -6 : 1);
-          const monday = new Date(pastMonday.setDate(diff));
-          state.planStartDate = monday.toISOString();
+          state.planStartDate = getCurrentWeekMondayISO();
         }
         readInputsAndComputeMetrics();
         buildWeekSchedule(state.currentWeek);
@@ -2695,15 +2698,12 @@
         renderGoalGuidanceBox();
         updateTrainingTypeHint();
         loadStateFromLocal((hadData) => {
-          readInputsAndComputeMetrics();
           if (!state.planStartDate) {
-            const pastMonday = new Date();
-            pastMonday.setDate(pastMonday.getDate() - 7);
-            const day = pastMonday.getDay();
-            const diff = pastMonday.getDate() - day + (day === 0 ? -6 : 1);
-            const monday = new Date(pastMonday.setDate(diff));
-            state.planStartDate = monday.toISOString();
+            state.planStartDate = getCurrentWeekMondayISO();
+            state.currentWeek = 1;
+            state.maxUnlockedWeek = 1;
           }
+          readInputsAndComputeMetrics();
           calculateAllowedWeekByCalendar();
           populateWeekSelector();
           buildWeekSchedule(state.currentWeek);
