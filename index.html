@@ -77,7 +77,6 @@
   <header class="sticky top-0 z-40 glass border-b border-amber-900/30 px-3 py-2.5">
     <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
       <div class="flex items-center gap-2.5">
-        <!-- Emblema basado en Logo TreninPlan.png -->
         <div class="w-10 h-10 rounded-full bg-stone-900 border border-stone-700 flex items-center justify-center shadow-lg shrink-0 overflow-hidden" title="trenin_plan">
           <svg viewBox="0 0 120 120" class="w-9 h-9" aria-label="Logo trenin_plan">
             <circle cx="60" cy="60" r="56" fill="#2b2b2b" />
@@ -92,7 +91,7 @@
           <div class="flex items-center gap-2">
             <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white">trenin<span class="text-amber-500">_plan</span></h1>
             <span id="saveStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">
-              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.7 Listo
+              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.8 Listo
             </span>
           </div>
           <p class="text-[11px] text-stone-400">Coach Pro • <span class="text-amber-400 font-semibold">Pulso</span> • <span class="text-orange-400 font-semibold">FTP</span> • <span class="text-amber-200 font-semibold">Cadencia</span></p>
@@ -562,8 +561,8 @@
       <div class="glass rounded-2xl p-4 sm:p-6 space-y-5">
         <div class="flex items-center justify-between border-b border-stone-800 pb-3">
           <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-amber-500">Magene C706 / Garmin / Wahoo</span>
-            <h2 class="text-lg sm:text-xl font-extrabold text-white">Enviar Entrenamientos a Intervals.icu o Descargar .FIT</h2>
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-500">Intervals.icu • Ciclocomputador</span>
+            <h2 class="text-lg sm:text-xl font-extrabold text-white">Archivo Directo de Intervals.icu o Descargar .FIT</h2>
           </div>
           <i class="fa-solid fa-satellite-dish text-2xl text-amber-500"></i>
         </div>
@@ -571,10 +570,10 @@
         <div class="p-4 rounded-xl bg-amber-950/35 border border-amber-500/40 space-y-2">
           <div class="flex items-center gap-2 text-sm font-bold text-amber-200">
             <i class="fa-solid fa-bolt text-orange-400"></i>
-            Exportación Limpia para Ciclocomputador (.FIT) e Intervals.icu
+            Uso Directo en Intervals.icu y .FIT Limpio
           </div>
           <p class="text-xs text-stone-300 leading-relaxed">
-            El archivo <strong>.FIT</strong> exporta los bloques limpios de entrenamiento sin mensajes de comida o agua en el ciclocomputador. Para avisos de hidratación y alimentación en ruta, usa el <strong>Reloj Agua</strong> de la app. La exportación de <strong>Intervals.icu</strong> genera bloques estructurados equivalentes para subir al calendario con rapidez.
+            Puedes descargar el archivo de <strong>Intervals.icu</strong> en un clic para subirlo directamente con sus bloques definidos (sin quedar en cero), o descargar el <strong>.FIT</strong> limpio para tu ciclocomputador. El <strong>Reloj Agua</strong> sigue disponible en la barra superior dentro de la app.
           </p>
         </div>
 
@@ -641,22 +640,25 @@
     </div>
   </div>
 
-  <!-- MODAL ENVIAR A INTERVALS -->
+  <!-- MODAL ENVIAR / DESCARGAR INTERVALS -->
   <div id="intervalsModal" class="fixed inset-0 z-50 hidden bg-stone-950/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="glass rounded-2xl max-w-lg w-full p-5 border border-amber-500/40 space-y-4">
       <div class="flex items-center justify-between">
-        <h3 class="text-base font-extrabold text-white">Enviar a Intervals.icu</h3>
+        <h3 class="text-base font-extrabold text-white">Archivo y Envío a Intervals.icu</h3>
         <button onclick="closeIntervalsModal()" class="text-stone-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
       <p id="intervalsModalSubtitle" class="text-xs text-stone-300"></p>
       <textarea id="intervalsModalTextarea" readonly rows="10" class="w-full rounded-xl bg-stone-950 border border-stone-800 p-3 text-xs mono text-amber-300 focus:outline-none"></textarea>
       <div class="flex flex-wrap justify-between items-center gap-2">
         <div class="flex flex-wrap gap-2">
-          <button onclick="pushWorkoutDirectlyToIntervals()" id="btnDirectPushIntervals" class="px-3.5 py-2 rounded-xl bg-amber-500 text-stone-950 font-extrabold text-xs">
+          <button onclick="downloadIntervalsWorkoutFile(state.selectedDayForIntervalsExport)" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-extrabold text-xs flex items-center gap-1.5">
+            <i class="fa-solid fa-download"></i> Descargar Archivo Intervals
+          </button>
+          <button onclick="pushWorkoutDirectlyToIntervals()" id="btnDirectPushIntervals" class="px-3.5 py-2 rounded-xl bg-orange-500/20 border border-orange-500/40 text-orange-200 font-bold text-xs">
             Subir al Calendario
           </button>
-          <button onclick="copyIntervalsTextarea()" class="px-3.5 py-2 rounded-xl bg-amber-500/20 text-amber-300 font-bold text-xs">
-            Copiar Texto
+          <button onclick="copyIntervalsTextarea()" class="px-3.5 py-2 rounded-xl bg-stone-800 text-stone-200 font-bold text-xs">
+            Copiar
           </button>
         </div>
         <button onclick="closeIntervalsModal()" class="px-3.5 py-2 rounded-xl bg-stone-800 text-stone-300 text-xs">Cerrar</button>
@@ -764,7 +766,6 @@
           </div>
         </div>
 
-        <!-- Pregunta guiada para la próxima semana -->
         <div class="p-4 rounded-xl bg-stone-900/90 border border-amber-500/40 space-y-3">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <label class="text-xs font-extrabold text-amber-300">
@@ -928,7 +929,7 @@
   </nav>
 
   <script>
-    const STORAGE_KEY = 'trenin_plan_v427_database';
+    const STORAGE_KEY = 'trenin_plan_v428_database';
 
     function getNextMondayAfterTodayISO() {
       const now = new Date();
@@ -1375,7 +1376,7 @@
       const badge = document.getElementById('saveStatusBadge');
       if (!badge) return;
       badge.innerHTML = '<i class="fa-solid fa-check mr-1"></i>Guardado';
-      setTimeout(() => { badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.7 Listo'; }, 1400);
+      setTimeout(() => { badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.8 Listo'; }, 1400);
     }
 
     function autoSaveInputs() {
@@ -2390,20 +2391,17 @@
               <div class="p-2 bg-cyan-950/30 rounded border border-cyan-500/30 text-cyan-300">Cadencia: <strong>${t.cadWorkMin}-${t.cadWorkMax} rpm</strong></div>
             </div>
             <p class="text-xs text-stone-300">${d.details}</p>
-            <div class="p-2.5 rounded-xl bg-stone-950/80 border border-stone-800 text-[11px] text-stone-300 space-y-0.5">
-              <div><strong class="text-amber-300">Hidratación/Comida:</strong> ${d.nutrition.during}</div>
-            </div>
 
             <div class="pt-2 border-t border-stone-800 space-y-2">
               <div class="grid grid-cols-3 gap-1.5">
-                <button onclick="openIntervalsExport(${idx})" class="py-2 px-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-stone-950 font-extrabold text-[11px] flex items-center justify-center gap-1">
-                  <i class="fa-solid fa-cloud-arrow-up"></i> Intervals
+                <button onclick="downloadIntervalsWorkoutFile(${idx})" class="py-2 px-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-stone-950 font-extrabold text-[11px] flex items-center justify-center gap-1">
+                  <i class="fa-solid fa-download"></i> Intervals
                 </button>
                 <button onclick="downloadBinaryFIT(${idx})" class="py-2 px-1 rounded-lg bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/40 text-orange-300 font-bold text-[11px] flex items-center justify-center gap-1">
                   <i class="fa-solid fa-microchip"></i> .FIT
                 </button>
-                <button onclick="downloadWorkoutZWO(${idx})" class="py-2 px-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 font-bold text-[11px] flex items-center justify-center gap-1">
-                  <i class="fa-solid fa-file-code"></i> .ZWO
+                <button onclick="openIntervalsExport(${idx})" class="py-2 px-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 font-bold text-[11px] flex items-center justify-center gap-1">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> Subir
                 </button>
               </div>
               <button onclick="openSmartAdviceModal(${idx})" class="w-full py-2.5 rounded-xl bg-amber-500/25 border border-amber-400/50 text-amber-200 font-extrabold text-xs flex items-center justify-center gap-1.5">
@@ -2422,7 +2420,7 @@
         <div class="p-3.5 rounded-xl bg-stone-900 border border-stone-800 flex justify-between items-center text-xs">
           <div><strong class="text-amber-400">${d.day}</strong> — ${d.title} (${d.durationMin} min)</div>
           <div class="flex gap-1.5">
-            <button onclick="openIntervalsExport(${d.idx})" class="px-2.5 py-1.5 bg-amber-500 text-stone-950 font-bold rounded">Intervals</button>
+            <button onclick="downloadIntervalsWorkoutFile(${d.idx})" class="px-2.5 py-1.5 bg-amber-500 text-stone-950 font-bold rounded">Descargar Intervals</button>
             <button onclick="downloadBinaryFIT(${d.idx})" class="px-2.5 py-1.5 bg-orange-500/20 border border-orange-500/40 text-orange-300 font-bold rounded">.FIT</button>
           </div>
         </div>
@@ -2823,7 +2821,6 @@
       return crc;
     }
 
-    // .FIT limpio para ciclocomputador (sin mensajes de comida/agua en los pasos)
     function downloadBinaryFIT(dayIdx) {
       const w = state.plan[dayIdx];
       const t = w.targets;
@@ -2896,46 +2893,50 @@
       a.download = `trenin_S${state.currentWeek}_${w.shortDay}.fit`; a.click();
     }
 
-    function downloadWorkoutZWO(dayIdx) {
-      const w = state.plan[dayIdx];
-      const t = w.targets;
-      let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<workout_file>\n  <author>trenin_plan</author>\n  <name>S${state.currentWeek}_${w.day}</name>\n  <sportType>bike</sportType>\n  <workout>\n`;
-      xml += `    <Warmup Duration="${w.warmMin * 60}" PowerLow="0.48" PowerHigh="0.65"/>\n`;
-      if (w.reps > 1) {
-        xml += `    <IntervalsT Repeat="${w.reps}" OnDuration="${w.workMin * 60}" OffDuration="${w.restMin * 60}" OnPower="${t.wWorkPct}" OffPower="0.52"/>\n`;
-      } else {
-        xml += `    <SteadyState Duration="${w.workMin * 60}" Power="${t.wWorkPct}"/>\n`;
-      }
-      xml += `    <Cooldown Duration="${w.coolMin * 60}" PowerLow="0.58" PowerHigh="0.45"/>\n  </workout>\n</workout_file>`;
-      const blob = new Blob([xml], { type: 'application/octet-stream' });
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-      a.download = `trenin_S${state.currentWeek}_${w.shortDay}.zwo`; a.click();
-    }
-
-    // Sintaxis estructurada limpia para Intervals.icu, equivalente en estructura y objetivos al .FIT
+    // Sintaxis válida y clara para Intervals.icu: bloques con duración e intensidad reales (nunca en cero)
     function buildIntervalsWorkoutSyntax(dayIdx) {
       const w = state.plan[dayIdx];
       const t = w.targets;
       const hasPM = state.bike.hasPM;
-      const workTarget = hasPM ? `${t.wWorkMin}-${t.wWorkMax}w cadence=${t.cadWorkMin}-${t.cadWorkMax}rpm` : `${t.hrWorkMin}-${t.hrWorkMax}bpm cadence=${t.cadWorkMin}-${t.cadWorkMax}rpm`;
-      const warmTarget = hasPM ? `${t.wWarmMin}-${t.wWarmMax}w cadence=${t.cadWarmMin}-${t.cadWarmMax}rpm` : `${t.hrWarmMin}-${t.hrWarmMax}bpm cadence=${t.cadWarmMin}-${t.cadWarmMax}rpm`;
-      const restTarget = hasPM ? `${t.wRestMin}-${t.wRestMax}w cadence=${t.cadRestMin}-${t.cadRestMax}rpm` : `${t.hrRestMin}-${t.hrRestMax}bpm cadence=${t.cadRestMin}-${t.cadRestMax}rpm`;
+
+      const warmTarget = hasPM
+        ? `${t.wWarmMin}-${t.wWarmMax}w cadence ${t.cadWarmMin}-${t.cadWarmMax}`
+        : `${t.hrWarmMin}-${t.hrWarmMax} bpm cadence ${t.cadWarmMin}-${t.cadWarmMax}`;
+
+      const workTarget = hasPM
+        ? `${t.wWorkMin}-${t.wWorkMax}w cadence ${t.cadWorkMin}-${t.cadWorkMax}`
+        : `${t.hrWorkMin}-${t.hrWorkMax} bpm cadence ${t.cadWorkMin}-${t.cadWorkMax}`;
+
+      const restTarget = hasPM
+        ? `${t.wRestMin}-${t.wRestMax}w cadence ${t.cadRestMin}-${t.cadRestMax}`
+        : `${t.hrRestMin}-${t.hrRestMax} bpm cadence ${t.cadRestMin}-${t.cadRestMax}`;
 
       let txt = 'Warmup\n';
-      txt += `- ${w.warmMin}m ${warmTarget}\n\n`;
+      txt += `- ${Math.max(1, w.warmMin)}m ${warmTarget}\n\n`;
 
       if (w.reps > 1) {
         txt += `Main set ${w.reps}x\n`;
-        txt += `- ${w.workMin}m ${workTarget}\n`;
-        txt += `- ${w.restMin}m ${restTarget}\n\n`;
+        txt += `- ${Math.max(1, w.workMin)}m ${workTarget}\n`;
+        txt += `- ${Math.max(1, w.restMin || 2)}m ${restTarget}\n\n`;
       } else {
         txt += 'Main set\n';
-        txt += `- ${w.workMin}m ${workTarget}\n\n`;
+        txt += `- ${Math.max(1, w.workMin)}m ${workTarget}\n\n`;
       }
 
       txt += 'Cooldown\n';
-      txt += `- ${w.coolMin}m ${restTarget}\n`;
+      txt += `- ${Math.max(1, w.coolMin)}m ${restTarget}\n`;
       return txt;
+    }
+
+    function downloadIntervalsWorkoutFile(dayIdx) {
+      const w = state.plan[dayIdx];
+      if (!w || w.type !== 'bike') return;
+      const content = buildIntervalsWorkoutSyntax(dayIdx);
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `trenin_S${state.currentWeek}_${w.shortDay}_intervals.txt`;
+      a.click();
     }
 
     function openIntervalsExport(dayIdx) {
@@ -2963,7 +2964,7 @@
       const targetDate = prompt('Fecha del calendario (AAAA-MM-DD):', new Date().toISOString().split('T')[0]);
       if (!targetDate) return;
 
-      const fullDesc = `${w.title}\n\n` + buildIntervalsWorkoutSyntax(dayIdx);
+      const fullDesc = buildIntervalsWorkoutSyntax(dayIdx);
 
       try {
         const res = await fetch(`https://intervals.icu/api/v1/athlete/${encodeURIComponent(athleteId)}/events`, {
