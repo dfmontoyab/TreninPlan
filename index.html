@@ -93,7 +93,7 @@
           <div class="flex items-center gap-2">
             <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white">trenin<span class="text-amber-500">_plan</span></h1>
             <span id="saveStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">
-              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.5 Listo
+              <i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.6 Listo
             </span>
           </div>
           <p class="text-[11px] text-stone-400">Coach Pro • <span class="text-amber-400 font-semibold">Pulso</span> • <span class="text-orange-400 font-semibold">FTP</span> • <span class="text-amber-200 font-semibold">Cadencia</span></p>
@@ -123,13 +123,13 @@
   <!-- CONTENEDOR PRINCIPAL -->
   <main class="max-w-6xl mx-auto px-3 sm:px-5 pt-4 space-y-5">
 
-    <!-- PASO 1: DATOS DEL CICLISTA -->
+    <!-- PASO 1: DATOS DEL CICLISTA Y ENCUESTA DE SALUD -->
     <section id="tab-step1" class="tab-panel space-y-4">
       <div class="glass rounded-2xl p-4 sm:p-6">
         <div class="flex items-center justify-between border-b border-stone-800 pb-3 mb-4">
           <div>
             <span class="text-xs font-bold uppercase tracking-wider text-amber-500">Paso 1 de 3</span>
-            <h2 class="text-lg sm:text-xl font-bold text-white">Tus Datos Fisiológicos</h2>
+            <h2 class="text-lg sm:text-xl font-bold text-white">Tus Datos Fisiológicos y Condiciones de Salud</h2>
           </div>
           <i class="fa-solid fa-id-card-clip text-2xl text-stone-600"></i>
         </div>
@@ -189,6 +189,48 @@
             <input id="inFTP" type="number" value="0" min="0" max="500" placeholder="0 = Automático" oninput="autoSaveInputs()" class="w-full rounded-lg bg-stone-950 border border-orange-500/40 px-3 py-1.5 text-sm text-white mono" />
             <p class="text-[11px] text-stone-400 mt-1">Vatios que aguantas 1 hora. Pon 0 si no tienes potenciómetro.</p>
           </div>
+        </div>
+
+        <!-- Encuesta Inicial de Condiciones de Salud -->
+        <div id="healthSurveyBox" class="mt-5 pt-4 border-t border-stone-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-amber-300">
+              <i class="fa-solid fa-notes-medical mr-1.5"></i>Encuesta Inicial de Condiciones de Salud
+            </h3>
+            <span class="text-[10px] text-stone-400">Ajusta cargas y consumo de líquidos/nutrientes</span>
+          </div>
+          <p class="text-xs text-stone-300">
+            Si es tu primera configuración, cuéntanos si tienes alguna condición o molestia para adaptar la exigencia y las recomendaciones de consumo (hidratación, sales, carbohidratos o estimulantes):
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+            <div>
+              <label class="block text-[11px] font-semibold text-stone-300 mb-1">Condición Principal</label>
+              <select id="inHealthCondition" onchange="renderHealthGuidanceBox(); autoSaveInputs();" class="w-full rounded-xl bg-stone-950 border border-amber-500/40 px-3 py-2 text-xs text-white font-semibold">
+                <option value="none" selected>Ninguna condición reportada</option>
+                <option value="hypertension">Presión arterial alta / hipertensión controlada</option>
+                <option value="cardiovascular">Antecedente o sensibilidad cardiovascular / arritmias</option>
+                <option value="joint_knee">Molestia en rodilla o articulaciones</option>
+                <option value="respiratory">Sensibilidad respiratoria / aire frío o seco</option>
+                <option value="heavy_sweater">Sudoración muy abundante / calambres frecuentes</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-stone-300 mb-1">Tolerancia a Cafeína / Estimulantes</label>
+              <select id="inCaffeineTolerance" onchange="renderHealthGuidanceBox(); autoSaveInputs();" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-xs text-white">
+                <option value="normal" selected>Normal / sin molestias</option>
+                <option value="reduce">Reducir o evitar (palpitaciones, nervios o tensión)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-stone-300 mb-1">Nota adicional de salud o consumo</label>
+              <input id="inHealthNotes" type="text" placeholder="Ej: Tomar más agua en calor, evitar esfuerzos máximos..." oninput="renderHealthGuidanceBox(); autoSaveInputs();" class="w-full rounded-xl bg-stone-950 border border-stone-800 px-3 py-2 text-xs text-white" />
+            </div>
+          </div>
+
+          <div id="healthGuidanceBox" class="p-3.5 rounded-xl bg-amber-950/20 border border-amber-500/30 text-xs text-stone-200 leading-relaxed"></div>
         </div>
 
         <div class="mt-5 flex justify-end">
@@ -836,15 +878,16 @@
   </nav>
 
   <script>
-    const STORAGE_KEY = 'trenin_plan_v425_database';
+    const STORAGE_KEY = 'trenin_plan_v426_database';
 
-    function getCurrentWeekMondayISO() {
+    // Devuelve el lunes estrictamente posterior al día actual (si hoy es sábado o domingo, arranca el lunes próximo)
+    function getNextMondayAfterTodayISO() {
       const now = new Date();
-      const day = now.getDay();
-      const diff = now.getDate() - day + (day === 0 ? -6 : 1);
-      const monday = new Date(now.getFullYear(), now.getMonth(), diff);
-      monday.setHours(0, 0, 0, 0);
-      return monday.toISOString();
+      const day = now.getDay(); // 0 = domingo, 1 = lunes, ..., 6 = sábado
+      const daysUntilNextMonday = (8 - day) % 7 || 7;
+      const nextMonday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilNextMonday);
+      nextMonday.setHours(0, 0, 0, 0);
+      return nextMonday.toISOString();
     }
 
     const state = {
@@ -863,6 +906,11 @@
         ftp: 0,
         ftpCalculated: 205,
         ftpEstimated: true
+      },
+      health: {
+        condition: 'none',
+        caffeine: 'normal',
+        notes: ''
       },
       bike: {
         type: '',
@@ -980,6 +1028,64 @@
       ]
     };
 
+    function getHealthRecommendations(cond, caffeine, notes) {
+      let loadMsg = 'Carga estándar progresiva según tu nivel y disponibilidad.';
+      let consumeMsg = 'Consumir agua de forma regular cada 15 min y carbohidratos según la duración.';
+      let loadMult = 1.0;
+      let capZone = 5;
+      let extraHydrationMl = 0;
+
+      if (cond === 'hypertension') {
+        loadMult = 0.85;
+        capZone = 4;
+        extraHydrationMl = 120;
+        loadMsg = 'Ajuste de carga (-15% y tope en Zona 4): priorizamos progresión controlada evitando picos bruscos o esfuerzos máximos sostenidos.';
+        consumeMsg = 'Aumentar hidratación constante (agua en sorbos frecuentes) y moderar el exceso de sodio/sal añadido o estimulantes antes de rodar; consulta con tu médico sobre tu pauta habitual.';
+      } else if (cond === 'cardiovascular') {
+        loadMult = 0.80;
+        capZone = 3;
+        extraHydrationMl = 100;
+        loadMsg = 'Ajuste prudente de carga (-20% y enfoque en Zonas 1–3/4 controlada): evitamos esfuerzos máximos (Z5) hasta validar tolerancia con tu médico.';
+        consumeMsg = 'Aumentar agua en pequeñas tomas frecuentes, evitar deshidratación y reducir o eliminar cafeína/pre-entrenos si te aceleran el pulso.';
+      } else if (cond === 'joint_knee') {
+        loadMult = 0.75;
+        capZone = 4;
+        loadMsg = 'Ajuste articular (-25% de volumen/carga): cadencia más ágil, menor resistencia en subidas y precaución ante cualquier dolor.';
+        consumeMsg = 'Mantener buena hidratación y aporte proteico/energético adecuado para recuperación muscular sin sobrecargar en exceso.';
+      } else if (cond === 'respiratory') {
+        loadMult = 0.88;
+        capZone = 4;
+        extraHydrationMl = 120;
+        loadMsg = 'Ajuste respiratorio (-12% de intensidad pico): calentamiento más gradual y control de esfuerzo en aire frío, seco o con polvo.';
+        consumeMsg = 'Aumentar un poco la ingesta de agua para mantener hidratadas las vías respiratorias y evitar bebidas muy frías o azucaradas en exceso.';
+      } else if (cond === 'heavy_sweater') {
+        loadMult = 0.95;
+        capZone = 5;
+        extraHydrationMl = 220;
+        loadMsg = 'Carga ajustada con atención a la termorregulación y fatiga por calor.';
+        consumeMsg = 'Aumentar de forma importante el consumo de agua y electrolitos/sodio (especialmente en salidas > 60 min o clima cálido) y reponer carbohidratos.';
+      }
+
+      if (caffeine === 'reduce') {
+        consumeMsg += ' Reducir o evitar cafeína/estimulantes para cuidar el descanso y la estabilidad del pulso.';
+      }
+      if (notes && notes.trim()) {
+        consumeMsg += ` Nota tuya: "${notes.trim()}".`;
+      }
+
+      return { loadMsg, consumeMsg, loadMult, capZone, extraHydrationMl };
+    }
+
+    function renderHealthGuidanceBox() {
+      const cond = document.getElementById('inHealthCondition')?.value || 'none';
+      const caffeine = document.getElementById('inCaffeineTolerance')?.value || 'normal';
+      const notes = document.getElementById('inHealthNotes')?.value || '';
+      const box = document.getElementById('healthGuidanceBox');
+      if (!box) return;
+      const rec = getHealthRecommendations(cond, caffeine, notes);
+      box.innerHTML = `<div><strong class="text-amber-300">Carga y zonas:</strong> ${rec.loadMsg}</div><div class="mt-1"><strong class="text-orange-300">Qué consumir en mayor o menor cantidad:</strong> ${rec.consumeMsg}</div>`;
+    }
+
     function updateTrainingTypeHint() {
       const sel = document.getElementById('obsTrainingType');
       const hint = document.getElementById('obsTrainingTypeHint');
@@ -1039,6 +1145,7 @@
         hasSavedProfile: true,
         lastActiveTab: state.lastActiveTab,
         rider: state.rider,
+        health: state.health,
         bike: state.bike,
         goal: state.goal,
         weekConfigs: state.weekConfigs,
@@ -1059,7 +1166,6 @@
       } catch (e) {}
     }
 
-    // Carga exclusiva del perfil de este usuario sin arrastrar datos de otros usuarios
     function loadStateFromLocal(callback) {
       let loaded = null;
       try {
@@ -1079,6 +1185,7 @@
       state.hasSavedProfile = Boolean(data.hasSavedProfile);
       state.lastActiveTab = data.lastActiveTab || 'plan';
       if (data.rider) Object.assign(state.rider, data.rider);
+      if (data.health) Object.assign(state.health, data.health);
       if (data.bike) Object.assign(state.bike, data.bike);
       if (data.goal) Object.assign(state.goal, data.goal);
       if (data.weekConfigs) state.weekConfigs = data.weekConfigs;
@@ -1102,6 +1209,11 @@
       document.getElementById('inMaxHR').value = state.rider.maxHR || 0;
       document.getElementById('inRestHR').value = state.rider.restHR || 58;
       document.getElementById('inFTP').value = state.rider.ftpEstimated ? 0 : (state.rider.ftp || 0);
+
+      document.getElementById('inHealthCondition').value = state.health.condition || 'none';
+      document.getElementById('inCaffeineTolerance').value = state.health.caffeine || 'normal';
+      document.getElementById('inHealthNotes').value = state.health.notes || '';
+      renderHealthGuidanceBox();
 
       if (state.bike.type) document.getElementById('inBikeType').value = state.bike.type;
       updateGroupsetOptions();
@@ -1138,13 +1250,14 @@
       const badge = document.getElementById('saveStatusBadge');
       if (!badge) return;
       badge.innerHTML = '<i class="fa-solid fa-check mr-1"></i>Guardado';
-      setTimeout(() => { badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.5 Listo'; }, 1400);
+      setTimeout(() => { badge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i>v4.2.6 Listo'; }, 1400);
     }
 
     function autoSaveInputs() {
       if (!state.planStartDate) {
-        state.planStartDate = getCurrentWeekMondayISO();
+        state.planStartDate = getNextMondayAfterTodayISO();
       }
+      renderHealthGuidanceBox();
       readInputsAndComputeMetrics();
       calculateAllowedWeekByCalendar();
       populateWeekSelector();
@@ -1157,7 +1270,7 @@
     function saveAndGeneratePlan() {
       state.lastActiveTab = 'plan';
       if (!state.planStartDate) {
-        state.planStartDate = getCurrentWeekMondayISO();
+        state.planStartDate = getNextMondayAfterTodayISO();
         state.currentWeek = 1;
         state.maxUnlockedWeek = 1;
       }
@@ -1197,6 +1310,11 @@
       state.rider.height = parseInt(document.getElementById('inHeight').value) || 175;
       state.rider.level = document.getElementById('inLevel').value;
 
+      state.health.condition = document.getElementById('inHealthCondition')?.value || 'none';
+      state.health.caffeine = document.getElementById('inCaffeineTolerance')?.value || 'normal';
+      state.health.notes = (document.getElementById('inHealthNotes')?.value || '').trim();
+      const healthRec = getHealthRecommendations(state.health.condition, state.health.caffeine, state.health.notes);
+
       const rawMaxHR = parseInt(document.getElementById('inMaxHR').value) || 0;
       state.rider.maxHR = rawMaxHR > 120 ? rawMaxHR : Math.round(208 - (0.7 * state.rider.age));
       state.rider.restHR = parseInt(document.getElementById('inRestHR').value) || 58;
@@ -1210,7 +1328,7 @@
       } else {
         const wkgMap = { beginner: 2.2, intermediate: 2.85, advanced: 3.5 };
         state.rider.ftp = 0;
-        state.rider.ftpCalculated = Math.round(state.rider.weight * (wkgMap[state.rider.level] || 2.8) * state.weeklyProgressionFactor);
+        state.rider.ftpCalculated = Math.round(state.rider.weight * (wkgMap[state.rider.level] || 2.8) * state.weeklyProgressionFactor * healthRec.loadMult);
         state.rider.ftpEstimated = true;
       }
 
@@ -1236,7 +1354,7 @@
       state.goal.climate = document.getElementById('inClimate').value;
 
       if (state.goal.eventDate) {
-        const startRef = state.planStartDate ? new Date(state.planStartDate) : new Date(getCurrentWeekMondayISO());
+        const startRef = state.planStartDate ? new Date(state.planStartDate) : new Date(getNextMondayAfterTodayISO());
         const diffMs = new Date(state.goal.eventDate) - startRef;
         const w = Math.ceil(diffMs / (1000 * 60 * 60 * 24 * 7));
         state.totalWeeks = Math.max(4, Math.min(36, w));
@@ -1264,16 +1382,17 @@
     function buildNutritionProtocol(durationMin, zoneNumber, workoutType) {
       const weight = state.rider.weight;
       const climateBonus = state.goal.climate === 'warm' ? 180 : (state.goal.climate === 'temperate' ? 80 : 0);
+      const healthRec = getHealthRecommendations(state.health.condition, state.health.caffeine, state.health.notes);
 
       if (workoutType === 'rest') {
-        return { mlPerHour: 0, mlEvery15: 0, totalMl: Math.round(weight * 35), carbsPerHour: 0, before: 'Hidratación normal y proteína de calidad.', during: 'Agua moderada.', after: 'Descanso total y buena cena.' };
+        return { mlPerHour: 0, mlEvery15: 0, totalMl: Math.round(weight * 35), carbsPerHour: 0, before: 'Hidratación normal y proteína de calidad.', during: `Agua moderada. ${healthRec.consumeMsg}`, after: 'Descanso total y buena cena.' };
       }
       if (workoutType === 'strength') {
-        const mlH = 500;
-        return { mlPerHour: mlH, mlEvery15: 125, totalMl: Math.round((durationMin/60)*mlH), carbsPerHour: 20, before: 'Banano o tostada con maní.', during: '125 ml de agua cada 15 min.', after: 'Proteína post-ejercicio para reparar tejido muscular.' };
+        const mlH = 500 + healthRec.extraHydrationMl;
+        return { mlPerHour: mlH, mlEvery15: Math.round(mlH / 4), totalMl: Math.round((durationMin/60)*mlH), carbsPerHour: 20, before: 'Banano o tostada con maní.', during: `${Math.round(mlH / 4)} ml de agua cada 15 min. ${healthRec.consumeMsg}`, after: 'Proteína post-ejercicio para reparar tejido muscular.' };
       }
 
-      const mlPerHour = Math.round(580 + climateBonus + (weight - 70) * 4);
+      const mlPerHour = Math.round(580 + climateBonus + healthRec.extraHydrationMl + (weight - 70) * 4);
       const mlEvery15 = Math.round(mlPerHour / 4);
       const totalMl = Math.round((durationMin / 60) * mlPerHour);
       const carbs = durationMin >= 120 ? 60 : 45;
@@ -1284,14 +1403,14 @@
         totalMl,
         carbsPerHour: carbs,
         before: '1.5 horas antes: Avena o pan con mermelada y café + 350 ml de agua.',
-        during: `Agua: Toma ${mlEvery15} ml cada 15 min (Total: ${totalMl} ml). Alimento: ${carbs}g de carbohidratos/hora (gel, bocadillo o banano cada 40 min).`,
+        during: `Agua: Toma ${mlEvery15} ml cada 15 min (Total: ${totalMl} ml). Alimento: ${carbs}g de carbohidratos/hora (gel, bocadillo o banano cada 40 min). ${healthRec.consumeMsg}`,
         after: 'Al llegar: 500 ml de agua con sales + carbohidrato con proteína en los primeros 30 minutos.'
       };
     }
 
     function getWeekDateRangeStr(weekNum) {
       if (!state.planStartDate) {
-        state.planStartDate = getCurrentWeekMondayISO();
+        state.planStartDate = getNextMondayAfterTodayISO();
       }
       const start = new Date(state.planStartDate);
       start.setDate(start.getDate() + (weekNum - 1) * 7);
@@ -1302,7 +1421,7 @@
     }
 
     function getWeekWindow(weekNum) {
-      const base = state.planStartDate ? new Date(state.planStartDate) : new Date(getCurrentWeekMondayISO());
+      const base = state.planStartDate ? new Date(state.planStartDate) : new Date(getNextMondayAfterTodayISO());
       const start = new Date(base);
       start.setDate(start.getDate() + (weekNum - 1) * 7);
       start.setHours(0, 0, 0, 0);
@@ -1319,8 +1438,8 @@
       const now = new Date();
       now.setHours(0,0,0,0);
       const diffTime = now - start;
-      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-      const calendarWeek = Math.max(1, Math.floor(diffDays / 7) + 1);
+      // Si la semana 1 empieza un lunes futuro (ej. hoy es domingo y empieza mañana), diffDays < 0 => semana 1 habilitada para programar
+      const calendarWeek = diffTime < 0 ? 1 : (Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7)) + 1);
 
       const allowed = Math.max(state.maxUnlockedWeek, Math.min(state.totalWeeks, calendarWeek));
       state.maxUnlockedWeek = allowed;
@@ -1437,17 +1556,19 @@
       const z1 = state.zones[0];
       const z2 = state.zones[1];
 
+      const healthRec = getHealthRecommendations(state.health.condition, state.health.caffeine, state.health.notes);
       const wCfg = state.weekConfigs[`W${weekNum}`] || {};
       const tType = wCfg.trainingType || 'default';
       const parsedFree = parseFreeTextObservations(wCfg.freeText || '');
 
+      const healthRestrictHigh = (state.health.condition === 'cardiovascular' || state.health.condition === 'hypertension');
       const avoidZ3 = Boolean(tType === 'polarized' || parsedFree.avoidZone3);
-      const focusVo2 = Boolean(tType === 'hiit_sprint_fartlek' || tType === 'polarized' || state.goal.type === 'vo2max' || parsedFree.focusVo2);
-      const focusZ2 = Boolean(tType === 'endurance_base' || tType === 'pyramidal' || state.goal.type === 'base' || parsedFree.focusZ2);
-      const focusThreshold = Boolean(tType === 'strength_threshold' || tType === 'sweet_spot');
-      const jointPain = Boolean(wCfg.healthStatus === 'knee_pain' || parsedFree.jointPain);
+      const focusVo2 = !healthRestrictHigh && Boolean(tType === 'hiit_sprint_fartlek' || tType === 'polarized' || state.goal.type === 'vo2max' || parsedFree.focusVo2);
+      const focusZ2 = Boolean(tType === 'endurance_base' || tType === 'pyramidal' || state.goal.type === 'base' || parsedFree.focusZ2 || healthRestrictHigh);
+      const focusThreshold = !healthRestrictHigh && Boolean(tType === 'strength_threshold' || tType === 'sweet_spot');
+      const jointPain = Boolean(wCfg.healthStatus === 'knee_pain' || parsedFree.jointPain || state.health.condition === 'joint_knee');
       const isIndoorSim = Boolean(wCfg.healthStatus === 'indoor_sim');
-      const softMode = Boolean(jointPain || wCfg.healthStatus === 'mild_illness' || wCfg.healthStatus === 'sore_legs' || parsedFree.lowerLoad);
+      const softMode = Boolean(jointPain || healthRestrictHigh || wCfg.healthStatus === 'mild_illness' || wCfg.healthStatus === 'sore_legs' || parsedFree.lowerLoad);
 
       let weekdayCap = wCfg.customWeekdayMin || parsedFree.customWeekdayMin || state.goal.weekdayMin;
       let satCap = state.goal.saturdayMin || state.goal.weekendMin || 150;
@@ -1483,7 +1604,7 @@
       const blockNumber = Math.floor((weekNum - 1) / 4);
       const isTaper = (weekNum === state.totalWeeks);
 
-      let fitnessMult = state.weeklyProgressionFactor * (1 + (blockNumber * 0.08));
+      let fitnessMult = state.weeklyProgressionFactor * healthRec.loadMult * (1 + (blockNumber * 0.08));
       if (cycleIndex === 3 || softMode) fitnessMult *= 0.80;
       if (jointPain) fitnessMult *= 0.70;
       if (isTaper) fitnessMult *= 0.65;
@@ -1517,6 +1638,9 @@
       if (jointPain) {
         phaseLabel = `SEMANA ${weekNum} (${dateRangeStr}): PROTECCIÓN ARTICULAR / RODILLA`;
         phaseDesc = 'Carga reducida y cadencia ágil sin forzar: si el dolor aparece o aumenta al pedalear, detén la sesión o descansa.';
+      } else if (healthRestrictHigh) {
+        phaseLabel = `SEMANA ${weekNum} (${dateRangeStr}): CARGA CONTROLADA POR SALUD`;
+        phaseDesc = healthRec.loadMsg;
       } else if (tType !== 'default') {
         phaseLabel = `SEMANA ${weekNum} (${dateRangeStr}): ${tType.toUpperCase()}`;
         phaseDesc = trainingTypeDescriptions[tType] || phaseDesc;
@@ -1537,7 +1661,17 @@
       state.currentWeekTheme = { badge: phaseLabel, desc: phaseDesc };
 
       let tueConfig;
-      if (softMode) {
+      if (healthRestrictHigh) {
+        const fit = fitIntervalsToAvailableTime(weekdayCap, 12, 10, 6, 4, 2);
+        const safeZone = Math.min(healthRec.capZone, 3);
+        tueConfig = {
+          title: 'Ritmo Aeróbico Controlado',
+          subtitle: `Semana ${weekNum} • Intensidad moderada sin picos`,
+          zone: safeZone, ...fit,
+          cadWorkMin: 86, cadWorkMax: 96,
+          details: 'Mantén respiración cómoda y control de pulsaciones; sin esfuerzos máximos.'
+        };
+      } else if (softMode) {
         const fit = fitIntervalsToAvailableTime(weekdayCap, 12, 10, 5, 4, 2);
         tueConfig = {
           title: jointPain ? 'Rodaje Suave de Protección Articular' : 'Activación Controlada en Zona 2',
@@ -1694,8 +1828,8 @@
       const satTarget = Math.max(30, satCap);
       const sunTarget = Math.max(30, sunCap);
       const sunWorkEach = Math.max(15, Math.floor((sunTarget - 30) / 2));
-      const sunZone = (cycleIndex === 2 && !avoidZ3 && !softMode) ? 3 : (jointPain ? 1 : 2);
-      const satZone = jointPain ? 1 : 2;
+      const sunZone = Math.min(healthRec.capZone, (cycleIndex === 2 && !avoidZ3 && !softMode) ? 3 : (jointPain ? 1 : 2));
+      const satZone = Math.min(healthRec.capZone, jointPain ? 1 : 2);
 
       const wantExtraDay = Boolean(wCfg.bikeDaysDelta === 'plus1' || parsedFree.extraBikeDay);
       const wantFewerDay = Boolean(wCfg.bikeDaysDelta === 'minus1' || parsedFree.fewerBikeDay);
@@ -1773,7 +1907,9 @@
       const ftp = state.rider.ftpCalculated;
       state.plan.forEach(item => {
         if (item.type === 'bike') {
-          const zObj = state.zones[item.zone - 1] || state.zones[1];
+          const safeZ = Math.min(healthRec.capZone, item.zone || 2);
+          item.zone = safeZ;
+          const zObj = state.zones[safeZ - 1] || state.zones[1];
           item.durationMin = item.warmMin + (item.reps * item.workMin) + ((item.reps > 1 ? item.reps - 1 : 0) * item.restMin) + item.coolMin;
           item.targets = {
             hrWorkMin: zObj.hrMin, hrWorkMax: zObj.hrMax, hrWorkPct: zObj.hrPctText,
@@ -1935,7 +2071,7 @@
           state.intervalsAuth.lastSyncSummary = `Sintonía activa: ${state.intervalsActivities.length} actividades de Intervals.icu conciliadas (regla 1 a 1 y máximo +1 día compatible).`;
         }
         if (!state.planStartDate) {
-          state.planStartDate = getCurrentWeekMondayISO();
+          state.planStartDate = getNextMondayAfterTodayISO();
         }
         readInputsAndComputeMetrics();
         buildWeekSchedule(state.currentWeek);
@@ -2696,10 +2832,11 @@
       try {
         document.getElementById('inEventDate').value = new Date(Date.now() + 56*86400000).toISOString().split('T')[0];
         renderGoalGuidanceBox();
+        renderHealthGuidanceBox();
         updateTrainingTypeHint();
         loadStateFromLocal((hadData) => {
           if (!state.planStartDate) {
-            state.planStartDate = getCurrentWeekMondayISO();
+            state.planStartDate = getNextMondayAfterTodayISO();
             state.currentWeek = 1;
             state.maxUnlockedWeek = 1;
           }
